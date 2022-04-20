@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/sign_up.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -139,7 +140,8 @@ class _SignInState extends State<SignIn> {
 
   Widget BuildSignUpBtn() {
     return GestureDetector(
-      onTap: () => print("Sign up Pressed"),
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUp())),
       child: RichText(
           text: TextSpan(children: [
         TextSpan(

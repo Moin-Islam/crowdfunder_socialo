@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -44,11 +46,11 @@ class _UploadImageState extends State<UploadImage> {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
-                    fontWeight: FontWeight.normal),
+                    fontWeight: FontWeight.bold),
               ),
               Icon(
                 Icons.camera_alt_outlined,
-                color: Color(0xff800080),
+                color: Colors.white,
               )
             ],
           )),
@@ -76,6 +78,72 @@ class _UploadImageState extends State<UploadImage> {
             ])),
           ],
         ));
+  }
+
+  Widget buildSignUpBtn() {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUp())),
+      child: RichText(
+          text: TextSpan(children: [
+        TextSpan(
+            text: 'Don\'t have any Account?',
+            style: TextStyle(
+                color: Colors.black38,
+                fontSize: 18,
+                fontWeight: FontWeight.w500)),
+        TextSpan(
+            text: 'Sign Up',
+            style: TextStyle(
+                color: Color(0xff800080),
+                fontSize: 18,
+                fontWeight: FontWeight.bold))
+      ])),
+    );
+  }
+
+  Widget buildBottomButtons() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          RaisedButton(
+            elevation: 5,
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SignUp())),
+            padding: EdgeInsets.all(15),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: Color(0xff800080),
+            child: Text(
+              'Previous',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          RaisedButton(
+            elevation: 5,
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SetUp())),
+            padding: EdgeInsets.all(15),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            color: Color(0xff800080),
+            child: Text(
+              'Next',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -117,6 +185,10 @@ class _UploadImageState extends State<UploadImage> {
                     buildUseCameraBtn(),
                     SizedBox(height: 25),
                     buildGalleryBtn(),
+                    SizedBox(height: 55),
+                    buildSignUpBtn(),
+                    SizedBox(height: 25),
+                    buildBottomButtons(),
                   ],
                 ),
               ),
