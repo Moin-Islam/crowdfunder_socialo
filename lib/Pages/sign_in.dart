@@ -18,19 +18,22 @@ class _SignInState extends State<SignIn> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(
+              color: Colors.black,
+            ),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.email,
                   color: Colors.black,
@@ -50,19 +53,20 @@ class _SignInState extends State<SignIn> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -123,6 +127,7 @@ class _SignInState extends State<SignIn> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25),
       width: double.infinity,
+      margin: EdgeInsets.symmetric(horizontal: 50),
       child: RaisedButton(
         elevation: 5,
         onPressed: () => print('Login Pressed'),
@@ -132,7 +137,7 @@ class _SignInState extends State<SignIn> {
         child: Text(
           'Sign In',
           style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.normal),
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
     );
@@ -143,20 +148,25 @@ class _SignInState extends State<SignIn> {
       onTap: () => Navigator.push(
           context, MaterialPageRoute(builder: (context) => SignUp())),
       child: RichText(
+          textAlign: TextAlign.center,
           text: TextSpan(children: [
-        TextSpan(
-            text: 'Don\'t have any Account?',
-            style: TextStyle(
-                color: Colors.black38,
-                fontSize: 18,
-                fontWeight: FontWeight.w500)),
-        TextSpan(
-            text: 'Sign Up',
-            style: TextStyle(
+            TextSpan(
+              text: 'Don\'t have any Account? ',
+              style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal),
+            ),
+            TextSpan(
+              text: 'Sign Up Now',
+              style: TextStyle(
                 color: Color(0xff800080),
-                fontSize: 18,
-                fontWeight: FontWeight.normal))
-      ])),
+                fontSize: 13,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.underline,
+              ),
+            )
+          ])),
     );
   }
 
@@ -169,40 +179,37 @@ class _SignInState extends State<SignIn> {
             child: Stack(
           children: [
             Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0x66f0f8ff),
-                    Color(0x99f0f8ff),
-                    Color(0xccf0f8ff),
-                    Color(0xfff0f8ff),
-                  ])),
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Hello',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 40,
-                        fontWeight: FontWeight.normal,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hello,',
+                          style: TextStyle(
+                            color: Color(0xff800080),
+                            fontSize: 25,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      'Sign in to your account',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sign in to your account',
+                          style: TextStyle(
+                            color: Color(0xff800080),
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     buildEmail(),
