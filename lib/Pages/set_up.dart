@@ -20,13 +20,13 @@ class _SetUpState extends State<SetUp> {
             text: 'See the details in the video',
             style: TextStyle(
                 color: Colors.black38,
-                fontSize: 18,
-                fontWeight: FontWeight.w500)),
+                fontSize: 13,
+                fontWeight: FontWeight.normal)),
         TextSpan(
             text: 'https://bit.ly/CFpromo1',
             style: TextStyle(
                 color: Color(0xff800080),
-                fontSize: 18,
+                fontSize: 13,
                 fontWeight: FontWeight.normal))
       ])),
     );
@@ -39,19 +39,20 @@ class _SetUpState extends State<SetUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14),
+              contentPadding: EdgeInsets.only(left: 14),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: Color(0xff800080), width: 2.0),
+              ),
             ),
           ),
         ),
@@ -66,22 +67,20 @@ class _SetUpState extends State<SetUp> {
         Container(
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2))
-                ]),
-            height: 60,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 48,
             child: TextField(
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
-              ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 14),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Color(0xff800080), width: 2.0),
+                  )),
             )),
       ],
     );
@@ -92,16 +91,15 @@ class _SetUpState extends State<SetUp> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        elevation: 5,
         onPressed: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => AccountSettings())),
         padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
         child: Text(
           'Set Up Account',
           style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.normal),
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
     );
@@ -132,13 +130,14 @@ class _SetUpState extends State<SetUp> {
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Set Up Your Account',
                       style: TextStyle(
                         color: Color(0xff800080),
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -146,10 +145,10 @@ class _SetUpState extends State<SetUp> {
                     buildVideoLinkBtn(),
                     SizedBox(height: 20),
                     Text(
-                      'input the Public Key \*',
+                      'Input the Public Key \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -157,10 +156,10 @@ class _SetUpState extends State<SetUp> {
                     buildPublicKey(),
                     SizedBox(height: 20),
                     Text(
-                      'input the Private Key \*',
+                      'Input the Private Key \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),

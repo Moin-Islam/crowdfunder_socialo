@@ -16,19 +16,20 @@ class _SignUpState extends State<SignUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.person,
                   color: Colors.black,
@@ -48,19 +49,20 @@ class _SignUpState extends State<SignUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.email,
                   color: Colors.black,
@@ -80,19 +82,20 @@ class _SignUpState extends State<SignUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.clean_hands_sharp,
                   color: Colors.black,
@@ -112,19 +115,20 @@ class _SignUpState extends State<SignUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -144,19 +148,20 @@ class _SignUpState extends State<SignUp> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -173,20 +178,22 @@ class _SignUpState extends State<SignUp> {
     return GestureDetector(
       onTap: () => print("Login Pressed"),
       child: RichText(
+          textAlign: TextAlign.center,
           text: TextSpan(children: [
-        TextSpan(
-            text: 'Already have an account ?',
-            style: TextStyle(
-                color: Colors.black38,
-                fontSize: 18,
-                fontWeight: FontWeight.w500)),
-        TextSpan(
-            text: 'Login now',
-            style: TextStyle(
-                color: Color(0xff800080),
-                fontSize: 18,
-                fontWeight: FontWeight.normal))
-      ])),
+            TextSpan(
+                text: 'Already have an account ? ',
+                style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: 13,
+                    fontWeight: FontWeight.normal)),
+            TextSpan(
+                text: 'Login now',
+                style: TextStyle(
+                    color: Color(0xff800080),
+                    fontSize: 13,
+                    fontWeight: FontWeight.normal,
+                    decoration: TextDecoration.underline))
+          ])),
     );
   }
 
@@ -221,29 +228,24 @@ class _SignUpState extends State<SignUp> {
             Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0x66f0f8ff),
-                    Color(0x99f0f8ff),
-                    Color(0xccf0f8ff),
-                    Color(0xfff0f8ff),
-                  ])),
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Create Your Account',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 30,
-                        fontWeight: FontWeight.normal,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Create Your Account',
+                          style: TextStyle(
+                            color: Color(0xff800080),
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     buildName(),

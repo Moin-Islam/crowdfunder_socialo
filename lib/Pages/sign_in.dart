@@ -79,43 +79,47 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Widget buildForgotPassBtn() {
+  Widget RememberPasswordRow() {
     return Container(
-      alignment: Alignment.centerRight,
-      child: FlatButton(
-        onPressed: () => print("Forgot Password pressed"),
-        padding: EdgeInsets.only(right: 0),
-        child: Text(
-          'Forgot your Password?',
-          style:
-              TextStyle(color: Colors.black45, fontWeight: FontWeight.normal),
-        ),
-      ),
-    );
-  }
-
-  Widget buildRememberCb() {
-    return Container(
-      height: 20,
+      width: double.infinity,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Theme(
-              data: ThemeData(unselectedWidgetColor: Colors.black38),
-              child: Checkbox(
-                value: isRememberMe,
-                checkColor: Colors.white,
-                activeColor: Color(0xff800080),
-                onChanged: (value) {
-                  setState(() {
-                    isRememberMe = value;
-                  });
-                },
-              )),
-          Text(
-            'Remember me',
-            style: TextStyle(
-              color: Colors.black38,
-              fontWeight: FontWeight.normal,
+          Container(
+            height: 20,
+            child: Row(
+              children: [
+                Theme(
+                    data: ThemeData(unselectedWidgetColor: Colors.black38),
+                    child: Checkbox(
+                      value: isRememberMe,
+                      checkColor: Colors.white,
+                      activeColor: Color(0xff800080),
+                      onChanged: (value) {
+                        setState(() {
+                          isRememberMe = value;
+                        });
+                      },
+                    )),
+                Text(
+                  'Remember me',
+                  style: TextStyle(
+                    color: Colors.black38,
+                    fontWeight: FontWeight.normal,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            child: FlatButton(
+              onPressed: () => print("Forgot Password pressed"),
+              padding: EdgeInsets.only(right: 0),
+              child: Text(
+                'Forgot your Password?',
+                style: TextStyle(
+                    color: Colors.black45, fontWeight: FontWeight.normal),
+              ),
             ),
           )
         ],
@@ -215,8 +219,7 @@ class _SignInState extends State<SignIn> {
                     buildEmail(),
                     SizedBox(height: 20),
                     buildPassword(),
-                    buildForgotPassBtn(),
-                    buildRememberCb(),
+                    RememberPasswordRow(),
                     buildLoginBtn(),
                     BuildSignUpBtn(),
                   ],

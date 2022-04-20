@@ -32,7 +32,6 @@ class _UploadImageState extends State<UploadImage> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-          elevation: 5,
           onPressed: () => captureImage(),
           padding: EdgeInsets.all(15),
           shape:
@@ -45,8 +44,8 @@ class _UploadImageState extends State<UploadImage> {
                 'Use Camera',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
               ),
               Icon(
                 Icons.camera_alt_outlined,
@@ -68,14 +67,21 @@ class _UploadImageState extends State<UploadImage> {
               color: Color(0xff800080),
             ),
             RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                  text: 'Select the documents from Gallery',
-                  style: TextStyle(
-                      color: Color(0xff800080),
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal))
-            ])),
+              text: TextSpan(children: [
+                TextSpan(
+                    text: 'Select the documents from Gallery',
+                    style: TextStyle(
+                        color: Color(0xff800080),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal)),
+                TextSpan(
+                    text: '\n.png or .jpeg file',
+                    style: TextStyle(
+                        color: Color(0xffBEBEBE),
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal))
+              ]),
+            ),
           ],
         ));
   }
@@ -90,57 +96,65 @@ class _UploadImageState extends State<UploadImage> {
             text: 'Don\'t have any Account?',
             style: TextStyle(
                 color: Colors.black38,
-                fontSize: 18,
-                fontWeight: FontWeight.w500)),
+                fontSize: 13,
+                fontWeight: FontWeight.normal)),
         TextSpan(
-            text: 'Sign Up',
+            text: ' Sign Up',
             style: TextStyle(
-                color: Color(0xff800080),
-                fontSize: 18,
-                fontWeight: FontWeight.bold))
+              color: Color(0xff800080),
+              fontSize: 13,
+              fontWeight: FontWeight.normal,
+              decoration: TextDecoration.underline,
+            ))
       ])),
     );
   }
 
   Widget buildBottomButtons() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          RaisedButton(
-            elevation: 5,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SignUp())),
-            padding: EdgeInsets.all(15),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            color: Color(0xff800080),
-            child: Text(
-              'Previous',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            width: double.infinity,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RaisedButton(
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUp())),
+                  padding: EdgeInsets.all(13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: Color(0xff800080),
+                  child: Text(
+                    'Previous',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SetUp())),
+                  padding: EdgeInsets.all(13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: Color(0xff800080),
+                  child: Text(
+                    'Next',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                )
+              ],
             ),
           ),
-          RaisedButton(
-            elevation: 5,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SetUp())),
-            padding: EdgeInsets.all(15),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            color: Color(0xff800080),
-            child: Text(
-              'Next',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-          )
         ],
       ),
     );
@@ -171,18 +185,42 @@ class _UploadImageState extends State<UploadImage> {
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Upload Your Image',
                       style: TextStyle(
                         color: Color(0xff800080),
-                        fontSize: 30,
+                        fontSize: 18,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                     SizedBox(height: 25),
                     buildUseCameraBtn(),
+                    SizedBox(height: 25),
+                    Row(children: <Widget>[
+                      Expanded(
+                        child: new Container(
+                            margin:
+                                const EdgeInsets.only(left: 10.0, right: 15.0),
+                            child: Divider(
+                              color: Colors.black,
+                              height: 50,
+                            )),
+                      ),
+                      Text(
+                        "or",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      Expanded(
+                        child: new Container(
+                            margin:
+                                const EdgeInsets.only(left: 15.0, right: 10.0),
+                            child: Divider(
+                              color: Colors.black,
+                              height: 50,
+                            )),
+                      ),
+                    ]),
                     SizedBox(height: 25),
                     buildGalleryBtn(),
                     SizedBox(height: 55),

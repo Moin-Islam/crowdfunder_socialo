@@ -17,19 +17,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.person,
                   color: Colors.black,
@@ -49,19 +50,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.email,
                   color: Colors.black,
@@ -81,19 +83,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.clean_hands_sharp,
                   color: Colors.black,
@@ -113,19 +116,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -145,19 +149,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -177,19 +182,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
                 prefixIcon: Icon(
                   Icons.lock,
                   color: Colors.black,
@@ -207,23 +213,21 @@ class _AccountSettingsState extends State<AccountSettings> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(),
           RaisedButton(
-            elevation: 5,
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => PaymentInfo())),
             padding: EdgeInsets.all(15),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             color: Color(0xff800080),
             child: Text(
               'Save Changes',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal),
             ),
           )
         ],
@@ -238,19 +242,20 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14),
+              contentPadding: EdgeInsets.only(left: 14),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: Color(0xff800080), width: 2.0),
+              ),
             ),
           ),
         ),
@@ -265,23 +270,43 @@ class _AccountSettingsState extends State<AccountSettings> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))
-              ]),
-          height: 60,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
           child: TextField(
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14),
+              contentPadding: EdgeInsets.only(left: 14),
+              focusedBorder: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: Color(0xff800080), width: 2.0),
+              ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildSetUpAccountbtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AccountSettings())),
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: Color(0xff800080),
+        child: Text(
+          'Set Up Account',
+          style: TextStyle(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
+        ),
+      ),
     );
   }
 
@@ -310,7 +335,6 @@ class _AccountSettingsState extends State<AccountSettings> {
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Hello',
@@ -342,36 +366,46 @@ class _AccountSettingsState extends State<AccountSettings> {
                     SizedBox(height: 20),
                     buildConfirmPassword(),
                     buildSaveChangesBtn(),
-                    Text(
-                      'Stripe Account Info',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
+                    SizedBox(height: 40),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Stripe Account Info',
+                          style: TextStyle(
+                            color: Color(0xff800080),
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          'Input the public key \*',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        buildPublicKey(),
+                        SizedBox(height: 20),
+                        Text(
+                          'Input the Private Key \*',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        buildPrivateKey(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        buildSetUpAccountbtn()
+                      ],
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Input the public key \*',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    buildPublicKey(),
-                    SizedBox(height: 20),
-                    Text(
-                      'input the Private Key \*',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    buildPrivateKey(),
                   ],
                 ),
               ),
