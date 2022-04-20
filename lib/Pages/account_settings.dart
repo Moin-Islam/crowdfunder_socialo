@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 
 class AccountSettings extends StatefulWidget {
@@ -129,7 +130,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   Icons.lock,
                   color: Colors.black,
                 ),
-                hintText: 'password',
+                hintText: 'Current password',
                 hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
@@ -161,7 +162,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   Icons.lock,
                   color: Colors.black,
                 ),
-                hintText: 'password',
+                hintText: 'New password',
                 hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
@@ -193,7 +194,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                   Icons.lock,
                   color: Colors.black,
                 ),
-                hintText: 'password',
+                hintText: 'Confirm password',
                 hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
@@ -211,8 +212,8 @@ class _AccountSettingsState extends State<AccountSettings> {
           Container(),
           RaisedButton(
             elevation: 5,
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SignUp())),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PaymentInfo())),
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
