@@ -64,6 +64,11 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - img/
+  fonts :
+    family : roboto
+      - fonts/roboto/
+    family : rubick
+      - fonts/rubick/
     
 
 
