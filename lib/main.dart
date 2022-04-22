@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/demo1.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/welcome_page.dart';
-import 'package:intro_slider/intro_slider.dart';
+import './Pages/custom_intro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +20,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: IntroSlider());
+        home: IntroScreen());
   }
 }

@@ -8,9 +8,9 @@ class IntroSliderPage extends StatefulWidget {
 }
 
 class _IntroSliderPageState extends State<IntroSliderPage> {
-  List<Slide> slides = new List();
+  List<Slide> slides = [];
 
-  Function goToTab;
+  late Function goToTab;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   }
 
   List<Widget> renderListCustomTabs() {
-    List<Widget> tabs = new List();
+    List<Widget> tabs = [];
     for (int i = 0; i < slides.length; i++) {
       Slide? currentSlide = slides[i];
       tabs.add(Container(
@@ -90,7 +90,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
             children: [
               GestureDetector(
                 child: Image.asset(
-                  currentSlide.pathImage,
+                  currentSlide.pathImage.toString(),
                   width: 200,
                   height: 200,
                   fit: BoxFit.contain,
@@ -98,7 +98,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
               ),
               Container(
                 child: Text(
-                  currentSlide.title,
+                  currentSlide.title.toString(),
                   style: currentSlide.styleTitle,
                   textAlign: TextAlign.center,
                 ),
@@ -106,8 +106,8 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
               ),
               Container(
                 child: Text(
-                  currentSlide.description,
-                  style: TextAlign.center,
+                  currentSlide.description.toString(),
+                  textAlign: TextAlign.center,
                   maxLines: 5,
                   overflow: TextOverflow.ellipsis,
                 ),
