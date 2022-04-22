@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AccountSettings extends StatefulWidget {
   @override
@@ -10,6 +12,17 @@ class AccountSettings extends StatefulWidget {
 }
 
 class _AccountSettingsState extends State<AccountSettings> {
+  File? image;
+
+  Future pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    this.image = imageTemporary;
+  }
+
   Widget buildName() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,6 +323,52 @@ class _AccountSettingsState extends State<AccountSettings> {
     );
   }
 
+  Widget buildUserProfile() {
+    return Container(
+        child: Card(
+      child: Row(
+        children: [
+          Material(
+            color: Color(0xff800080),
+            elevation: 2,
+            shape: CircleBorder(),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: InkWell(
+              splashColor: Color(0xff800080),
+              onTap: () {
+                child:
+                Ink.image(
+                  image: AssetImage("img/person1"),
+                  height: 200,
+                  width: 200,
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
+          ),
+          Column(
+            children: [
+              Text(
+                'Ilias Kanchon',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+              Text(
+                'User ID : 12314',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+            ],
+          )
+        ],
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -336,23 +395,7 @@ class _AccountSettingsState extends State<AccountSettings> {
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
                   children: [
-                    Text(
-                      'Hello',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 40,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Sign in to your account',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
+                    buildUserProfile(),
                     SizedBox(height: 20),
                     buildName(),
                     SizedBox(height: 20),
