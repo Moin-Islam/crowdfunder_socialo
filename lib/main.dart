@@ -1,8 +1,11 @@
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/welcome_page.dart';
 
 void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
