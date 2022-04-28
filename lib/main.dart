@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Pages/account_settings.dart';
 import 'package:flutter_demo/Pages/demo1.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
@@ -22,6 +23,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: IntroScreen());
+        home: StripeAccount());
   }
 }
