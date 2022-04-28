@@ -121,27 +121,100 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     return tabs;
   }
 
+  BuildDisclaimer() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Disclaimer',
+              style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal),
+            ),
+            content: Text(
+              '',
+              style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  color: Color(0xff800080),
+                  onPressed: (() {}),
+                  child: Text('Next'))
+            ],
+          );
+        });
+  }
+
+  Widget BuildDisclaimerBtn() {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => BuildDisclaimer())),
+      child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(children: [
+            TextSpan(
+              text: 'Read Our ',
+              style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal),
+            ),
+            TextSpan(
+              text: 'Disclaimer',
+              style: TextStyle(
+                color: Color(0xff800080),
+                fontSize: 13,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+            TextSpan(
+              text: 'and ',
+              style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 13,
+                  fontWeight: FontWeight.normal),
+            ),
+            TextSpan(
+              text: 'Privacy Policy',
+              style: TextStyle(
+                color: Color(0xff800080),
+                fontSize: 13,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.underline,
+              ),
+            )
+          ])),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('SLider app'),
-          ),
-          body: IntroSlider(
-            slides: this.slides,
-            renderSkipBtn: this.renderSkipbtn(),
-            renderDoneBtn: this.renderDonebtn(),
-            renderNextBtn: this.renderNextbtn(),
-            colorDot: Colors.blue.shade900,
-            sizeDot: 13.0,
-            listCustomTabs: this.renderListCustomTabs(),
-            backgroundColorAllSlides: Colors.white,
-            refFuncGoToTab: (reffunc) {
-              this.goToTab = reffunc;
-            },
-            onTabChangeCompleted: this.onTabChangeCompleted,
-          )),
+        appBar: AppBar(
+          title: Text('SLider app'),
+        ),
+        body: IntroSlider(
+          slides: this.slides,
+          renderSkipBtn: this.renderSkipbtn(),
+          renderDoneBtn: this.renderDonebtn(),
+          renderNextBtn: this.renderNextbtn(),
+          colorDot: Colors.blue.shade900,
+          sizeDot: 13.0,
+          listCustomTabs: this.renderListCustomTabs(),
+          backgroundColorAllSlides: Colors.white,
+          refFuncGoToTab: (reffunc) {
+            this.goToTab = reffunc;
+          },
+          onTabChangeCompleted: this.onTabChangeCompleted,
+        ),
+      ),
     );
   }
 }
