@@ -65,23 +65,28 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   Widget renderNextBtn() {
-    return Text(
-      "Next",
-      style: TextStyle(backgroundColor: Color(0xff80080), color: Colors.white),
+    return Container(
+      height: 48,
+      color: Color(0xff800080),
+      alignment: Alignment(0.0, 0.0),
+      child: Text(
+        "Next >",
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 
   Widget renderDoneBtn() {
     return Icon(
       Icons.done,
-      color: Color(0xff80080),
+      color: Color(0xff800080),
     );
   }
 
   Widget renderSkipBtn() {
     return Icon(
       Icons.skip_next,
-      color: Color.fromARGB(15, 0, 248, 54),
+      color: Color(0xff800080),
     );
   }
 

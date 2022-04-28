@@ -18,21 +18,20 @@ class _PaymentInfoState extends State<PaymentInfo> {
         Container(
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2))
-                ]),
-            height: 60,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 48,
             child: TextField(
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                contentPadding: EdgeInsets.only(left: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
               ),
             )),
       ],
@@ -46,21 +45,20 @@ class _PaymentInfoState extends State<PaymentInfo> {
         Container(
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2))
-                ]),
-            height: 60,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 48,
             child: TextField(
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                contentPadding: EdgeInsets.only(left: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
               ),
             ))
       ],
@@ -74,21 +72,20 @@ class _PaymentInfoState extends State<PaymentInfo> {
         Container(
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2))
-                ]),
-            height: 60,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 48,
             child: TextField(
               keyboardType: TextInputType.datetime,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                contentPadding: EdgeInsets.only(left: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
               ),
             ))
       ],
@@ -102,21 +99,20 @@ class _PaymentInfoState extends State<PaymentInfo> {
         Container(
             alignment: Alignment.centerLeft,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 6,
-                      offset: Offset(0, 2))
-                ]),
-            height: 60,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            height: 48,
             child: TextField(
               keyboardType: TextInputType.number,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                contentPadding: EdgeInsets.only(left: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
               ),
             ))
       ],
@@ -132,43 +128,58 @@ class _PaymentInfoState extends State<PaymentInfo> {
             child: Stack(
           children: [
             Container(
-              height: double.infinity,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0x66f0f8ff),
-                    Color(0x99f0f8ff),
-                    Color(0xccf0f8ff),
-                    Color(0xfff0f8ff),
-                  ])),
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Payment Info',
                       style: TextStyle(
                         color: Color(0xff800080),
-                        fontSize: 40,
+                        fontSize: 25,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                     SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(),
                         Container(
-                          color: Color(0xff800080),
+                          alignment: Alignment(0.0, 0.0),
+                          width: 130,
+                          height: 133,
+                          decoration: BoxDecoration(
+                              color: Color(0xff800080),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Text(
+                            'Visa',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 50),
+                        Container(
+                          alignment: Alignment(0.0, 0.0),
+                          width: 130,
+                          height: 133,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF4F6F8),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
                           child: Text(
                             'Stripe',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
+                              color: Colors.black,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
@@ -180,39 +191,37 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       'Card Number \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    SizedBox(height: 20),
                     buildCardNumber(),
                     SizedBox(height: 20),
                     Text(
                       'Card Holder Name \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    SizedBox(height: 20),
                     buildCardHolderName(),
                     SizedBox(height: 20),
                     Text(
                       'Expiry Date \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
-                    SizedBox(height: 20),
                     buildExpiryDate(),
+                    SizedBox(height: 20),
                     Text(
                       'CVV \*',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
