@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/account_settings.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 
@@ -91,8 +92,8 @@ class _SetUpState extends State<SetUp> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AccountSettings())),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AccountSetting())),
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),

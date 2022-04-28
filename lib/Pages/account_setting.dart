@@ -6,12 +6,12 @@ import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AccountSettings extends StatefulWidget {
+class AccountSetting extends StatefulWidget {
   @override
-  State<AccountSettings> createState() => _AccountSettingsState();
+  State<AccountSetting> createState() => _AccountSettingtate();
 }
 
-class _AccountSettingsState extends State<AccountSettings> {
+class _AccountSettingtate extends State<AccountSetting> {
   File? image;
 
   Future pickImage() async {
@@ -229,8 +229,7 @@ class _AccountSettingsState extends State<AccountSettings> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           RaisedButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PaymentInfo())),
+            onPressed: () => {},
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -309,8 +308,8 @@ class _AccountSettingsState extends State<AccountSettings> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AccountSettings())),
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => PaymentInfo())),
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
@@ -328,21 +327,12 @@ class _AccountSettingsState extends State<AccountSettings> {
         child: Card(
       child: Row(
         children: [
-          Material(
-            color: Color(0xff800080),
-            elevation: 2,
-            shape: CircleBorder(),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: InkWell(
-              splashColor: Color(0xff800080),
-              onTap: () {
-                child:
-                Ink.image(
-                  image: AssetImage("img/person.png"),
-                  width: 200,
-                  fit: BoxFit.cover,
-                );
-              },
+          Container(
+            padding: EdgeInsets.all(20),
+            child: new Image.asset(
+              'img/person.png',
+              height: 50,
+              fit: BoxFit.cover,
             ),
           ),
           Column(
@@ -371,89 +361,66 @@ class _AccountSettingsState extends State<AccountSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-            child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0x66f0f8ff),
-                    Color(0x99f0f8ff),
-                    Color(0xccf0f8ff),
-                    Color(0xfff0f8ff),
-                  ])),
-              child: SingleChildScrollView(
+        body: Container(
+            width: double.infinity,
+            child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
-                child: Column(
-                  children: [
-                    buildUserProfile(),
-                    SizedBox(height: 20),
-                    buildName(),
-                    SizedBox(height: 20),
-                    buildEmail(),
-                    SizedBox(height: 20),
-                    buildPuropose(),
-                    SizedBox(height: 20),
-                    buildCurrentPassword(),
-                    SizedBox(height: 20),
-                    buildNewPassword(),
-                    SizedBox(height: 20),
-                    buildConfirmPassword(),
-                    buildSaveChangesBtn(),
-                    SizedBox(height: 40),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Stripe Account Info',
-                          style: TextStyle(
-                            color: Color(0xff800080),
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                          ),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                child: Column(children: [
+                  buildUserProfile(),
+                  SizedBox(height: 20),
+                  buildName(),
+                  SizedBox(height: 20),
+                  buildEmail(),
+                  SizedBox(height: 20),
+                  buildPuropose(),
+                  SizedBox(height: 20),
+                  buildCurrentPassword(),
+                  SizedBox(height: 20),
+                  buildNewPassword(),
+                  SizedBox(height: 20),
+                  buildConfirmPassword(),
+                  buildSaveChangesBtn(),
+                  SizedBox(height: 40),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Stripe Account Info',
+                        style: TextStyle(
+                          color: Color(0xff800080),
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          'Input the public key \*',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                          ),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Input the public key \*',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
                         ),
-                        SizedBox(height: 20),
-                        buildPublicKey(),
-                        SizedBox(height: 20),
-                        Text(
-                          'Input the Private Key \*',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                          ),
+                      ),
+                      SizedBox(height: 20),
+                      buildPublicKey(),
+                      SizedBox(height: 20),
+                      Text(
+                        'Input the Private Key \*',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
                         ),
-                        SizedBox(height: 20),
-                        buildPrivateKey(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        buildSetUpAccountbtn()
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        )),
-      ),
-    );
+                      ),
+                      SizedBox(height: 20),
+                      buildPrivateKey(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      buildSetUpAccountbtn()
+                    ],
+                  ),
+                ]))));
   }
 }
