@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_settings.dart';
+import "./member_list.dart";
 
 class PaymentInfo extends StatefulWidget {
   const PaymentInfo({Key? key}) : super(key: key);
@@ -119,6 +120,25 @@ class _PaymentInfoState extends State<PaymentInfo> {
     );
   }
 
+  Widget buildSetUpAccountbtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      width: double.infinity,
+      child: RaisedButton(
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MemberList())),
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        color: Color(0xff800080),
+        child: Text(
+          'Set Up Account',
+          style: TextStyle(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -226,6 +246,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       ),
                     ),
                     buildCVV(),
+                    buildSetUpAccountbtn()
                   ],
                 ),
               ),

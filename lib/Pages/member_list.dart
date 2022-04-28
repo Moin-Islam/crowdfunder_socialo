@@ -22,6 +22,60 @@ class _MemberListState extends State<MemberList> {
     Item("Towhid", "2654"),
   ];
 
+  Widget singleUserList() {
+    return Container(
+        width: double.infinity,
+        color: Color(0xffF4F6F8),
+        child: Column(children: [
+          Column(
+            children: [
+              Row(
+                children: [
+                  Image.asset('img/person.png', height: 48, width: 48),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    children: [
+                      Text("Jordan Hemsworth"),
+                      Text("User ID: 2345"),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: null,
+                child: Text(
+                  "Product Link",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xff800080)),
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: null,
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(BorderSide(
+                        color: Color(0xff800080),
+                        width: 1.0,
+                        style: BorderStyle.solid)),
+                    backgroundColor:
+                        MaterialStateProperty.all(Color(0xffF4F6F8)),
+                  ),
+                  child: Text(
+                    "Select",
+                    style: TextStyle(color: Color(0xff800080)),
+                  )),
+            ],
+          )
+        ]));
+  }
+
   List<Widget> generateItems() {
     final result = <Widget>[];
     for (int i = 0; i < datalist.length; i++) {
@@ -39,17 +93,19 @@ class _MemberListState extends State<MemberList> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(left: 20),
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('img/image1.jpg'),
+            Image.asset('img/person.png'),
             // ignore: prefer_const_constructors
             Text(
               'Hello',
               style: TextStyle(
                 color: Color(0xff800080),
-                fontSize: 20,
+                fontSize: 25,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -78,16 +134,13 @@ class _MemberListState extends State<MemberList> {
             SizedBox(
               height: 15,
             ),
-            Expanded(
-              child: new Container(
-                  margin: const EdgeInsets.only(left: 15.0, right: 10.0),
-                  child: Divider(
-                    color: Colors.black,
-                    height: 50,
-                  )),
-            ),
-            SizedBox(
-              height: 15,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Container(
+                height: 1.0,
+                width: double.infinity,
+                color: Colors.black,
+              ),
             ),
             Text(
               'Member List and Products',
@@ -100,7 +153,24 @@ class _MemberListState extends State<MemberList> {
             SizedBox(
               height: 15,
             ),
-            Container(child: Column(children: generateItems()))
+            singleUserList(),
+            SizedBox(
+              height: 15,
+            ),
+            singleUserList(),
+            SizedBox(
+              height: 15,
+            ),
+            singleUserList(),
+            SizedBox(
+              height: 15,
+            ),
+            singleUserList(),
+            SizedBox(
+              height: 15,
+            ),
+            singleUserList(),
+            // Container(child: Column(children: generateItems()))
           ],
         ),
       ),

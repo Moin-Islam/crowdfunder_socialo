@@ -4,6 +4,7 @@ import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:intro_slider/scrollbar_behavior_enum.dart';
+import 'package:modals/modals.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -26,9 +27,70 @@ class IntroScreenState extends State<IntroScreen> {
             "You are now in the CrowdFunder team where raising money for any cause is quick and easy! Vacation, car repairs, college anything.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Color(0xff707070), fontSize: 13)),
-        Text("Read Our Disclaimer and Privacy Policy.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 13))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Read Our ",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            FlatButton(
+              onPressed: () {
+                showModal(ModalEntry.positioned(context,
+                    tag: 'Disclaimer',
+                    top: 300,
+                    child: Container(
+                      color: Colors.white,
+                      width: 300,
+                      height: 300,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Privacy",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          FlatButton(
+                            onPressed: () => removeAllModals(),
+                            child: Text("close"),
+                          )
+                        ],
+                      ),
+                    )));
+              },
+              child: const Text('Privacy',
+                  style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            ),
+            Text(" and ",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            FlatButton(
+              onPressed: () {
+                showModal(ModalEntry.positioned(context,
+                    tag: 'Terms and Policy',
+                    top: 300,
+                    child: Container(
+                      color: Colors.white,
+                      width: 300,
+                      height: 300,
+                      child: Column(
+                        children: [
+                          Text(
+                            "Terms and Policy",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          FlatButton(
+                            onPressed: () => removeAllModals(),
+                            child: Text("close"),
+                          )
+                        ],
+                      ),
+                    )));
+              },
+              child: const Text('Terms and Policy',
+                  style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            ),
+          ],
+        ),
       ]),
       pathImage: "img/image1.png",
       backgroundColor: Colors.white,
