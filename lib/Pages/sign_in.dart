@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:intro_slider/intro_slider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'custom_intro.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -10,6 +16,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool? isRememberMe = false;
+  bool _isLoading = false;
 
   Widget buildEmail() {
     return Column(
@@ -22,7 +29,7 @@ class _SignInState extends State<SignIn> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.black,
@@ -46,7 +53,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  Widget buildPassword() {
+  /* Widget buildPassword() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -57,7 +64,7 @@ class _SignInState extends State<SignIn> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFor(
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -77,7 +84,7 @@ class _SignInState extends State<SignIn> {
         )
       ],
     );
-  }
+  }*/
 
   Widget RememberPasswordRow() {
     return Container(
@@ -174,6 +181,104 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
+  Container txtSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      child: Column(children: <Widget>[
+        TextFormField(
+          controller: emailController,
+          cursorColor: Colors.amber[800],
+          style: TextStyle(color: Colors.amber[800]),
+          decoration: InputDecoration(
+            icon: Icon(
+              Icons.email,
+              color: Colors.amber[800],
+            ),
+            hintText: "Email",
+            border: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.amber)),
+            hintStyle: TextStyle(color: Colors.amber),
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        TextFormField(
+            controller: passwordController,
+            cursorColor: Colors.amber,
+            obscureText: true,
+            style: TextStyle(color: Colors.amber),
+            decoration: InputDecoration(
+                icon: Icon(
+                  Icons.lock,
+                  color: Colors.amber,
+                ),
+                hintText: "password",
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.amber)),
+                hintStyle: TextStyle(color: Colors.amber)))
+      ]),
+    );
+  }
+
+  signIn(String email, pass) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {'email': email, 'password': pass};
+    var jsonResponse = null;
+    var response = await http.post(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess"),
+        body: data);
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        sharedPreferences.setString("token", jsonResponse['token']);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => IntroScreen()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
+
+  Container buttonSection() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 40.0,
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      margin: EdgeInsets.only(top: 15.0),
+      child: RaisedButton(
+        onPressed: emailController.text == "" || passwordController.text == ""
+            ? null
+            : () {
+                setState(() {
+                  _isLoading = true;
+                });
+                signIn(emailController.text, passwordController.text);
+              },
+        elevation: 0.0,
+        color: Colors.amber[800],
+        child: Text(
+          "Sign In",
+          style: TextStyle(color: Colors.amber),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,11 +321,14 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    buildEmail(),
+                    /*buildEmail(),*/
+                    Text("test1"),
+                    txtSection(),
                     SizedBox(height: 20),
-                    buildPassword(),
+                    /*buildPassword(),*/
                     RememberPasswordRow(),
-                    buildLoginBtn(),
+                    /*buildLoginBtn(),*/
+                    buttonSection(),
                     BuildSignUpBtn(),
                   ],
                 ),
