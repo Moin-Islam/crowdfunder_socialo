@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/upload_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'custom_intro.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -9,6 +14,15 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool _isLoading = false;
+
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController confirmpasswordController =
+      new TextEditingController();
+  final TextEditingController purposeController = new TextEditingController();
+
   Widget buildName() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +34,8 @@ class _SignUpState extends State<SignUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: nameController,
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -53,7 +68,8 @@ class _SignUpState extends State<SignUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -86,7 +102,8 @@ class _SignUpState extends State<SignUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: purposeController,
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -119,7 +136,8 @@ class _SignUpState extends State<SignUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: passwordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -152,7 +170,8 @@ class _SignUpState extends State<SignUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: confirmpasswordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -197,14 +216,65 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  signUp(String name, email, purpose, password, confirmpassword) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {
+      'name': name,
+      'email': email,
+      'password': password,
+      'confirm_password': confirmpassword,
+      'profile_image': "aaaa",
+      'purpose': purpose,
+      'invitation_code': "xqrBfmdT8ZoVcKeuRAzMDNH1h4Sv3iFs",
+    };
+    print(data);
+    var jsonResponse = null;
+    var response = await http.post(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
+        body: data);
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        print(jsonResponse);
+        sharedPreferences.setString("token", jsonResponse['token']);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => IntroScreen()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
+
   Widget buildNextBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UploadImage())),
+        onPressed: () {
+          setState(() {
+            _isLoading = true;
+          });
+          print(nameController.text);
+
+          signUp(
+            nameController.text,
+            emailController.text,
+            purposeController.text,
+            passwordController.text,
+            confirmpasswordController.text,
+          );
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Color(0xff800080),

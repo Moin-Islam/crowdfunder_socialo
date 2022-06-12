@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSetting extends StatefulWidget {
   @override
@@ -13,6 +17,60 @@ class AccountSetting extends StatefulWidget {
 
 class _AccountSettingtate extends State<AccountSetting> {
   File? image;
+  bool _isLoading = false;
+
+  final TextEditingController nameController = new TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController purposeController = new TextEditingController();
+  final TextEditingController currentpasswordController =
+      new TextEditingController();
+  final TextEditingController newpasswordController =
+      new TextEditingController();
+  final TextEditingController confirmpasswordController =
+      new TextEditingController();
+
+  accountSetting(
+    String name,
+    email,
+    purpose,
+    currentpassword,
+    newpassword,
+    confirmpassword,
+  ) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {
+      'name': name,
+      'email': email,
+      'purpose': purpose,
+      'currentpassword': currentpassword,
+      'newpassword': newpassword,
+      'confirmpassword': confirmpassword,
+    };
+    var jsonResponse = null;
+    var response = await http.post(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
+        body: data);
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        sharedPreferences.setString("token", jsonResponse['token']);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -34,7 +92,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: nameController,
             keyboardType: TextInputType.name,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -67,7 +126,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -100,7 +160,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: purposeController,
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -133,7 +194,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: currentpasswordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -166,7 +228,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: newpasswordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -199,7 +262,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: confirmpasswordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -229,7 +293,27 @@ class _AccountSettingtate extends State<AccountSetting> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           RaisedButton(
-            onPressed: () => {},
+            onPressed: nameController.text == "" ||
+                    emailController.text == "" ||
+                    purposeController.text == "" ||
+                    currentpasswordController.text == "" ||
+                    newpasswordController == "" ||
+                    confirmpasswordController.text == ""
+                ? null
+                : () {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    print(nameController.text);
+                    accountSetting(
+                      nameController.text,
+                      emailController.text,
+                      purposeController.text,
+                      currentpasswordController.text,
+                      newpasswordController,
+                      confirmpasswordController.text,
+                    );
+                  },
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
