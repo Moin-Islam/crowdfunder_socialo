@@ -1,9 +1,18 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/account_settings.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SetUp extends StatefulWidget {
   @override
@@ -11,10 +20,15 @@ class SetUp extends StatefulWidget {
 }
 
 class _SetUpState extends State<SetUp> {
+  /*final abc = FlutterSecureStorage();
+
+  Future<String?> getToken(String token) async {
+    return await abc.read(key: "token");
+  }*/
+
   Widget buildVideoLinkBtn() {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SignUp())),
+      onTap: () {},
       child: RichText(
           text: TextSpan(children: [
         TextSpan(

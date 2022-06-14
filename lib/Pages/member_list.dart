@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MemberList extends StatefulWidget {
   const MemberList({Key? key}) : super(key: key);
@@ -58,7 +62,12 @@ class _MemberListState extends State<MemberList> {
                 ),
               ),
               ElevatedButton(
-                  onPressed: null,
+                  onPressed: () {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    signIn();
+                  },
                   style: ButtonStyle(
                     side: MaterialStateProperty.all(BorderSide(
                         color: Color(0xff800080),
@@ -87,6 +96,39 @@ class _MemberListState extends State<MemberList> {
     }
 
     return result;
+  }
+
+  bool _isLoading = false;
+
+  signIn() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {};
+    var jsonResponse = null;
+    var response = await http.post(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
+        body: data);
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        sharedPreferences.setString("token", jsonResponse['token']);
+        print(jsonResponse);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => AccountSetting()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
   }
 
   @override

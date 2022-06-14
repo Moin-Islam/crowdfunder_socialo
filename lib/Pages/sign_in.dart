@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'custom_intro.dart';
 
@@ -181,6 +183,8 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  final storage = FlutterSecureStorage();
+
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
@@ -224,6 +228,14 @@ class _SignInState extends State<SignIn> {
     );
   }
 
+  Future<void> storeToken(String token) async {
+    await storage.write(key: "token", value: token);
+  }
+
+  Future<String?> getToken(String token) async {
+    return await storage.read(key: "token");
+  }
+
   signIn(String email, pass) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {'email': email, 'password': pass};
@@ -241,8 +253,10 @@ class _SignInState extends State<SignIn> {
           _isLoading = false;
         });
         sharedPreferences.setString("token", jsonResponse['token']);
+        storeToken(jsonResponse["token"]);
+        storeToken("token").then((value) => print(jsonResponse['token']));
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => IntroScreen()),
+            MaterialPageRoute(builder: (BuildContext context) => SetUp()),
             (Route<dynamic> route) => false);
       }
     } else {

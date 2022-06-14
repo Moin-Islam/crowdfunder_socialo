@@ -24,6 +24,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: SignUp());
+        home: SignIn());
   }
 }
+
+
+
+
+
+
+/*Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SignUp()))*/
