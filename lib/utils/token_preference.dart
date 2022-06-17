@@ -6,7 +6,7 @@ class TokenPreference {
     sharedPreferences.setString("token", token);
   }
 
-  static Future<String?> fetchAddress() async {
+  static Future<String> fetchAddress() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
 

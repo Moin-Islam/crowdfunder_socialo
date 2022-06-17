@@ -16,7 +16,7 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingtate extends State<AccountSetting> {
-  File? image;
+  File image;
   bool _isLoading = false;
 
   final TextEditingController nameController = new TextEditingController();

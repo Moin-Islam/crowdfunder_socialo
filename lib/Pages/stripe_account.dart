@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/material/icons.dart';
 
 class StripeAccount extends StatefulWidget {
-  const StripeAccount({Key? key}) : super(key: key);
+  const StripeAccount({Key key}) : super(key: key);
 
   @override
   State<StripeAccount> createState() => _StripeAccountState();

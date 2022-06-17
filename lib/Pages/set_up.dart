@@ -48,26 +48,23 @@ class _SetUpState extends State<SetUp> {
 
   bool _isLoading = false;
 
-   Future<List> fetchAddress() async {
-      final prefs = await SharedPreferences.getInstance();
-      final addressFlag = List(1);
-      addressFlag[0] = prefs.getString("name");
-      addressFlag[1] = prefs.getString("contactNumber");
-      addressFlag[2] = prefs.getString("addressLine1");
-      addressFlag[3] = prefs.getString("addressLine2");
-      return addressFlag;
-      }
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   signIn() async {
-    /*Map data = {'email': email, 'password': pass};*/
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("token");
+    Map data = {'public_key': "hi", 'secret_key': "helo"};
+    String token = await getToken();
     print(token);
-    var dictionary = {"Authorization": token};
+    print(data);
     var jsonResponse = null;
-    var response = await http.post(
+    var response = await http.get(
       Uri.parse(
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
-          headers: 'token';
+      headers: {
+        'Authorization': '$token',
+      },
     );
 
     if (response.statusCode == 200) {

@@ -19,7 +19,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool? isRememberMe = false;
+  bool isRememberMe = false;
   bool _isLoading = false;
 
   Widget buildEmail() {
@@ -244,6 +244,10 @@ class _SignInState extends State<SignIn> {
         setState(() {
           _isLoading = false;
         });
+        sharedPreferences.setString("token", jsonResponse['token']);
+
+        await TokenStorage.ssetToken(jsonResponse['token']);
+
         TokenPreference.saveAddress(jsonResponse['token']);
 
         final prefs = await SharedPreferences.getInstance();

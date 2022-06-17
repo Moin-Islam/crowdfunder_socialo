@@ -6,8 +6,7 @@ class AppText extends StatelessWidget {
   final String text;
   final Color color;
 
-  AppText(
-      {Key? key, this.size = 13, required this.text, this.color = Colors.black})
+  AppText({Key key, this.size = 13, this.text, this.color = Colors.black})
       : super(key: key);
 
   @override

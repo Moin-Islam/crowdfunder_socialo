@@ -10,7 +10,7 @@ class IntroSliderPage extends StatefulWidget {
 class _IntroSliderPageState extends State<IntroSliderPage> {
   List<Slide> slides = [];
 
-  late Function goToTab;
+  Function goToTab;
 
   @override
   void initState() {
@@ -80,7 +80,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   List<Widget> renderListCustomTabs() {
     List<Widget> tabs = [];
     for (int i = 0; i < slides.length; i++) {
-      Slide? currentSlide = slides[i];
+      Slide currentSlide = slides[i];
       tabs.add(Container(
         width: double.infinity,
         height: double.infinity,

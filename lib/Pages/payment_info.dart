@@ -5,7 +5,7 @@ import 'package:flutter_demo/Pages/account_settings.dart';
 import "./member_list.dart";
 
 class PaymentInfo extends StatefulWidget {
-  const PaymentInfo({Key? key}) : super(key: key);
+  const PaymentInfo({Key key}) : super(key: key);
 
   @override
   State<PaymentInfo> createState() => _PaymentInfoState();

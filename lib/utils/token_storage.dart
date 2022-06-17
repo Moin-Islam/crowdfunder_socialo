@@ -9,7 +9,7 @@ class TokenStorage {
     await storage.write(key: setToken, value: token);
   }
 
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     await storage.read(key: setToken);
   }
 }

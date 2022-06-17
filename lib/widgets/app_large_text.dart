@@ -7,9 +7,9 @@ class AppLargeText extends StatelessWidget {
   final Color color;
 
   AppLargeText(
-      {Key? key,
+      {Key key,
       this.size = 25,
-      required this.text,
+      this.text,
       this.color = const Color(0xff800080)})
       : super(key: key);
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Mysquare extends StatelessWidget {
   final child;
 
-  Mysquare({required this.child});
+  Mysquare({this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class AppButtons extends StatelessWidget {
-  String? text;
-  IconData? icon;
+  String text;
+  IconData icon;
   final Color color;
   final Color backgroundColor;
   double size;
@@ -10,14 +10,14 @@ class AppButtons extends StatelessWidget {
   bool isIcon;
 
   AppButtons(
-      {Key? key,
+      {Key key,
       this.isIcon = false,
       this.text,
       this.icon,
-      required this.color,
-      required this.backgroundColor,
-      required this.borderColor,
-      required this.size})
+      this.color,
+      this.backgroundColor,
+      this.borderColor,
+      this.size})
       : super(key: key);
 
   @override

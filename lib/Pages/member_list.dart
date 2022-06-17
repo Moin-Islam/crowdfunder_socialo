@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MemberList extends StatefulWidget {
-  const MemberList({Key? key}) : super(key: key);
+  const MemberList({Key key}) : super(key: key);
 
   @override
   State<MemberList> createState() => _MemberListState();

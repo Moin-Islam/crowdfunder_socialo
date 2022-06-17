@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class ResponsiveButton extends StatelessWidget {
-  bool? isResponsive;
-  double? width;
+  bool isResponsive;
+  double width;
 
-  ResponsiveButton({Key? key, this.width, this.isResponsive = false})
+  ResponsiveButton({Key key, this.width, this.isResponsive = false})
       : super(key: key);
 
   @override

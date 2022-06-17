@@ -5,7 +5,7 @@ import 'package:flutter_demo/widgets/app_text.dart';
 import 'package:flutter_demo/widgets/responsive_button.dart';
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+  const WelcomePage({Key key}) : super(key: key);
 
   @override
   _WelcomePageState createState() => _WelcomePageState();
