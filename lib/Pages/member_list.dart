@@ -4,6 +4,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_demo/utils/token_preference.dart';
+import 'package:flutter_demo/Pages/set_up.dart';
 
 class MemberList extends StatefulWidget {
   const MemberList({Key key}) : super(key: key);
@@ -25,6 +27,47 @@ class _MemberListState extends State<MemberList> {
     Item("Kabir", "1233"),
     Item("Towhid", "2654"),
   ];
+
+  bool _isLoading = false;
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  signIn() async {
+    Map data = {'public_key': "hi", 'secret_key': "helo"};
+    String token = await getToken();
+    print(token);
+    print(data);
+    var jsonResponse = null;
+    var response = await http.get(
+      Uri.parse(
+          "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
 
   Widget singleUserList() {
     return Container(
@@ -96,39 +139,6 @@ class _MemberListState extends State<MemberList> {
     }
 
     return result;
-  }
-
-  bool _isLoading = false;
-
-  signIn() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    Map data = {};
-    var jsonResponse = null;
-    var response = await http.post(
-        Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
-        body: data);
-
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        sharedPreferences.setString("token", jsonResponse['token']);
-        print(jsonResponse);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => AccountSetting()),
-            (Route<dynamic> route) => false);
-      }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      print(response.body);
-    }
   }
 
   @override

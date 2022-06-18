@@ -9,6 +9,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_demo/utils/token_preference.dart';
 
 class AccountSetting extends StatefulWidget {
   @override
@@ -47,9 +48,9 @@ class _AccountSettingtate extends State<AccountSetting> {
       'confirmpassword': confirmpassword,
     };
     var jsonResponse = null;
-    var response = await http.post(
+    var response = await http.put(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
+            "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
         body: data);
 
     if (response.statusCode == 200) {
@@ -62,6 +63,47 @@ class _AccountSettingtate extends State<AccountSetting> {
         sharedPreferences.setString("token", jsonResponse['token']);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+      }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  /*Update Profile Postman API*/
+
+  updateProfile() async {
+    Map data = {};
+    String token = await getToken();
+    print(token);
+    print(data);
+    var jsonResponse = null;
+    var response = await http.get(
+      Uri.parse(
+          "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      if (jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => PaymentInfo()),
             (Route<dynamic> route) => false);
       }
     } else {
