@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/account_setting.dart';
+import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -22,6 +24,15 @@ class _SignInState extends State<SignIn> {
   bool isRememberMe = false;
   bool _isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchToken();
+  }
+
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
   Widget buildEmail() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,6 +45,7 @@ class _SignInState extends State<SignIn> {
           ),
           height: 48,
           child: TextFormField(
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.black,
@@ -57,7 +69,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  /* Widget buildPassword() {
+  Widget buildPassword() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,7 +80,8 @@ class _SignInState extends State<SignIn> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextFor(
+          child: TextFormField(
+            controller: passwordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -88,7 +101,7 @@ class _SignInState extends State<SignIn> {
         )
       ],
     );
-  }*/
+  }
 
   Widget RememberPasswordRow() {
     return Container(
@@ -145,7 +158,14 @@ class _SignInState extends State<SignIn> {
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: RaisedButton(
         elevation: 5,
-        onPressed: () => print('Login Pressed'),
+        onPressed: emailController.text == "" || passwordController.text == ""
+            ? null
+            : () {
+                setState(() {
+                  _isLoading = true;
+                });
+                signIn(emailController.text, passwordController.text);
+              },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Color(0xff800080),
@@ -185,47 +205,16 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  fetchToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
 
-  Container txtSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-      child: Column(children: <Widget>[
-        TextFormField(
-          controller: emailController,
-          cursorColor: Colors.amber[800],
-          style: TextStyle(color: Colors.amber[800]),
-          decoration: InputDecoration(
-            icon: Icon(
-              Icons.email,
-              color: Colors.amber[800],
-            ),
-            hintText: "Email",
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.amber)),
-            hintStyle: TextStyle(color: Colors.amber),
-          ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        TextFormField(
-            controller: passwordController,
-            cursorColor: Colors.amber,
-            obscureText: true,
-            style: TextStyle(color: Colors.amber),
-            decoration: InputDecoration(
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.amber,
-                ),
-                hintText: "password",
-                border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.amber)),
-                hintStyle: TextStyle(color: Colors.amber)))
-      ]),
-    );
+    print(token);
+
+    /*if (token != "") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AccountSetting()));
+    }*/
   }
 
   signIn(String email, pass) async {
@@ -256,7 +245,8 @@ class _SignInState extends State<SignIn> {
         print(token);
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => AccountSetting()),
             (Route<dynamic> route) => false);
       }
     } else {
@@ -265,32 +255,6 @@ class _SignInState extends State<SignIn> {
       });
       print(response.body);
     }
-  }
-
-  Container buttonSection() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 40.0,
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      margin: EdgeInsets.only(top: 15.0),
-      child: RaisedButton(
-        onPressed: emailController.text == "" || passwordController.text == ""
-            ? null
-            : () {
-                setState(() {
-                  _isLoading = true;
-                });
-                signIn(emailController.text, passwordController.text);
-              },
-        elevation: 0.0,
-        color: Colors.amber[800],
-        child: Text(
-          "Sign In",
-          style: TextStyle(color: Colors.amber),
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-      ),
-    );
   }
 
   @override
@@ -335,14 +299,11 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    /*buildEmail(),*/
-                    Text("test1"),
-                    txtSection(),
+                    buildEmail(),
                     SizedBox(height: 20),
-                    /*buildPassword(),*/
+                    buildPassword(),
                     RememberPasswordRow(),
-                    /*buildLoginBtn(),*/
-                    buttonSection(),
+                    buildLoginBtn(),
                     BuildSignUpBtn(),
                   ],
                 ),
