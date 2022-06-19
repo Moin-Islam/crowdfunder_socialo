@@ -21,21 +21,21 @@ class _AccountSettingtate extends State<AccountSetting> {
   Future<User> futureUser;
   File image;
   bool _isLoading = false;
+  String name;
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController purposeController = TextEditingController();
+  TextEditingController currentpasswordController = TextEditingController();
+  TextEditingController newpasswordController = TextEditingController();
+  TextEditingController confirmpasswordController = TextEditingController();
+
+  @override
   void initState() {
     super.initState();
     futureUser = fetchUser();
+    fetchProfile();
   }
-
-  final TextEditingController nameController = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController purposeController = new TextEditingController();
-  final TextEditingController currentpasswordController =
-      new TextEditingController();
-  final TextEditingController newpasswordController =
-      new TextEditingController();
-  final TextEditingController confirmpasswordController =
-      new TextEditingController();
 
   accountSetting(
     String name,
@@ -109,8 +109,7 @@ class _AccountSettingtate extends State<AccountSetting> {
 
   /*Update Profile Postman API*/
 
-  updateProfile() async {
-    Map data = {};
+  fetchProfile() async {
     String token = await getToken();
     var jsonResponse = null;
     var response = await http.get(
@@ -139,8 +138,13 @@ class _AccountSettingtate extends State<AccountSetting> {
       });
     }
 
-    print(response);
-    print(response.body);
+    Map<String, dynamic> data = jsonDecode(response.body);
+    TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+
+    nameController.text = data["USER_DATA"][0]["name"];
+    name = data["USER_DATA"][0]["name"];
+    emailController.text = data["USER_DATA"][0]["email_address"];
+    purposeController.text = data["USER_DATA"][0]["purpose"];
   }
 
   Future pickImage() async {
@@ -368,7 +372,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                     emailController.text == "" ||
                     purposeController.text == "" ||
                     currentpasswordController.text == "" ||
-                    newpasswordController == "" ||
+                    newpasswordController.text == "" ||
                     confirmpasswordController.text == ""
                 ? null
                 : () {
@@ -492,13 +496,17 @@ class _AccountSettingtate extends State<AccountSetting> {
           ),
           Column(
             children: [
-              Text(
-                'Ilias Kanchon',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.normal),
-              ),
+              FutureBuilder<User>(
+                  future: futureUser,
+                  builder: (context, snapshot) {
+                    return Text(
+                      snapshot.data.name,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal),
+                    );
+                  }),
               Text(
                 'User ID : 12314',
                 style: TextStyle(

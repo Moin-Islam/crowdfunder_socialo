@@ -18,6 +18,11 @@ class SetUp extends StatefulWidget {
 }
 
 class _SetUpState extends State<SetUp> {
+  @override
+  void initState() {
+    super.initState();
+    fetchPayment();
+  }
   /*final abc = FlutterSecureStorage();
 
   Future<String?> getToken(String token) async {
@@ -52,11 +57,8 @@ class _SetUpState extends State<SetUp> {
     return prefs.getString('token');
   }
 
-  signIn() async {
-    Map data = {'public_key': "hi", 'secret_key': "helo"};
+  fetchPayment() async {
     String token = await getToken();
-    print(token);
-    print(data);
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
@@ -65,6 +67,33 @@ class _SetUpState extends State<SetUp> {
         'Authorization': '$token',
       },
     );
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+    }
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+
+    // nameController.text = data["USER_DATA"][0]["name"];
+    // name = data["USER_DATA"][0]["name"];
+    // emailController.text = data["USER_DATA"][0]["email_address"];
+    // purposeController.text = data["USER_DATA"][0]["purpose"];
+  }
+
+  paymentSetup() async {
+    Map data = {'public_key': "hi", 'secret_key': "helo"};
+    String token = await getToken();
+    print(token);
+    print(data);
+    var jsonResponse = null;
+    var response = await http.put(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+        headers: {
+          'Authorization': '$token',
+        },
+        body: jsonEncode(data));
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
@@ -82,8 +111,9 @@ class _SetUpState extends State<SetUp> {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
     }
+
+    print(response.body);
   }
 
   Widget buildPublicKey() {
@@ -146,7 +176,7 @@ class _SetUpState extends State<SetUp> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-          signIn();
+          paymentSetup();
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

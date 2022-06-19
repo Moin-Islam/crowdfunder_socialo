@@ -5,6 +5,7 @@ import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -218,7 +219,6 @@ class _SignInState extends State<SignIn> {
   }
 
   signIn(String email, pass) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {'email': email, 'password': pass};
     var jsonResponse = null;
     var response = await http.post(
@@ -233,11 +233,8 @@ class _SignInState extends State<SignIn> {
         setState(() {
           _isLoading = false;
         });
-        sharedPreferences.setString("token", jsonResponse['token']);
 
-        await TokenStorage.ssetToken(jsonResponse['token']);
-
-        TokenPreference.saveAddress(jsonResponse['token']);
+        TokenPreference.saveAddress("token", jsonResponse['token']);
 
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString("token");
@@ -245,8 +242,7 @@ class _SignInState extends State<SignIn> {
         print(token);
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => AccountSetting()),
+            MaterialPageRoute(builder: (BuildContext context) => SetUp()),
             (Route<dynamic> route) => false);
       }
     } else {
