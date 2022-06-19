@@ -22,6 +22,12 @@ class Item {
 }
 
 class _MemberListState extends State<MemberList> {
+  @override
+  void initState() {
+    super.initState();
+    fetchTeamList();
+  }
+
   final datalist = <Item>[
     Item("Rakibul", "1644"),
     Item("Kabir", "1233"),
@@ -35,11 +41,9 @@ class _MemberListState extends State<MemberList> {
     return prefs.getString('token');
   }
 
-  signIn() async {
-    Map data = {'public_key': "hi", 'secret_key': "helo"};
+  fetchTeamList() async {
     String token = await getToken();
     print(token);
-    print(data);
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
@@ -109,7 +113,6 @@ class _MemberListState extends State<MemberList> {
                     setState(() {
                       _isLoading = true;
                     });
-                    signIn();
                   },
                   style: ButtonStyle(
                     side: MaterialStateProperty.all(BorderSide(

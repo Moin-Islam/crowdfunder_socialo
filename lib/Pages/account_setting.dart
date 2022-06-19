@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
+import 'package:flutter_demo/utils/user.dart';
 
 class AccountSetting extends StatefulWidget {
   @override
@@ -17,8 +18,14 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingtate extends State<AccountSetting> {
+  Future<User> futureUser;
   File image;
   bool _isLoading = false;
+
+  void initState() {
+    super.initState();
+    futureUser = fetchUser();
+  }
 
   final TextEditingController nameController = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
@@ -78,13 +85,33 @@ class _AccountSettingtate extends State<AccountSetting> {
     return prefs.getString('token');
   }
 
+  Future<User> fetchUser() async {
+    String token = await getToken();
+    final response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
+
   /*Update Profile Postman API*/
 
   updateProfile() async {
     Map data = {};
     String token = await getToken();
-    print(token);
-    print(data);
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
@@ -102,16 +129,18 @@ class _AccountSettingtate extends State<AccountSetting> {
           _isLoading = false;
         });
 
-        Navigator.of(context).pushAndRemoveUntil(
+        /*Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => PaymentInfo()),
-            (Route<dynamic> route) => false);
+            (Route<dynamic> route) => false);*/
       }
     } else {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
     }
+
+    print(response);
+    print(response.body);
   }
 
   Future pickImage() async {

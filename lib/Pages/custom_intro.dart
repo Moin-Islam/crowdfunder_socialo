@@ -51,7 +51,8 @@ class IntroScreenState extends State<IntroScreen> {
                           ),
                           FlatButton(
                             onPressed: () => removeAllModals(),
-                            child: Text("close"),
+                            child: Text(
+                                "The CROWDFUNDER TEAM app never shares or retains any information about it's users and only uses any information to confirm payments were made, and any information needed to make sure the app works as advertised"),
                           )
                         ],
                       ),

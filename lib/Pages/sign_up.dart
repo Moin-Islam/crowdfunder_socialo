@@ -244,15 +244,15 @@ class _SignUpState extends State<SignUp> {
         print(jsonResponse);
         sharedPreferences.setString("token", jsonResponse['token']);
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => IntroScreen()),
+            MaterialPageRoute(builder: (BuildContext context) => UploadImage()),
             (Route<dynamic> route) => false);
       }
     } else {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
     }
+    print(response.body);
   }
 
   Widget buildNextBtn() {
