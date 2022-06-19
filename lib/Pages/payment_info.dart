@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
-import 'package:flutter_demo/Pages/account_settings.dart';
 import "./member_list.dart";
 
 class PaymentInfo extends StatefulWidget {

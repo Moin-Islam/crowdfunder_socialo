@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
-import 'package:flutter_demo/Pages/account_settings.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
