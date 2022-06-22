@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -42,7 +43,7 @@ class _UploadImageState extends State<UploadImage> {
             children: [
               Text(
                 'Use Camera',
-                style: TextStyle(
+                style: GoogleFonts.rubik(
                     color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
@@ -70,7 +71,7 @@ class _UploadImageState extends State<UploadImage> {
               text: TextSpan(children: [
                 TextSpan(
                     text: 'Select the documents from Gallery',
-                    style: TextStyle(
+                    style: GoogleFonts.rubik(
                         color: Color(0xff800080),
                         fontSize: 15,
                         fontWeight: FontWeight.normal)),
@@ -94,13 +95,13 @@ class _UploadImageState extends State<UploadImage> {
           text: TextSpan(children: [
         TextSpan(
             text: 'Don\'t have any Account?',
-            style: TextStyle(
+            style: GoogleFonts.roboto(
                 color: Colors.black38,
                 fontSize: 13,
                 fontWeight: FontWeight.normal)),
         TextSpan(
             text: ' Sign Up',
-            style: TextStyle(
+            style: GoogleFonts.roboto(
               color: Color(0xff800080),
               fontSize: 13,
               fontWeight: FontWeight.normal,
@@ -131,9 +132,9 @@ class _UploadImageState extends State<UploadImage> {
                   color: Color(0xff800080),
                   child: Text(
                     'Previous',
-                    style: TextStyle(
+                    style: GoogleFonts.rubik(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 15,
                         fontWeight: FontWeight.normal),
                   ),
                 ),
@@ -145,8 +146,8 @@ class _UploadImageState extends State<UploadImage> {
                       borderRadius: BorderRadius.circular(10)),
                   color: Color(0xff800080),
                   child: Text(
-                    'Next',
-                    style: TextStyle(
+                    'Sign Up',
+                    style: GoogleFonts.rubik(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.normal),

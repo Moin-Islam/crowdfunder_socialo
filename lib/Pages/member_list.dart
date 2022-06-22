@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
+import 'package:flutter_demo/Pages/payment_info.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -69,27 +71,36 @@ class _MemberListState extends State<MemberList> {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
     }
+    print(response.body);
   }
 
   Widget singleUserList() {
     return Container(
-        width: double.infinity,
+        height: 133,
+        width: 334,
         color: Color(0xffF4F6F8),
         child: Column(children: [
           Column(
             children: [
               Row(
                 children: [
-                  Image.asset('img/person.png', height: 48, width: 48),
+                  Image.asset('img/person.png', height: 46, width: 45),
                   SizedBox(
                     width: 20,
                   ),
                   Column(
                     children: [
-                      Text("Jordan Hemsworth"),
-                      Text("User ID: 2345"),
+                      Text(
+                        "Jordan Hemsworth",
+                        style: GoogleFonts.roboto(
+                            fontSize: 13, color: Colors.black),
+                      ),
+                      Text(
+                        "User ID: 2345",
+                        style: GoogleFonts.roboto(
+                            fontSize: 12, color: Color(0xff707070)),
+                      ),
                     ],
                   )
                 ],
@@ -98,34 +109,47 @@ class _MemberListState extends State<MemberList> {
           ),
           Row(
             children: [
-              ElevatedButton(
-                onPressed: null,
-                child: Text(
-                  "Product Link",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Color(0xff800080)),
+              SizedBox(
+                height: 34,
+                width: 130,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PaymentInfo())),
+                  child: Text(
+                    "Product Link",
+                    style: GoogleFonts.rubik(color: Colors.white),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Color(0xff800080)),
+                  ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                  },
-                  style: ButtonStyle(
-                    side: MaterialStateProperty.all(BorderSide(
-                        color: Color(0xff800080),
-                        width: 1.0,
-                        style: BorderStyle.solid)),
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xffF4F6F8)),
-                  ),
-                  child: Text(
-                    "Select",
-                    style: TextStyle(color: Color(0xff800080)),
-                  )),
+              SizedBox(
+                height: 34,
+                width: 130,
+                child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                    },
+                    style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(
+                          color: Color(0xff800080),
+                          width: 1.0,
+                          style: BorderStyle.solid)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xffF4F6F8)),
+                    ),
+                    child: Text(
+                      "Select",
+                      style: GoogleFonts.rubik(
+                          color: Color(
+                        0xff800080,
+                      )),
+                    )),
+              ),
             ],
           )
         ]));
@@ -154,11 +178,15 @@ class _MemberListState extends State<MemberList> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('img/person.png'),
+            Image.asset(
+              'img/person.png',
+              height: 73,
+              width: 74,
+            ),
             // ignore: prefer_const_constructors
             Text(
               'Hello',
-              style: TextStyle(
+              style: GoogleFonts.rubik(
                 color: Color(0xff800080),
                 fontSize: 25,
                 fontWeight: FontWeight.normal,
@@ -169,7 +197,7 @@ class _MemberListState extends State<MemberList> {
             ),
             Text(
               'Hasibul Haque Prottoy',
-              style: TextStyle(
+              style: GoogleFonts.rubik(
                 color: Color(0xff800080),
                 fontSize: 15,
                 fontWeight: FontWeight.normal,
@@ -180,9 +208,9 @@ class _MemberListState extends State<MemberList> {
             ),
             Text(
               'Help your team by making a purchase',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 color: Colors.black38,
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.normal,
               ),
             ),
@@ -199,7 +227,7 @@ class _MemberListState extends State<MemberList> {
             ),
             Text(
               'Member List and Products',
-              style: TextStyle(
+              style: GoogleFonts.rubik(
                 color: Color(0xff800080),
                 fontSize: 15,
                 fontWeight: FontWeight.normal,

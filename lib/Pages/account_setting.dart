@@ -4,6 +4,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -391,7 +392,7 @@ class _AccountSettingtate extends State<AccountSetting> {
             color: Color(0xff800080),
             child: Text(
               'Save Changes',
-              style: TextStyle(
+              style: GoogleFonts.rubik(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.normal),
@@ -470,7 +471,7 @@ class _AccountSettingtate extends State<AccountSetting> {
         color: Color(0xff800080),
         child: Text(
           'Set Up Account',
-          style: TextStyle(
+          style: GoogleFonts.rubik(
               color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
@@ -542,7 +543,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                     children: [
                       Text(
                         'Stripe Account Info',
-                        style: TextStyle(
+                        style: GoogleFonts.rubik(
                           color: Color(0xff800080),
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
@@ -551,7 +552,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                       SizedBox(height: 20),
                       Text(
                         'Input the public key \*',
-                        style: TextStyle(
+                        style: GoogleFonts.roboto(
                           color: Colors.black,
                           fontSize: 13,
                           fontWeight: FontWeight.normal,
@@ -562,7 +563,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                       SizedBox(height: 20),
                       Text(
                         'Input the Private Key \*',
-                        style: TextStyle(
+                        style: GoogleFonts.roboto(
                           color: Colors.black,
                           fontSize: 13,
                           fontWeight: FontWeight.normal,

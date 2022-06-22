@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StripeAccount extends StatefulWidget {
   const StripeAccount({Key key}) : super(key: key);
@@ -26,16 +27,16 @@ class _StripeAccountState extends State<StripeAccount> {
             children: [
               Text(
                 'Ilias Kanchon',
-                style: TextStyle(
+                style: GoogleFonts.rubik(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
               ),
               Text(
                 'User ID : 12314',
-                style: TextStyle(
+                style: GoogleFonts.roboto(
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 13,
                     fontWeight: FontWeight.normal),
               ),
             ],
@@ -54,7 +55,10 @@ class _StripeAccountState extends State<StripeAccount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('This is Bonus Product'),
+              Text(
+                'This is Bonus Product',
+                style: GoogleFonts.roboto(fontSize: 13, color: Colors.white),
+              ),
               Icon(
                 Icons.turn_right,
                 color: Color(0xff800080),
@@ -64,7 +68,8 @@ class _StripeAccountState extends State<StripeAccount> {
           SizedBox(
             height: 10,
           ),
-          Text('this is bonus product'),
+          Text('this is bonus product',
+              style: GoogleFonts.roboto(fontSize: 12, color: Colors.white)),
           SizedBox(
             height: 10,
           ),
@@ -79,8 +84,10 @@ class _StripeAccountState extends State<StripeAccount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Sale : 6'),
-              Text('Total Earnings : *\$6'),
+              Text('Total Sale : 6',
+                  style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
+              Text('Total Earnings : *\$6',
+                  style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
             ],
           )
         ],
@@ -98,7 +105,10 @@ class _StripeAccountState extends State<StripeAccount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Product 1'),
+              Text(
+                'Product 1',
+                style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
+              ),
               Icon(
                 Icons.turn_right,
                 color: Color(0xff800080),
@@ -108,7 +118,10 @@ class _StripeAccountState extends State<StripeAccount> {
           SizedBox(
             height: 15,
           ),
-          Text('Lorem Ipsum'),
+          Text(
+            'Lorem Ipsum',
+            style: GoogleFonts.roboto(fontSize: 12, color: Color(0xff707070)),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -123,8 +136,14 @@ class _StripeAccountState extends State<StripeAccount> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Sale : 6'),
-              Text('Total Earnings : *\$6'),
+              Text(
+                'Total Sale : 6',
+                style:
+                    GoogleFonts.rubik(fontSize: 13, color: Color(0xff800080)),
+              ),
+              Text('Total Earnings : *\$6',
+                  style: GoogleFonts.rubik(
+                      fontSize: 13, color: Color(0xff800080))),
             ],
           )
         ],
@@ -139,9 +158,9 @@ class _StripeAccountState extends State<StripeAccount> {
         children: [
           Text(
             'Total Earning : *\$128.50',
-            style: TextStyle(
+            style: GoogleFonts.rubik(
                 color: Color(0xff800080),
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeight.normal),
           ),
           SizedBox(
@@ -150,9 +169,9 @@ class _StripeAccountState extends State<StripeAccount> {
           buildUserProfile(),
           Text(
             'Bonus Product',
-            style: TextStyle(
+            style: GoogleFonts.rubik(
                 color: Color(0xff800080),
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeight.normal),
           ),
           buildBonusProduct(),
@@ -161,9 +180,9 @@ class _StripeAccountState extends State<StripeAccount> {
           ),
           Text(
             'All Product List',
-            style: TextStyle(
+            style: GoogleFonts.rubik(
                 color: Color(0xff800080),
-                fontSize: 20,
+                fontSize: 15,
                 fontWeight: FontWeight.normal),
           ),
           SizedBox(

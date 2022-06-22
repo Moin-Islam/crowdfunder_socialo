@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
@@ -22,18 +23,22 @@ class IntroScreenState extends State<IntroScreen> {
     slides.add(new Slide(
       widgetDescription: Column(children: [
         Text("Welcome To The Team",
-            style: TextStyle(color: Color(0xff800080), fontSize: 18)),
+            style: GoogleFonts.rubik(
+              color: Color(0xff800080),
+              fontSize: 18,
+            )),
         Text(
             "You are now in the CrowdFunder team where raising money for any cause is quick and easy! Vacation, car repairs, college anything.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("Read Our ",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+                style:
+                    GoogleFonts.roboto(color: Color(0xff707070), fontSize: 12)),
             FlatButton(
               onPressed: () {
                 showModal(ModalEntry.positioned(context,
@@ -47,7 +52,7 @@ class IntroScreenState extends State<IntroScreen> {
                         children: [
                           Text(
                             "Privacy",
-                            style: TextStyle(fontSize: 13),
+                            style: GoogleFonts.roboto(fontSize: 12),
                           ),
                           FlatButton(
                             onPressed: () => removeAllModals(),
@@ -59,11 +64,11 @@ class IntroScreenState extends State<IntroScreen> {
                     )));
               },
               child: const Text('Privacy',
-                  style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+                  style: TextStyle(color: Color(0xff707070), fontSize: 12)),
             ),
             Text(" and ",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+                style: TextStyle(color: Color(0xff707070), fontSize: 12)),
             FlatButton(
               onPressed: () {
                 showModal(ModalEntry.positioned(context,
@@ -77,7 +82,7 @@ class IntroScreenState extends State<IntroScreen> {
                         children: [
                           Text(
                             "Terms and Policy",
-                            style: TextStyle(fontSize: 13),
+                            style: TextStyle(fontSize: 12),
                           ),
                           FlatButton(
                             onPressed: () => removeAllModals(),
@@ -88,26 +93,28 @@ class IntroScreenState extends State<IntroScreen> {
                     )));
               },
               child: const Text('Terms and Policy',
-                  style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+                  style: TextStyle(color: Color(0xff707070), fontSize: 12)),
             ),
           ],
         ),
       ]),
       pathImage: "img/image1.png",
+      heightImage: 283,
+      widthImage: 54,
       backgroundColor: Colors.white,
     ));
 
     slides.add(new Slide(
       widgetDescription: Column(children: [
-        Text("Get Started",
-            style: TextStyle(color: Color(0xff800080), fontSize: 18)),
+        Text("Qualify and Start Earning Now",
+            style: GoogleFonts.rubik(color: Color(0xff800080), fontSize: 18)),
         Text(
-            "You are now in the CrowdFunder team where raising money for any cause is quick and easy! Vacation, car repairs, college anything.",
+            "To qualify and start earning, you need to join a team of fundraisers.  Whoever shared this link/app with you is asking you to join their team.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 13)),
+            style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
         Text("Read Our Disclaimer and Privacy Policy.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 13))
+            style: TextStyle(color: Color(0xff707070), fontSize: 12))
       ]),
       pathImage: "img/image2.png",
       backgroundColor: Colors.white,
@@ -130,6 +137,7 @@ class IntroScreenState extends State<IntroScreen> {
   Widget renderNextBtn() {
     return Container(
       height: 48,
+      width: 115,
       color: Color(0xff800080),
       alignment: Alignment(0.0, 0.0),
       child: Text(
@@ -140,9 +148,17 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   Widget renderDoneBtn() {
-    return Icon(
-      Icons.done,
-      color: Color(0xff800080),
+    return Row(
+      children: [
+        Text(
+          "Get Started",
+          style: GoogleFonts.rubik(fontSize: 15, color: Colors.white),
+        ),
+        Icon(
+          Icons.done,
+          color: Color(0xff800080),
+        )
+      ],
     );
   }
 

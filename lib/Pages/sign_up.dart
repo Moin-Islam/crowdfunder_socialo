@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/upload_image.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -37,7 +38,7 @@ class _SignUpState extends State<SignUp> {
           child: TextFormField(
             controller: nameController,
             keyboardType: TextInputType.name,
-            style: TextStyle(color: Colors.black),
+            style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
@@ -50,7 +51,8 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.black,
                 ),
                 hintText: 'Name',
-                hintStyle: TextStyle(color: Colors.black38)),
+                hintStyle:
+                    GoogleFonts.roboto(color: Colors.black38, fontSize: 13)),
           ),
         )
       ],
@@ -71,7 +73,7 @@ class _SignUpState extends State<SignUp> {
           child: TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color: Colors.black),
+            style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
@@ -84,7 +86,8 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.black,
                 ),
                 hintText: 'Email',
-                hintStyle: TextStyle(color: Colors.black38)),
+                hintStyle:
+                    GoogleFonts.roboto(color: Colors.black38, fontSize: 13)),
           ),
         )
       ],
@@ -105,7 +108,7 @@ class _SignUpState extends State<SignUp> {
           child: TextFormField(
             controller: purposeController,
             keyboardType: TextInputType.text,
-            style: TextStyle(color: Colors.black),
+            style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
             decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(top: 14),
@@ -118,7 +121,8 @@ class _SignUpState extends State<SignUp> {
                   color: Colors.black,
                 ),
                 hintText: 'Purpose for raising money',
-                hintStyle: TextStyle(color: Colors.black38)),
+                hintStyle:
+                    GoogleFonts.roboto(color: Colors.black38, fontSize: 13)),
           ),
         )
       ],
@@ -201,13 +205,13 @@ class _SignUpState extends State<SignUp> {
           text: TextSpan(children: [
             TextSpan(
                 text: 'Already have an account ? ',
-                style: TextStyle(
+                style: GoogleFonts.roboto(
                     color: Colors.black38,
                     fontSize: 13,
                     fontWeight: FontWeight.normal)),
             TextSpan(
                 text: 'Login now',
-                style: TextStyle(
+                style: GoogleFonts.roboto(
                     color: Color(0xff800080),
                     fontSize: 13,
                     fontWeight: FontWeight.normal,
@@ -280,8 +284,8 @@ class _SignUpState extends State<SignUp> {
         color: Color(0xff800080),
         child: Text(
           'Next',
-          style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.normal),
+          style: GoogleFonts.rubik(
+              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
     );
@@ -309,7 +313,7 @@ class _SignUpState extends State<SignUp> {
                       children: [
                         Text(
                           'Create Your Account',
-                          style: TextStyle(
+                          style: GoogleFonts.rubik(
                             color: Color(0xff800080),
                             fontSize: 18,
                             fontWeight: FontWeight.normal,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/set_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 import "./member_list.dart";
 
 class PaymentInfo extends StatefulWidget {
@@ -125,7 +127,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MemberList())),
+            context, MaterialPageRoute(builder: (context) => SetUp())),
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
@@ -157,7 +159,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   children: [
                     Text(
                       'Payment Info',
-                      style: TextStyle(
+                      style: GoogleFonts.rubik(
                         color: Color(0xff800080),
                         fontSize: 25,
                         fontWeight: FontWeight.normal,
@@ -208,7 +210,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     SizedBox(height: 20),
                     Text(
                       'Card Number \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,
@@ -218,7 +220,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     SizedBox(height: 20),
                     Text(
                       'Card Holder Name \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,
@@ -228,7 +230,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     SizedBox(height: 20),
                     Text(
                       'Expiry Date \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,
@@ -238,7 +240,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     SizedBox(height: 20),
                     Text(
                       'CVV \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,

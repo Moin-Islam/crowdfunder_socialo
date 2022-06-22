@@ -5,6 +5,7 @@ import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -31,13 +32,13 @@ class _SetUpState extends State<SetUp> {
           text: TextSpan(children: [
         TextSpan(
             text: 'See the details in the video',
-            style: TextStyle(
+            style: GoogleFonts.roboto(
                 color: Colors.black38,
                 fontSize: 13,
                 fontWeight: FontWeight.normal)),
         TextSpan(
             text: 'https://bit.ly/CFpromo1',
-            style: TextStyle(
+            style: GoogleFonts.roboto(
                 color: Color(0xff800080),
                 fontSize: 13,
                 fontWeight: FontWeight.normal))
@@ -153,7 +154,7 @@ class _SetUpState extends State<SetUp> {
         color: Color(0xff800080),
         child: Text(
           'Set Up Account',
-          style: TextStyle(
+          style: GoogleFonts.roboto(
               color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
@@ -201,7 +202,7 @@ class _SetUpState extends State<SetUp> {
                     SizedBox(height: 20),
                     Text(
                       'Input the Public Key \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,
@@ -212,7 +213,7 @@ class _SetUpState extends State<SetUp> {
                     SizedBox(height: 20),
                     Text(
                       'Input the Private Key \*',
-                      style: TextStyle(
+                      style: GoogleFonts.roboto(
                         color: Colors.black,
                         fontSize: 13,
                         fontWeight: FontWeight.normal,

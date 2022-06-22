@@ -5,6 +5,7 @@ import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -171,7 +172,7 @@ class _SignInState extends State<SignIn> {
         color: Color(0xff800080),
         child: Text(
           'Sign In',
-          style: TextStyle(
+          style: GoogleFonts.rubik(
               color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),
       ),
@@ -187,14 +188,14 @@ class _SignInState extends State<SignIn> {
           text: TextSpan(children: [
             TextSpan(
               text: 'Don\'t have any Account? ',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                   color: Colors.black38,
                   fontSize: 13,
                   fontWeight: FontWeight.normal),
             ),
             TextSpan(
               text: 'Sign Up Now',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 color: Color(0xff800080),
                 fontSize: 13,
                 fontWeight: FontWeight.normal,
@@ -245,8 +246,7 @@ class _SignInState extends State<SignIn> {
         print(token);
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => AccountSetting()),
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
             (Route<dynamic> route) => false);
       }
     } else {
@@ -276,7 +276,7 @@ class _SignInState extends State<SignIn> {
                       children: [
                         Text(
                           'Hello,',
-                          style: TextStyle(
+                          style: GoogleFonts.rubik(
                             color: Color(0xff800080),
                             fontSize: 25,
                             fontWeight: FontWeight.normal,
@@ -290,7 +290,7 @@ class _SignInState extends State<SignIn> {
                       children: [
                         Text(
                           'Sign in to your account',
-                          style: TextStyle(
+                          style: GoogleFonts.rubik(
                             color: Color(0xff800080),
                             fontSize: 15,
                             fontWeight: FontWeight.normal,
