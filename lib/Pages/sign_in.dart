@@ -219,7 +219,6 @@ class _SignInState extends State<SignIn> {
   }
 
   signIn(String email, pass) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {'email': email, 'password': pass};
     var jsonResponse = null;
     var response = await http.post(
@@ -234,11 +233,8 @@ class _SignInState extends State<SignIn> {
         setState(() {
           _isLoading = false;
         });
-        sharedPreferences.setString("token", jsonResponse['token']);
 
-        await TokenStorage.ssetToken(jsonResponse['token']);
-
-        TokenPreference.saveAddress(jsonResponse['token']);
+        TokenPreference.saveAddress("token", jsonResponse['token']);
 
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString("token");

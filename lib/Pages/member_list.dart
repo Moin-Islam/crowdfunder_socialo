@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 
+import '../utils/Member.dart';
+
 class MemberList extends StatefulWidget {
   const MemberList({Key key}) : super(key: key);
 
@@ -16,42 +18,30 @@ class MemberList extends StatefulWidget {
   State<MemberList> createState() => _MemberListState();
 }
 
-class Item {
-  Item(this.name, this.Id);
-  String name;
-  String Id;
-  bool selected = false;
-}
-
 class _MemberListState extends State<MemberList> {
+  var memberList;
   @override
   void initState() {
     super.initState();
-    fetchTeamList();
+
+    memberList = fetchTeamList();
   }
-
-  final datalist = <Item>[
-    Item("Rakibul", "1644"),
-    Item("Kabir", "1233"),
-    Item("Towhid", "2654"),
-  ];
-
-  bool _isLoading = false;
 
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
 
-  fetchTeamList() async {
+  Future<List<Member>> fetchTeamList() async {
     String token = await getToken();
-    print(token);
+
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
           "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
       headers: {
-        'Authorization': '$token',
+        'Authorization':
+            'rmcz8m3zR77PhpGfM9x479e0mbXkUHsx5rCib3ndKNkUEJM0djfBWHLfMzGZ2wIU2svNieDo2lSVgHQyEdlEFDTXCZBYwc3vPgKy8WgRTQsJZX4ST6Ynaet6tLO6Pbaj',
       },
     );
 
@@ -59,19 +49,11 @@ class _MemberListState extends State<MemberList> {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => SetUp()),
             (Route<dynamic> route) => false);
       }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    } else {}
     print(response.body);
   }
 
@@ -129,11 +111,7 @@ class _MemberListState extends State<MemberList> {
                 height: 34,
                 width: 130,
                 child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                    },
+                    onPressed: () {},
                     style: ButtonStyle(
                       side: MaterialStateProperty.all(BorderSide(
                           color: Color(0xff800080),
@@ -155,18 +133,9 @@ class _MemberListState extends State<MemberList> {
         ]));
   }
 
-  List<Widget> generateItems() {
-    final result = <Widget>[];
-    for (int i = 0; i < datalist.length; i++) {
-      result.add(CheckboxListTile(
-          value: datalist[i].selected,
-          onChanged: (v) {
-            datalist[i].selected = v ?? false;
-          }));
-    }
-
-    return result;
-  }
+  // Widget singleUserList(String name, String id) {
+  //   return
+  // }
 
   @override
   Widget build(BuildContext context) {
