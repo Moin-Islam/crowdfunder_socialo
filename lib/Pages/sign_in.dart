@@ -242,7 +242,8 @@ class _SignInState extends State<SignIn> {
         print(token);
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => AccountSetting()),
             (Route<dynamic> route) => false);
       }
     } else {

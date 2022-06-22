@@ -15,10 +15,10 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       name: json['USER_DATA'][0]["name"],
-      email_address: json['email_address'],
-      purpose: json['purpose'],
-      profile_image: json['profile_image'],
-      invitation_code: json['invitation_code'],
+      email_address: json['USER_DATA'][0]['email_address'],
+      purpose: json['USER_DATA'][0]['purpose'],
+      profile_image: json['USER_DATA'][0]['profile_image'],
+      invitation_code: json['USER_DATA'][0]['invitation_code'],
     );
   }
 }

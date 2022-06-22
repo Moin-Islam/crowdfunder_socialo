@@ -4,6 +4,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:flutter_demo/utils/Stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -20,6 +21,7 @@ class AccountSetting extends StatefulWidget {
 
 class _AccountSettingtate extends State<AccountSetting> {
   Future<User> futureUser;
+  Future<Stripe> futureStripe;
   File image;
   bool _isLoading = false;
   String name;
@@ -30,12 +32,19 @@ class _AccountSettingtate extends State<AccountSetting> {
   TextEditingController currentpasswordController = TextEditingController();
   TextEditingController newpasswordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
+  TextEditingController publickeyController = TextEditingController();
+  TextEditingController privatekeyController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     futureUser = fetchUser();
-    fetchProfile();
+    futureStripe = fetchStripe();
+  }
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
   }
 
   accountSetting(
@@ -46,44 +55,41 @@ class _AccountSettingtate extends State<AccountSetting> {
     newpassword,
     confirmpassword,
   ) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = await getToken();
     Map data = {
       'name': name,
       'email': email,
       'purpose': purpose,
-      'currentpassword': currentpassword,
-      'newpassword': newpassword,
-      'confirmpassword': confirmpassword,
+      'old_password': currentpassword,
+      'new_password': newpassword,
+      'confirm_password': confirmpassword,
     };
     var jsonResponse = null;
     var response = await http.put(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
-        body: data);
+        headers: {
+          'Authorization': token,
+        },
+        body: jsonEncode(data));
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
+      print(response.body);
 
       if (jsonResponse != null) {
         setState(() {
           _isLoading = false;
         });
-        sharedPreferences.setString("token", jsonResponse['token']);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-            (Route<dynamic> route) => false);
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+        //     (Route<dynamic> route) => false);
       }
     } else {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
     }
-  }
-
-  Future<String> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
   }
 
   Future<User> fetchUser() async {
@@ -97,6 +103,13 @@ class _AccountSettingtate extends State<AccountSetting> {
     );
 
     if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+
+      nameController.text = data["USER_DATA"][0]["name"];
+      name = data["USER_DATA"][0]["name"];
+      emailController.text = data["USER_DATA"][0]["email_address"];
+      purposeController.text = data["USER_DATA"][0]["purpose"];
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(response.body);
@@ -108,14 +121,12 @@ class _AccountSettingtate extends State<AccountSetting> {
     }
   }
 
-  /*Update Profile Postman API*/
-
-  fetchProfile() async {
+  Future<Stripe> fetchStripe() async {
     String token = await getToken();
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
-          "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
+          "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
         'Authorization': '$token',
       },
@@ -123,30 +134,59 @@ class _AccountSettingtate extends State<AccountSetting> {
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      publickeyController.text = data["STRIPE_DATA"][0]["public_key"];
+      privatekeyController.text = data["STRIPE_DATA"][0]["secret_key"];
+
+      print(response.body);
+
+      return Stripe.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  saveStripe(
+    String public,
+    String private,
+  ) async {
+    String token = await getToken();
+    Map data = {
+      'public_key': public,
+      'secret_key': private,
+    };
+    var jsonResponse = null;
+    var response = await http.put(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+        headers: {
+          'Authorization': token,
+        },
+        body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      print(response.body);
 
       if (jsonResponse != null) {
         setState(() {
           _isLoading = false;
         });
-
-        /*Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => PaymentInfo()),
-            (Route<dynamic> route) => false);*/
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+        //     (Route<dynamic> route) => false);
       }
     } else {
       setState(() {
         _isLoading = false;
       });
     }
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
-
-    nameController.text = data["USER_DATA"][0]["name"];
-    name = data["USER_DATA"][0]["name"];
-    emailController.text = data["USER_DATA"][0]["email_address"];
-    purposeController.text = data["USER_DATA"][0]["purpose"];
   }
+
+  /*Update Profile Postman API*/
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -369,27 +409,25 @@ class _AccountSettingtate extends State<AccountSetting> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           RaisedButton(
-            onPressed: nameController.text == "" ||
-                    emailController.text == "" ||
-                    purposeController.text == "" ||
-                    currentpasswordController.text == "" ||
-                    newpasswordController.text == "" ||
-                    confirmpasswordController.text == ""
-                ? null
-                : () {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    print(nameController.text);
-                    accountSetting(
-                      nameController.text,
-                      emailController.text,
-                      purposeController.text,
-                      currentpasswordController.text,
-                      newpasswordController,
-                      confirmpasswordController.text,
-                    );
-                  },
+            onPressed: () {
+              setState(() {
+                _isLoading = true;
+              });
+              print(nameController.text);
+              print(emailController.text);
+              print(purposeController.text);
+              print(currentpasswordController.text);
+              print(newpasswordController.text);
+              print(confirmpasswordController.text);
+              accountSetting(
+                nameController.text,
+                emailController.text,
+                purposeController.text,
+                currentpasswordController.text,
+                newpasswordController.text,
+                confirmpasswordController.text,
+              );
+            },
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -418,7 +456,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: publickeyController,
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -446,7 +485,8 @@ class _AccountSettingtate extends State<AccountSetting> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: privatekeyController,
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
@@ -468,8 +508,9 @@ class _AccountSettingtate extends State<AccountSetting> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PaymentInfo())),
+        onPressed: () {
+          saveStripe(publickeyController.text, privatekeyController.text);
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
@@ -485,6 +526,9 @@ class _AccountSettingtate extends State<AccountSetting> {
   Widget buildUserProfile() {
     return Container(
         child: Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: new BorderSide(color: Color(0xff800080), width: 1.0)),
       child: Row(
         children: [
           Container(
@@ -584,7 +628,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                       ),
                       buildSetUpAccountbtn()
                     ],
-                  ),
+                  )
                 ]))));
   }
 }
