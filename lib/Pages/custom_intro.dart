@@ -6,6 +6,7 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:intro_slider/scrollbar_behavior_enum.dart';
 import 'package:modals/modals.dart';
+import 'package:flutter/gestures.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -27,73 +28,232 @@ class IntroScreenState extends State<IntroScreen> {
               color: Color(0xff800080),
               fontSize: 18,
             )),
+        SizedBox(
+          height: 15,
+        ),
         Text(
-            "You are now in the CrowdFunder team where raising money for any cause is quick and easy! Vacation, car repairs, college anything.",
+            "You are now on the CROWDFUNDER TEAM where raising money for any cause is quick and easy! Vacations, car repairs, dental work, college or retirement.",
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
+        SizedBox(
+          height: 15,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Read Our ",
-                textAlign: TextAlign.center,
-                style:
-                    GoogleFonts.roboto(color: Color(0xff707070), fontSize: 12)),
-            FlatButton(
-              onPressed: () {
-                showModal(ModalEntry.positioned(context,
-                    tag: 'Disclaimer',
-                    top: 300,
-                    child: Container(
-                      color: Colors.white,
-                      width: 300,
-                      height: 300,
-                      child: Column(
-                        children: [
-                          Text(
-                            "Privacy",
-                            style: GoogleFonts.roboto(fontSize: 12),
-                          ),
-                          FlatButton(
-                            onPressed: () => removeAllModals(),
-                            child: Text(
-                                "The CROWDFUNDER TEAM app never shares or retains any information about it's users and only uses any information to confirm payments were made, and any information needed to make sure the app works as advertised"),
-                          )
-                        ],
-                      ),
-                    )));
-              },
-              child: const Text('Privacy',
-                  style: TextStyle(color: Color(0xff707070), fontSize: 12)),
-            ),
-            Text(" and ",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Color(0xff707070), fontSize: 12)),
-            FlatButton(
-              onPressed: () {
-                showModal(ModalEntry.positioned(context,
-                    tag: 'Terms and Policy',
-                    top: 300,
-                    child: Container(
-                      color: Colors.white,
-                      width: 300,
-                      height: 300,
-                      child: Column(
-                        children: [
-                          Text(
-                            "Terms and Policy",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          FlatButton(
-                            onPressed: () => removeAllModals(),
-                            child: Text("close"),
-                          )
-                        ],
-                      ),
-                    )));
-              },
-              child: const Text('Terms and Policy',
-                  style: TextStyle(color: Color(0xff707070), fontSize: 12)),
+            RichText(
+              text: new TextSpan(
+                  text: 'Read Our',
+                  style:
+                      GoogleFonts.roboto(color: Colors.black38, fontSize: 12),
+                  children: [
+                    new TextSpan(
+                      text: ' Disclaimer',
+                      style: GoogleFonts.roboto(
+                          color: Color(0xff800080), fontSize: 12),
+                      recognizer: new TapGestureRecognizer()
+                        ..onTap = () => {
+                              showModal(ModalEntry.aligned(context,
+                                  tag: 'Disclaimer',
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    color: Colors.white,
+                                    width: 300,
+                                    height: 200,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: new TextSpan(
+                                            text: "Disclaimer",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.black,
+                                                fontSize: 18),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        RichText(
+                                          text: new TextSpan(
+                                            text:
+                                                "The CROWDFUNDER TEAM app never shares or retains any information about it's users and only uses any information to confirm payments were made, and any information needed to make sure the app works as advertised",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.black87,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(),
+                                            FlatButton(
+                                              padding: EdgeInsets.all(15),
+                                              color: Color(0xff800080),
+                                              onPressed: () {
+                                                removeAllModals();
+                                                showModal(
+                                                    ModalEntry.aligned(context,
+                                                        tag: 'Disclaimer',
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Container(
+                                                          color: Colors.white,
+                                                          width: 300,
+                                                          height: 200,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              RichText(
+                                                                text:
+                                                                    new TextSpan(
+                                                                  text:
+                                                                      "Disclaimer",
+                                                                  style: GoogleFonts.roboto(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          18),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              RichText(
+                                                                text:
+                                                                    new TextSpan(
+                                                                  text:
+                                                                      "The CROWDFUNDER app is not responsible for any funds lost and has 'No Refund' policy.",
+                                                                  style: GoogleFonts.roboto(
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontSize:
+                                                                          12),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Container(),
+                                                                  FlatButton(
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            15),
+                                                                    color: Color(
+                                                                        0xff800080),
+                                                                    onPressed: () =>
+                                                                        removeAllModals(),
+                                                                    child: Text(
+                                                                      "Done",
+                                                                      style: GoogleFonts.roboto(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              12),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )));
+                                              },
+                                              child: Text(
+                                                "Next",
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )))
+                            },
+                    ),
+                    new TextSpan(
+                        text: ' and',
+                        style: GoogleFonts.roboto(
+                            color: Colors.black38, fontSize: 12)),
+                    new TextSpan(
+                      text: ' Privacy Policy',
+                      style: GoogleFonts.roboto(
+                          color: Color(0xff800080), fontSize: 12),
+                      recognizer: new TapGestureRecognizer()
+                        ..onTap = () => {
+                              showModal(ModalEntry.aligned(context,
+                                  tag: 'Disclaimer',
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    color: Colors.white,
+                                    width: 300,
+                                    height: 200,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        RichText(
+                                          text: new TextSpan(
+                                            text: "Disclaimer",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.black,
+                                                fontSize: 18),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        RichText(
+                                          text: new TextSpan(
+                                            text:
+                                                "The CROWDFUNDER app is not responsible for any funds lost and has 'No Refund' policy. ",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.black87,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(),
+                                            FlatButton(
+                                              padding: EdgeInsets.all(15),
+                                              color: Color(0xff800080),
+                                              onPressed: () =>
+                                                  removeAllModals(),
+                                              child: Text(
+                                                "Done",
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )))
+                            },
+                    ),
+                  ]),
             ),
           ],
         ),
@@ -108,13 +268,220 @@ class IntroScreenState extends State<IntroScreen> {
       widgetDescription: Column(children: [
         Text("Qualify and Start Earning Now",
             style: GoogleFonts.rubik(color: Color(0xff800080), fontSize: 18)),
+        SizedBox(
+          height: 15,
+        ),
         Text(
             "To qualify and start earning, you need to join a team of fundraisers.  Whoever shared this link/app with you is asking you to join their team.",
             textAlign: TextAlign.center,
             style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
-        Text("Read Our Disclaimer and Privacy Policy.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff707070), fontSize: 12))
+        SizedBox(
+          height: 15,
+        ),
+        RichText(
+          text: new TextSpan(
+              text: 'Read Our',
+              style: GoogleFonts.roboto(color: Colors.black38, fontSize: 12),
+              children: [
+                new TextSpan(
+                  text: ' Disclaimer',
+                  style: GoogleFonts.roboto(
+                      color: Color(0xff800080), fontSize: 12),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () => {
+                          showModal(ModalEntry.aligned(context,
+                              tag: 'Disclaimer',
+                              alignment: Alignment.center,
+                              child: Container(
+                                color: Colors.white,
+                                width: 300,
+                                height: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: new TextSpan(
+                                        text: "Disclaimer",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black, fontSize: 18),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: new TextSpan(
+                                        text:
+                                            "The CROWDFUNDER TEAM app never shares or retains any information about it's users and only uses any information to confirm payments were made, and any information needed to make sure the app works as advertised",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black87,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(),
+                                        FlatButton(
+                                          padding: EdgeInsets.all(15),
+                                          color: Color(0xff800080),
+                                          onPressed: () {
+                                            removeAllModals();
+                                            showModal(ModalEntry.aligned(
+                                                context,
+                                                tag: 'Disclaimer',
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  width: 300,
+                                                  height: 200,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      RichText(
+                                                        text: new TextSpan(
+                                                          text: "Disclaimer",
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 18),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      RichText(
+                                                        text: new TextSpan(
+                                                          text:
+                                                              "The CROWDFUNDER app is not responsible for any funds lost and has 'No Refund' policy.",
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: Colors
+                                                                      .black87,
+                                                                  fontSize: 12),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Container(),
+                                                          FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    15),
+                                                            color: Color(
+                                                                0xff800080),
+                                                            onPressed: () =>
+                                                                removeAllModals(),
+                                                            child: Text(
+                                                              "Done",
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          12),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )));
+                                          },
+                                          child: Text(
+                                            "Next",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )))
+                        },
+                ),
+                new TextSpan(
+                    text: ' and',
+                    style: GoogleFonts.roboto(
+                        color: Colors.black38, fontSize: 12)),
+                new TextSpan(
+                  text: ' Privacy Policy',
+                  style: GoogleFonts.roboto(
+                      color: Color(0xff800080), fontSize: 12),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () => {
+                          showModal(ModalEntry.aligned(context,
+                              tag: 'Disclaimer',
+                              alignment: Alignment.center,
+                              child: Container(
+                                color: Colors.white,
+                                width: 300,
+                                height: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    RichText(
+                                      text: new TextSpan(
+                                        text: "Disclaimer",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black, fontSize: 18),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: new TextSpan(
+                                        text:
+                                            "The CROWDFUNDER app is not responsible for any funds lost and has 'No Refund' policy. ",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black87,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(),
+                                        FlatButton(
+                                          padding: EdgeInsets.all(15),
+                                          color: Color(0xff800080),
+                                          onPressed: () => removeAllModals(),
+                                          child: Text(
+                                            "Done",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )))
+                        },
+                ),
+              ]),
+        ),
       ]),
       pathImage: "img/image2.png",
       backgroundColor: Colors.white,
