@@ -175,9 +175,9 @@ class _AccountSettingtate extends State<AccountSetting> {
         setState(() {
           _isLoading = false;
         });
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-        //     (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
       }
     } else {
       setState(() {

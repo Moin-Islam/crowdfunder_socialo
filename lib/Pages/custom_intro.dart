@@ -65,6 +65,9 @@ class IntroScreenState extends State<IntroScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         RichText(
                                           text: new TextSpan(
                                             text: "Disclaimer",
@@ -112,6 +115,9 @@ class IntroScreenState extends State<IntroScreen> {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
                                                               RichText(
                                                                 text:
                                                                     new TextSpan(
@@ -206,6 +212,9 @@ class IntroScreenState extends State<IntroScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        SizedBox(
+                                          height: 15,
+                                        ),
                                         RichText(
                                           text: new TextSpan(
                                             text: "Disclaimer",
@@ -299,6 +308,9 @@ class IntroScreenState extends State<IntroScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    SizedBox(
+                                      height: 15,
+                                    ),
                                     RichText(
                                       text: new TextSpan(
                                         text: "Disclaimer",
@@ -344,6 +356,9 @@ class IntroScreenState extends State<IntroScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
                                                       RichText(
                                                         text: new TextSpan(
                                                           text: "Disclaimer",
@@ -435,6 +450,9 @@ class IntroScreenState extends State<IntroScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    SizedBox(
+                                      height: 15,
+                                    ),
                                     RichText(
                                       text: new TextSpan(
                                         text: "Disclaimer",
@@ -515,18 +533,10 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   Widget renderDoneBtn() {
-    return Row(
-      children: [
-        Text(
-          "Get Started",
-          style: GoogleFonts.rubik(fontSize: 15, color: Colors.white),
-        ),
-        Icon(
-          Icons.done,
-          color: Color(0xff800080),
-        )
-      ],
-    );
+    return (Icon(
+      Icons.done,
+      color: Color(0xff800080),
+    ));
   }
 
   Widget renderSkipBtn() {

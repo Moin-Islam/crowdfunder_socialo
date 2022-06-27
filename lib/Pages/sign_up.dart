@@ -23,6 +23,8 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController confirmpasswordController =
       new TextEditingController();
   final TextEditingController purposeController = new TextEditingController();
+  final TextEditingController invitationController =
+      new TextEditingController();
 
   Widget buildName() {
     return Column(
@@ -220,7 +222,8 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  signUp(String name, email, purpose, password, confirmpassword) async {
+  signUp(String name, email, purpose, password, confirmpassword,
+      invitation) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {
       'name': name,
@@ -229,7 +232,7 @@ class _SignUpState extends State<SignUp> {
       'confirm_password': confirmpassword,
       'profile_image': "aaaa",
       'purpose': purpose,
-      'invitation_code': "xqrBfmdT8ZoVcKeuRAzMDNH1h4Sv3iFs",
+      'invitation_code': invitation,
     };
     print(data);
     var jsonResponse = null;
@@ -259,6 +262,41 @@ class _SignUpState extends State<SignUp> {
     print(response.body);
   }
 
+  Widget buildInvitation() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            color: Color(0xffF4F6F8),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: 48,
+          child: TextFormField(
+            controller: invitationController,
+            keyboardType: TextInputType.text,
+            style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                prefixIcon: Icon(
+                  Icons.clean_hands_sharp,
+                  color: Colors.black,
+                ),
+                hintText: 'Invitation Code',
+                hintStyle:
+                    GoogleFonts.roboto(color: Colors.black38, fontSize: 13)),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget buildNextBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
@@ -277,6 +315,7 @@ class _SignUpState extends State<SignUp> {
             purposeController.text,
             passwordController.text,
             confirmpasswordController.text,
+            invitationController.text,
           );
         },
         padding: EdgeInsets.all(15),
@@ -327,6 +366,8 @@ class _SignUpState extends State<SignUp> {
                     buildEmail(),
                     SizedBox(height: 20),
                     buildPuropose(),
+                    SizedBox(height: 20),
+                    buildInvitation(),
                     SizedBox(height: 20),
                     buildPassword(),
                     SizedBox(height: 20),

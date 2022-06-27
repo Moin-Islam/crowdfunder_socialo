@@ -296,6 +296,25 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                     SizedBox(height: 20),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: new TextSpan(
+                            text:
+                                "Share the CROWDFUNDER TEAM App with the people you know, like and trust and help them do the same.",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xff800080),
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     buildEmail(),
                     SizedBox(height: 20),
                     buildPassword(),

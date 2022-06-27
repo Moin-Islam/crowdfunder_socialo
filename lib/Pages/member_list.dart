@@ -140,9 +140,10 @@ class _MemberListState extends State<MemberList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        body: Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: new SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,6 +227,6 @@ class _MemberListState extends State<MemberList> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
