@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
@@ -5,27 +8,39 @@ import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class UploadImage extends StatefulWidget {
+  final Map data;
+  UploadImage({Key key, @required this.data}) : super(key: key);
+
   @override
   State<UploadImage> createState() => _UploadImageState();
 }
 
 class _UploadImageState extends State<UploadImage> {
   File image;
+  String convertedImage;
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (image == null) return;
 
-    final imageTemporary = File(image.path);
-    this.image = imageTemporary;
+    final bytes = File(image.path).readAsBytesSync();
+    String img64 = base64Encode(bytes);
+    convertedImage = img64;
   }
 
   Future captureImage() async {
-    await ImagePicker().pickImage(source: ImageSource.camera);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
+
+    print(image);
+
+    final bytes = File(image.path).readAsBytesSync();
+    String img64 = base64Encode(bytes);
+    convertedImage = img64;
   }
 
   Widget buildUseCameraBtn() {
@@ -89,8 +104,10 @@ class _UploadImageState extends State<UploadImage> {
 
   Widget buildSignUpBtn() {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SignUp())),
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SignUp()));
+      },
       child: RichText(
           text: TextSpan(children: [
         TextSpan(
@@ -109,6 +126,26 @@ class _UploadImageState extends State<UploadImage> {
             ))
       ])),
     );
+  }
+
+  singUp() async {
+    if (convertedImage != null) {
+      widget.data["profile_image"] = convertedImage;
+    }
+    print(widget.data);
+    var jsonResponse = null;
+
+    var response = await http.post(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
+        body: widget.data);
+
+    print(response);
+    if (response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+
+      print(jsonResponse);
+    }
   }
 
   Widget buildBottomButtons() {
@@ -139,8 +176,9 @@ class _UploadImageState extends State<UploadImage> {
                   ),
                 ),
                 RaisedButton(
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SetUp())),
+                  onPressed: () {
+                    singUp();
+                  },
                   padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),

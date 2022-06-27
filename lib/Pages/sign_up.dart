@@ -232,34 +232,16 @@ class _SignUpState extends State<SignUp> {
       'confirm_password': confirmpassword,
       'profile_image': "aaaa",
       'purpose': purpose,
-      'invitation_code': invitation,
+      'invitation_code': "xqrBfmdT8ZoVcKeuRAzMDNH1h4Sv3iFs",
     };
     print(data);
-    var jsonResponse = null;
-    var response = await http.post(
-        Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
-        body: data);
 
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        print(jsonResponse);
-        sharedPreferences.setString("token", jsonResponse['token']);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => UploadImage()),
-            (Route<dynamic> route) => false);
-      }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
+    if (data != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => UploadImage(data: data)),
+          (Route<dynamic> route) => false);
     }
-    print(response.body);
   }
 
   Widget buildInvitation() {
