@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 import "./member_list.dart";
+import 'package:flutter_demo/Pages/splash.dart';
 
 class PaymentInfo extends StatefulWidget {
   const PaymentInfo({Key key}) : super(key: key);
@@ -13,6 +15,14 @@ class PaymentInfo extends StatefulWidget {
 }
 
 class _PaymentInfoState extends State<PaymentInfo> {
+  PaymentMethod paymentMethod;
+
+  @override
+  void initState() {
+    super.initState();
+    PaymentService.init();
+  }
+
   Widget buildCardNumber() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,8 +136,10 @@ class _PaymentInfoState extends State<PaymentInfo> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SetUp())),
+        onPressed: () async {
+          paymentMethod = await PaymentService().createPaymentMethod();
+          print(paymentMethod.id);
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),

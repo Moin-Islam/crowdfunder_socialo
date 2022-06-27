@@ -12,94 +12,90 @@ class StripeModuleX extends StatefulWidget {
 
 class _StripeModuleXState extends State<StripeModuleX> {
   Widget BuildProfileIDSection() {
-    return Scaffold(
-      body: Container(
-        height: 97,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              'img/person.png',
-              height: 73,
-              width: 74,
+    return Container(
+      height: 97,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            'img/person.png',
+            height: 73,
+            width: 74,
+          ),
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  "Hasibul Haque Prottoy",
+                  style: GoogleFonts.rubik(color: Colors.black, fontSize: 15),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "User ID : 2349",
+                  style: GoogleFonts.roboto(
+                      color: Color(0xff707070), fontSize: 13),
+                ),
+              ],
             ),
-            Container(
-              child: Column(
-                children: [
-                  Text(
-                    "Hasibul Haque Prottoy",
-                    style: GoogleFonts.rubik(color: Colors.black, fontSize: 15),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    "User ID : 2349",
-                    style: GoogleFonts.roboto(
-                        color: Color(0xff707070), fontSize: 13),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
 
   Widget BuildMiddleBtn() {
-    return Scaffold(
-      body: Container(
-        height: 97,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RaisedButton(
-                onPressed: () => "",
-                padding: EdgeInsets.all(20),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: Color(0xff800080),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Product List and Sales',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    Icon(
-                      Icons.add_chart,
-                      color: Colors.white,
-                    )
-                  ],
-                )),
-            RaisedButton(
-                onPressed: () => "",
-                padding: EdgeInsets.all(20),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: Color(0xff800080),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'My Account Settings',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    )
-                  ],
-                ))
-          ],
-        ),
+    return Container(
+      height: 97,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RaisedButton(
+              onPressed: () => "",
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              color: Color(0xff800080),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Product List and Sales',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  Icon(
+                    Icons.add_chart,
+                    color: Colors.white,
+                  )
+                ],
+              )),
+          RaisedButton(
+              onPressed: () => "",
+              padding: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              color: Color(0xff800080),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'My Account Settings',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  )
+                ],
+              ))
+        ],
       ),
     );
   }
@@ -145,66 +141,60 @@ class _StripeModuleXState extends State<StripeModuleX> {
   }
 
   Widget BuildSelectFromPhoneBookBtn() {
-    return Scaffold(
-      body: Container(
-        height: 97,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RaisedButton(
-                onPressed: () => "",
-                padding: EdgeInsets.all(15),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: Color(0xff800080),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Select from phone book',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    Icon(
-                      Icons.contact_page_sharp,
-                      color: Colors.white,
-                    )
-                  ],
-                )),
-          ],
-        ),
+    return Container(
+      height: 97,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RaisedButton(
+              onPressed: () => "",
+              padding: EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              color: Color(0xff800080),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select from phone book',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  Icon(
+                    Icons.contact_page_sharp,
+                    color: Colors.white,
+                  )
+                ],
+              )),
+        ],
       ),
     );
   }
 
   Widget BuildInviteNowBtn() {
-    return Scaffold(
-      body: Container(
-        height: 48,
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(BorderSide(
-                color: Color(0xff800080),
-                width: 1.0,
-                style: BorderStyle.solid)),
-            backgroundColor: MaterialStateProperty.all(Color(0xffF4F6F8)),
-          ),
-          child: Row(
-            children: [
-              Text(
-                "Invite Now",
-                style: TextStyle(color: Color(0xff800080)),
-              ),
-              Icon(
-                Icons.share,
-                color: Color(0xff800080),
-              ),
-            ],
-          ),
+    return Container(
+      height: 48,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+          side: MaterialStateProperty.all(BorderSide(
+              color: Color(0xff800080), width: 1.0, style: BorderStyle.solid)),
+          backgroundColor: MaterialStateProperty.all(Color(0xffF4F6F8)),
+        ),
+        child: Row(
+          children: [
+            Text(
+              "Invite Now",
+              style: TextStyle(color: Color(0xff800080)),
+            ),
+            Icon(
+              Icons.share,
+              color: Color(0xff800080),
+            ),
+          ],
         ),
       ),
     );

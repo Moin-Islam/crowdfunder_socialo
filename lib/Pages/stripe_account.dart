@@ -152,17 +152,16 @@ class _StripeAccountState extends State<StripeAccount> {
       ),
     );
   }
-  /*Widget buildBackBtn {
+
+  Widget buildBackBtn() {
     return Container(
-      child: IconButton(  
-        onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MemberList())),
-        icon: Icon(
-          Icons.arrow_back
-        ),
+      child: IconButton(
+        onPressed: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MemberList())),
+        icon: Icon(Icons.arrow_back),
       ),
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
