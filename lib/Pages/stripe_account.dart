@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/material/icons.dart';
+import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StripeAccount extends StatefulWidget {
@@ -150,6 +152,17 @@ class _StripeAccountState extends State<StripeAccount> {
       ),
     );
   }
+  /*Widget buildBackBtn {
+    return Container(
+      child: IconButton(  
+        onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemberList())),
+        icon: Icon(
+          Icons.arrow_back
+        ),
+      ),
+    );
+  }*/
 
   @override
   Widget build(BuildContext context) {
