@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stripe_payment/stripe_payment.dart';
+
 import "./member_list.dart";
 import 'package:flutter_demo/Pages/splash.dart';
 
@@ -15,8 +15,6 @@ class PaymentInfo extends StatefulWidget {
 }
 
 class _PaymentInfoState extends State<PaymentInfo> {
-  PaymentMethod paymentMethod;
-
   @override
   void initState() {
     super.initState();
@@ -137,8 +135,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () async {
-          paymentMethod = await PaymentService().createPaymentMethod();
-          print(paymentMethod.id);
+          /*paymentMethod = await PaymentService().createPaymentMethod();
+          print(paymentMethod.id);*/
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

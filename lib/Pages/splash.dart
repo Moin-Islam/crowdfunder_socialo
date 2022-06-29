@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:stripe_payment/stripe_payment.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentService {
   final int amount;
@@ -13,20 +14,48 @@ class PaymentService {
   });
 
   static init() {
-    StripePayment.setOptions(StripeOptions(
-        publishableKey:
-            'pk_test_51LFJ1nGvX3w5S0IIs8BGxaw9LV0i8zclsaT0wfbYom1h2eso9kwLMjjCErhCeRxaTkaEZYxX70kWrDNTEEWrTcRm008DVCZfql',
-        androidPayMode: 'test',
-        merchantId: ''));
+    Stripe.publishableKey =
+        "pk_live_51LFJ1nGvX3w5S0IIi6fqxJQDTwAhnKQ2ank17Au5Qkm9ERB5Jdhbur1iD3fdJUKWYWFywg0OpJ4xtaV8XJpmOsnI00YghMSj4M";
   }
 
-  Future<PaymentMethod> createPaymentMethod() async {
-    print('object');
+  Future createPaymentMethod(String public_key, secret_key) async {
+    Map data = {'public_key': public_key, 'secret_key': secret_key};
+    var jsonResponse = null;
+    var response = await http.get(
+      Uri.parse(
+          "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+    );
+  }
 
-    PaymentMethod paymentMethod =
-        await StripePayment.paymentRequestWithCardForm(
-            CardFormPaymentRequest());
-    return paymentMethod;
+  Future ProcessPayment(String saleId, stripeToken) async {
+    Map paymentIntent = {'saleId': saleId, 'stripeToken': stripeToken};
+    var jsonResponse = null;
+    var response = await http.put(
+        Uri.parse(
+            "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
+        body: jsonEncode(paymentIntent));
+
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntent['[paymentIntent'],
+            applePay: true,
+            googlePay: true,
+            style: ThemeMode.dark,
+            merchantCountryCode: 'US',
+            merchantDisplayName: 'Dede'));
+
+        displayPlaymentSheet();
+  }
+
+  Future<void> displayPlaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet(
+        parameters: PresentPaymentSheetParameters(clientSecret: PaymentIntent!['paymentIntent'],
+        confirmPayment: true)
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> processPayment(PaymentMethod paymentMethod) async {
