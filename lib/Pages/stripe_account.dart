@@ -51,11 +51,13 @@ class _StripeAccountState extends State<StripeAccount> {
   Widget buildBonusProduct() {
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.all(30),
       color: Color(0xff800080),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'This is Bonus Product',
@@ -63,7 +65,7 @@ class _StripeAccountState extends State<StripeAccount> {
               ),
               Icon(
                 Icons.turn_right,
-                color: Color(0xff800080),
+                color: Colors.white,
               ),
             ],
           ),
@@ -88,7 +90,7 @@ class _StripeAccountState extends State<StripeAccount> {
             children: [
               Text('Total Sale : 6',
                   style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
-              Text('Total Earnings : *\$6',
+              Text('Total Earnings : \$6',
                   style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
             ],
           )
@@ -101,6 +103,7 @@ class _StripeAccountState extends State<StripeAccount> {
     return Container(
       width: double.infinity,
       color: Color(0xffF4F6F8),
+      padding: EdgeInsets.all(30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -135,6 +138,9 @@ class _StripeAccountState extends State<StripeAccount> {
               color: Colors.black38,
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -143,7 +149,7 @@ class _StripeAccountState extends State<StripeAccount> {
                 style:
                     GoogleFonts.rubik(fontSize: 13, color: Color(0xff800080)),
               ),
-              Text('Total Earnings : *\$6',
+              Text('Total Earnings : \$6',
                   style: GoogleFonts.rubik(
                       fontSize: 13, color: Color(0xff800080))),
             ],
@@ -166,50 +172,82 @@ class _StripeAccountState extends State<StripeAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Text(
-            'Total Earning : *\$128.50',
-            style: GoogleFonts.rubik(
-                color: Color(0xff800080),
-                fontSize: 15,
-                fontWeight: FontWeight.normal),
+      body: Container(
+        padding: EdgeInsets.all(15),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Earning : \$128.50',
+                    style: GoogleFonts.rubik(
+                        color: Color(0xff800080),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              buildUserProfile(),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bonus Product',
+                    style: GoogleFonts.rubik(
+                        color: Color(0xff800080),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              buildBonusProduct(),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'All Product List',
+                    style: GoogleFonts.rubik(
+                        color: Color(0xff800080),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              buildProductList(),
+              SizedBox(
+                height: 20,
+              ),
+              buildProductList(),
+              SizedBox(
+                height: 20,
+              ),
+              buildProductList(),
+            ],
           ),
-          SizedBox(
-            height: 15,
-          ),
-          buildUserProfile(),
-          Text(
-            'Bonus Product',
-            style: GoogleFonts.rubik(
-                color: Color(0xff800080),
-                fontSize: 15,
-                fontWeight: FontWeight.normal),
-          ),
-          buildBonusProduct(),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            'All Product List',
-            style: GoogleFonts.rubik(
-                color: Color(0xff800080),
-                fontSize: 15,
-                fontWeight: FontWeight.normal),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          buildProductList(),
-          SizedBox(
-            height: 15,
-          ),
-          buildProductList(),
-          SizedBox(
-            height: 15,
-          ),
-          buildProductList(),
-        ],
+        ),
       ),
     );
   }

@@ -11,7 +11,7 @@ class StripeModuleX extends StatefulWidget {
 }
 
 class _StripeModuleXState extends State<StripeModuleX> {
-  Widget BuildProfileIDSection() {
+  /*Widget BuildProfileIDSection() {
     return Container(
       height: 97,
       child: Row(
@@ -42,18 +42,17 @@ class _StripeModuleXState extends State<StripeModuleX> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget BuildMiddleBtn() {
     return Container(
-      height: 97,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RaisedButton(
+              padding: EdgeInsets.symmetric(vertical: 50),
               onPressed: () => "",
-              padding: EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               color: Color(0xff800080),
@@ -74,8 +73,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 ],
               )),
           RaisedButton(
+              padding: EdgeInsets.symmetric(vertical: 50),
               onPressed: () => "",
-              padding: EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               color: Color(0xff800080),
@@ -149,7 +148,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
         children: [
           RaisedButton(
               onPressed: () => "",
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               color: Color(0xff800080),
@@ -185,10 +184,16 @@ class _StripeModuleXState extends State<StripeModuleX> {
           backgroundColor: MaterialStateProperty.all(Color(0xffF4F6F8)),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Invite Now",
+              textAlign: TextAlign.center,
               style: TextStyle(color: Color(0xff800080)),
+            ),
+            SizedBox(
+              width: 10,
             ),
             Icon(
               Icons.share,
@@ -206,63 +211,77 @@ class _StripeModuleXState extends State<StripeModuleX> {
         body: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Total Earning : 182.50",
-              style: GoogleFonts.rubik(color: Color(0xff800080), fontSize: 15),
-            ),
-            SizedBox(height: 15),
-            BuildProfileIDSection(),
-            SizedBox(
-              height: 15,
-            ),
-            BuildMiddleBtn(),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Set Up Your Account",
+      child: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Earning : \$128.50',
+                    style: GoogleFonts.rubik(
+                        color: Color(0xff800080),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              /*BuildProfileIDSection(),*/
+              SizedBox(
+                height: 20,
+              ),
+              BuildMiddleBtn(),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Set Up Your Account",
 
-              style: GoogleFonts.rubik(
-                fontSize: 25,
-                color: Color(0xff800080),
-              ), // Container(child: Column(children: generateItems()))
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Enter a phone number below and hit the invite button or hit Select from Contract and Choose a contract from your contract list",
-              style: GoogleFonts.roboto(
-                fontSize: 13,
-                color: Color(0xff707070),
-              ), // Container(child: Column(children: generateItems()))
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            BuildEnterPhoneNo(),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: new Container(
-                      margin: const EdgeInsets.only(left: 10.0, right: 15.0),
-                      child: Divider(
-                        color: Colors.black,
-                        height: 50,
-                      )),
-                ),
-              ],
-            ),
-            BuildSelectFromPhoneBookBtn(),
-            BuildInviteNowBtn(),
-          ]),
+                style: GoogleFonts.rubik(
+                  fontSize: 25,
+                  color: Color(0xff800080),
+                ), // Container(child: Column(children: generateItems()))
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Enter a phone number below and hit the invite button or hit Select from Contract and Choose a contract from your contract list",
+                style: GoogleFonts.roboto(
+                  fontSize: 13,
+                  color: Color(0xff707070),
+                ), // Container(child: Column(children: generateItems()))
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              BuildEnterPhoneNo(),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: new Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 15.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 50,
+                        )),
+                  ),
+                ],
+              ),
+              BuildSelectFromPhoneBookBtn(),
+              BuildInviteNowBtn(),
+            ]),
+      ),
     ));
   }
 }

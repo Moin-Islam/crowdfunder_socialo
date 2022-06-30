@@ -27,8 +27,28 @@ class PaymentService {
     );
   }
 
-  Future ProcessPayment(String saleId, stripeToken) async {
-    Map paymentIntent = {'saleId': saleId, 'stripeToken': stripeToken};
+/*
+  Future createPaymentIntent(String amount,currency) async {
+    try {
+      Map<String,dynamic> body = {
+        'amount' : calculateAmount(amount),
+        'currency' : currency,
+        'payment_method_types[]': 'card'
+      };
+    }
+
+    print(body);
+    var response = await http.post(
+      Uri.parse('https://api.')
+    );
+
+    catch(err) {
+
+    };
+  }
+
+  Future ProcessPayment() async {
+    Map paymentIntent = {'amount': 10, 'currency': USD};
     var jsonResponse = null;
     var response = await http.put(
         Uri.parse(
@@ -37,22 +57,18 @@ class PaymentService {
 
     await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
-            paymentIntentClientSecret: paymentIntent['[paymentIntent'],
             applePay: true,
             googlePay: true,
             style: ThemeMode.dark,
             merchantCountryCode: 'US',
             merchantDisplayName: 'Dede'));
 
-        displayPlaymentSheet();
+    displayPlaymentSheet();
   }
-
+*/
   Future<void> displayPlaymentSheet() async {
     try {
-      await Stripe.instance.presentPaymentSheet(
-        parameters: PresentPaymentSheetParameters(clientSecret: PaymentIntent!['paymentIntent'],
-        confirmPayment: true)
-      );
+      await Stripe.instance.presentPaymentSheet();
     } catch (e) {
       print(e);
     }

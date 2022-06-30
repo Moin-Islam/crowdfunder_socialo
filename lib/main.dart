@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Pages/forget_password.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: PaymentInfo());
+        home: ForgetPassword());
   }
 }
 
