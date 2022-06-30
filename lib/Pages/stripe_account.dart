@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/material/icons.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
+import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart';
 
 class StripeAccount extends StatefulWidget {
   const StripeAccount({Key key}) : super(key: key);
@@ -160,12 +162,22 @@ class _StripeAccountState extends State<StripeAccount> {
   }
 
   Widget buildBackBtn() {
-    return Container(
-      child: IconButton(
-        onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MemberList())),
-        icon: Icon(Icons.arrow_back),
-      ),
+    return Align(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => StripeModuleX()),
+              (_) => false,
+            );
+          },
+          padding: EdgeInsets.all(15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Icon(
+            Icons.arrow_back,
+            color: Color(0xff800080),
+          )),
     );
   }
 
@@ -173,13 +185,13 @@ class _StripeAccountState extends State<StripeAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 80),
           child: Column(
             children: [
-              SizedBox(
-                height: 30,
-              ),
+              buildBackBtn(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,

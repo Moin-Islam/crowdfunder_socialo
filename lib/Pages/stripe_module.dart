@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_demo/Pages/account_setting.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StripeModuleX extends StatefulWidget {
@@ -52,7 +56,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
         children: [
           RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 50),
-              onPressed: () => "",
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  CupertinoPageRoute(builder: (context) => StripeAccount()),
+                  (_) => false,
+                );
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               color: Color(0xff800080),
@@ -74,7 +83,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
               )),
           RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 50),
-              onPressed: () => "",
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  CupertinoPageRoute(builder: (context) => AccountSetting()),
+                  (_) => false,
+                );
+              },
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               color: Color(0xff800080),
@@ -205,6 +219,26 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
+  Widget buildLogOutBtn() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => SignIn()),
+              (_) => false,
+            );
+          },
+          padding: EdgeInsets.all(15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Icon(
+            Icons.logout,
+            color: Color(0xff800080),
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,6 +250,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              buildLogOutBtn(),
               SizedBox(
                 height: 30,
               ),
