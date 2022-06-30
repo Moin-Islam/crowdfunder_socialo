@@ -5,6 +5,8 @@ import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:flutter_demo/utils/Member.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'dart:convert';
@@ -120,11 +122,6 @@ class _SignInState extends State<SignIn> {
                       value: isRememberMe,
                       checkColor: Colors.white,
                       activeColor: Color(0xff800080),
-                      onChanged: (value) {
-                        setState(() {
-                          isRememberMe = value;
-                        });
-                      },
                     )),
                 Text(
                   'Remember me',
@@ -159,14 +156,23 @@ class _SignInState extends State<SignIn> {
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: RaisedButton(
         elevation: 5,
-        onPressed: emailController.text == "" || passwordController.text == ""
-            ? null
-            : () {
-                setState(() {
-                  _isLoading = true;
-                });
-                signIn(emailController.text, passwordController.text);
-              },
+        onPressed: () {
+          // setState(() {
+          //   _isLoading = true;
+          // });
+          signIn(emailController.text, passwordController.text).then((res) {
+            if (res["status"] == 0) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(res["message"]),
+                duration: Duration(milliseconds: 3000),
+              ));
+            }
+
+            // if (res.status == 0) {
+            //
+            // }
+          });
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Color(0xff800080),
@@ -220,15 +226,15 @@ class _SignInState extends State<SignIn> {
 
   signIn(String email, pass) async {
     Map data = {'email': email, 'password': pass};
+    print("NAX");
     var jsonResponse = null;
     var response = await http.post(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess"),
         body: data);
+    jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-
       if (jsonResponse != null) {
         setState(() {
           _isLoading = false;
@@ -239,18 +245,57 @@ class _SignInState extends State<SignIn> {
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString("token");
 
+        print("NAX");
         print(token);
 
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => AccountSetting()),
-            (Route<dynamic> route) => false);
+        final user_response = await http.get(
+          Uri.parse(
+              'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          headers: {
+            'Authorization': '$token',
+          },
+        );
+
+        if (user_response.statusCode == 200) {
+          Map<String, dynamic> data = jsonDecode(user_response.body);
+          TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+          TokenPreference.saveAddress("id", data["USER_DATA"][0]["id"]);
+          TokenPreference.saveAddress("status", data["USER_DATA"][0]["status"]);
+          if (data["USER_DATA"][0]["status"] == "0") {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MemberList()),
+                (Route<dynamic> route) => false);
+          } else {
+            final stripe_response = await http.get(
+              Uri.parse(
+                  'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
+              headers: {
+                'Authorization': '$token',
+              },
+            );
+
+            Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
+
+            if (stripe_data["status"] == "1") {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => StripeAccount()),
+                  (Route<dynamic> route) => false);
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+                  (Route<dynamic> route) => false);
+            }
+          }
+        }
+
+        return {'status': 200};
       }
     } else {
-      setState(() {
-        _isLoading = false;
-      });
       print(response.body);
+
+      return jsonResponse;
     }
   }
 

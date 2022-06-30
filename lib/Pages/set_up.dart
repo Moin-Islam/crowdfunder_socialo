@@ -173,25 +173,19 @@ class _SetUpState extends State<SetUp> {
   }
 
   Widget buildLogOutbtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      child: RaisedButton(
-          onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(builder: (context) => SignIn()),
-              (_) => false,
-            );
-          },
-          padding: EdgeInsets.all(15),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return FlatButton(
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+            CupertinoPageRoute(builder: (context) => SignIn()),
+            (_) => false,
+          );
+        },
+        padding: EdgeInsets.all(15),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Icon(
+          Icons.logout,
           color: Color(0xff800080),
-          child: Icon(
-            Icons.logout,
-            color: Color(0xff800080),
-          )),
-    );
+        ));
   }
 
   Widget buildSetUpAccountbtn() {
@@ -242,6 +236,7 @@ class _SetUpState extends State<SetUp> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    buildLogOutbtn(),
                     Text(
                       'Set Up Your Account',
                       style: TextStyle(

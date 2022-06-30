@@ -128,7 +128,7 @@ class _UploadImageState extends State<UploadImage> {
     );
   }
 
-  singUp() async {
+  Future singUp() async {
     if (convertedImage != null) {
       widget.data["profile_image"] = convertedImage;
     }
@@ -140,12 +140,13 @@ class _UploadImageState extends State<UploadImage> {
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
         body: widget.data);
 
-    print(response);
+    jsonResponse = json.decode(response.body);
+
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
-
-      print(jsonResponse);
     }
+
+    return jsonResponse;
   }
 
   Widget buildBottomButtons() {
@@ -177,7 +178,27 @@ class _UploadImageState extends State<UploadImage> {
                 ),
                 RaisedButton(
                   onPressed: () {
-                    singUp();
+                    print("BUTTON");
+
+                    singUp().then((res) {
+                      if (res["status"] == 0) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(res["message"]),
+                          duration: Duration(milliseconds: 3000),
+                        ));
+                      }
+
+                      // if (res.status == 0) {
+                      //
+                      // }
+                    });
+                    // print(response.statusCode);
+                    // if (response.statusCode != 200) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //     content: Text("Your Text"),
+                    //     duration: Duration(milliseconds: 300),
+                    //   ));
+                    // }
                   },
                   padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(

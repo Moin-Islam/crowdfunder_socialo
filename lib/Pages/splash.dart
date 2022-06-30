@@ -44,19 +44,19 @@ class PaymentService {
             merchantCountryCode: 'US',
             merchantDisplayName: 'Dede'));
 
-        displayPlaymentSheet();
+    // displayPlaymentSheet();
   }
 
-  Future<void> displayPlaymentSheet() async {
-    try {
-      await Stripe.instance.presentPaymentSheet(
-        parameters: PresentPaymentSheetParameters(clientSecret: PaymentIntent!['paymentIntent'],
-        confirmPayment: true)
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> displayPlaymentSheet() async {
+  //   try {
+  //     await Stripe.instance.presentPaymentSheet(
+  //       parameters: PresentPaymentSheetParameters(clientSecret: PaymentIntent!['paymentIntent'],
+  //       confirmPayment: true)
+  //     );
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<void> processPayment(PaymentMethod paymentMethod) async {
     final http.Response response = await http.post(
