@@ -25,6 +25,12 @@ class _AccountSettingtate extends State<AccountSetting> {
   File image;
   bool _isLoading = false;
   String name;
+  String _email;
+  var _image;
+  String _purpose;
+  String _public_key;
+  String _private_key;
+  String _id;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -72,23 +78,14 @@ class _AccountSettingtate extends State<AccountSetting> {
           'Authorization': token,
         },
         body: jsonEncode(data));
+    jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
-      print(response.body);
 
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-        //     (Route<dynamic> route) => false);
-      }
+      return jsonResponse;
     } else {
-      setState(() {
-        _isLoading = false;
-      });
+      return jsonResponse;
     }
   }
 
@@ -96,7 +93,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
       },
@@ -104,12 +101,34 @@ class _AccountSettingtate extends State<AccountSetting> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
-      TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+
+      print("NAX");
+      print(data);
+      setState(() {
+        _email = data["USER_DATA"][0]["email_address"];
+      });
+      setState(() {
+        name = data["USER_DATA"][0]["name"];
+      });
+
+      var image1 = data["USER_DATA"][0]["profile_image"];
+      setState(() {
+        _image = base64Decode(image1);
+      });
+
+      setState(() {
+        // _purpose = data["USER_DATA"][0]["purpose"];
+        _purpose = "Purpose";
+      });
+
+      setState(() {
+        _id = data["USER_DATA"][0]["id"];
+      });
 
       nameController.text = data["USER_DATA"][0]["name"];
-      name = data["USER_DATA"][0]["name"];
-      emailController.text = data["USER_DATA"][0]["email_address"];
-      purposeController.text = data["USER_DATA"][0]["purpose"];
+
+      emailController.text = (_email == "") ? "Email Address" : '$_email';
+      purposeController.text = (_purpose == "") ? "Purpose" : '$_purpose';
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(response.body);
@@ -136,8 +155,17 @@ class _AccountSettingtate extends State<AccountSetting> {
       jsonResponse = json.decode(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
 
-      publickeyController.text = data["STRIPE_DATA"][0]["public_key"];
-      privatekeyController.text = data["STRIPE_DATA"][0]["secret_key"];
+      setState(() {
+        _public_key = data["STRIPE_DATA"][0]["public_key"];
+      });
+
+      setState(() {
+        _private_key = data["STRIPE_DATA"][0]["secret_key"];
+      });
+      publickeyController.text =
+          (_public_key == "") ? "Public Key" : '$_public_key';
+      privatekeyController.text =
+          (_private_key == "") ? "Private Key" : '$_private_key';
 
       print(response.body);
 
@@ -166,23 +194,13 @@ class _AccountSettingtate extends State<AccountSetting> {
           'Authorization': token,
         },
         body: jsonEncode(data));
+    jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
-      print(response.body);
-
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-            (Route<dynamic> route) => false);
-      }
+      return jsonResponse;
     } else {
-      setState(() {
-        _isLoading = false;
-      });
+      return jsonResponse;
     }
   }
 
@@ -410,15 +428,6 @@ class _AccountSettingtate extends State<AccountSetting> {
         children: [
           RaisedButton(
             onPressed: () {
-              setState(() {
-                _isLoading = true;
-              });
-              print(nameController.text);
-              print(emailController.text);
-              print(purposeController.text);
-              print(currentpasswordController.text);
-              print(newpasswordController.text);
-              print(confirmpasswordController.text);
               accountSetting(
                 nameController.text,
                 emailController.text,
@@ -426,7 +435,12 @@ class _AccountSettingtate extends State<AccountSetting> {
                 currentpasswordController.text,
                 newpasswordController.text,
                 confirmpasswordController.text,
-              );
+              ).then((res) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(res["message"]),
+                  duration: Duration(milliseconds: 3000),
+                ));
+              });
             },
             padding: EdgeInsets.all(15),
             shape:
@@ -509,7 +523,13 @@ class _AccountSettingtate extends State<AccountSetting> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-          saveStripe(publickeyController.text, privatekeyController.text);
+          saveStripe(publickeyController.text, privatekeyController.text)
+              .then((res) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(res["message"]),
+              duration: Duration(milliseconds: 3000),
+            ));
+          });
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -532,28 +552,25 @@ class _AccountSettingtate extends State<AccountSetting> {
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(20),
-            child: new Image.asset(
-              'img/person.png',
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-          ),
+              padding: EdgeInsets.all(20),
+              child: (_image == null || _image == '')
+                  ? CircularProgressIndicator()
+                  : new Image.memory(
+                      _image,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )),
           Column(
             children: [
-              FutureBuilder<User>(
-                  future: futureUser,
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data.name,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal),
-                    );
-                  }),
               Text(
-                'User ID : 12314',
+                (name == null) ? "Fetching value..." : '$name',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+              Text(
+                (_id == null) ? "Fetching value..." : 'User ID : $_id',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,

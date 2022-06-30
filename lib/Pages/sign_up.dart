@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/upload_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -201,7 +202,9 @@ class _SignUpState extends State<SignUp> {
 
   Widget buildLoginBtn() {
     return GestureDetector(
-      onTap: () => print("Login Pressed"),
+      onTap: () => Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => SignIn()),
+          (Route<dynamic> route) => false),
       child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(children: [
