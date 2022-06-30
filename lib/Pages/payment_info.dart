@@ -6,6 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import "./member_list.dart";
 import 'package:flutter_demo/Pages/splash.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'package:flutter_demo/Pages/sign_in.dart';
 
 class PaymentInfo extends StatefulWidget {
   const PaymentInfo({Key key}) : super(key: key);
@@ -15,6 +18,11 @@ class PaymentInfo extends StatefulWidget {
 }
 
 class _PaymentInfoState extends State<PaymentInfo> {
+  TextEditingController cardnumberController = TextEditingController();
+  TextEditingController cardholdernameController = TextEditingController();
+  TextEditingController expirydateController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +40,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
               borderRadius: BorderRadius.circular(10),
             ),
             height: 48,
-            child: TextField(
+            child: TextFormField(
+              controller: cardnumberController,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -59,7 +68,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
               borderRadius: BorderRadius.circular(10),
             ),
             height: 48,
-            child: TextField(
+            child: TextFormField(
+              controller: cardholdernameController,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -86,7 +96,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
               borderRadius: BorderRadius.circular(10),
             ),
             height: 48,
-            child: TextField(
+            child: TextFormField(
+              controller: expirydateController,
               keyboardType: TextInputType.datetime,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -113,7 +124,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
               borderRadius: BorderRadius.circular(10),
             ),
             height: 48,
-            child: TextField(
+            child: TextFormField(
+              controller: cvvController,
               keyboardType: TextInputType.number,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -150,6 +162,26 @@ class _PaymentInfoState extends State<PaymentInfo> {
     );
   }
 
+  Widget buildLogOutBtn() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => SignIn()),
+              (_) => false,
+            );
+          },
+          padding: EdgeInsets.all(15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Icon(
+            Icons.logout,
+            color: Color(0xff800080),
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +199,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    buildLogOutBtn(),
                     Text(
                       'Payment Info',
                       style: GoogleFonts.rubik(
