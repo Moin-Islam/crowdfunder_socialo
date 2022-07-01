@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
+import 'package:flutter_demo/Pages/forget_password.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
@@ -26,6 +27,27 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool isRememberMe = false;
   bool _isLoading = false;
+
+  fetchUserLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    if (token != null) {
+      final response = await http.get(
+        Uri.parse(
+            'https://demo.socialo.agency/crowdfunder-api-application/authentication/auth'),
+        headers: {
+          'Authorization': '$token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AccountSetting()));
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -119,6 +141,11 @@ class _SignInState extends State<SignIn> {
                 Theme(
                     data: ThemeData(unselectedWidgetColor: Colors.black38),
                     child: Checkbox(
+                      onChanged: (bool value) {
+                        setState(() {
+                          isRememberMe = value;
+                        });
+                      },
                       value: isRememberMe,
                       checkColor: Colors.white,
                       activeColor: Color(0xff800080),
@@ -135,7 +162,12 @@ class _SignInState extends State<SignIn> {
           ),
           Container(
             child: FlatButton(
-              onPressed: () => print("Forgot Password pressed"),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ForgetPassword()),
+                    (Route<dynamic> route) => false);
+              },
               padding: EdgeInsets.only(right: 0),
               child: Text(
                 'Forgot your Password?',
