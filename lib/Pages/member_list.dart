@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -181,23 +183,38 @@ class _MemberListState extends State<MemberList> {
               )
             ],
           ),
+          SizedBox(
+            height: 15,
+          ),
           Row(
             children: [
               SizedBox(
-                height: 34,
-                width: 130,
                 child: ElevatedButton(
                   onPressed: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PaymentInfo())),
-                  child: Text(
-                    "Product Link",
-                    style: GoogleFonts.rubik(color: Colors.white),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Product links",
+                        style: GoogleFonts.rubik(color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_right_rounded,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Color(0xff800080)),
                   ),
                 ),
+              ),
+              SizedBox(
+                width: 10,
               ),
               SizedBox(
                   height: 34,
@@ -209,9 +226,25 @@ class _MemberListState extends State<MemberList> {
         ]));
   }
 
-  // Widget singleUserList(String name, String id) {
-  //   return
-  // }
+  Widget buildLogOutbtn() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => SignIn()),
+              (_) => false,
+            );
+          },
+          padding: EdgeInsets.all(15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Icon(
+            Icons.logout,
+            color: Color(0xff800080),
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -219,16 +252,20 @@ class _MemberListState extends State<MemberList> {
         body: Column(children: [
       Container(
           width: double.infinity,
-          padding: EdgeInsets.only(top: 60, left: 20),
+          padding: EdgeInsets.only(top: 30, left: 20),
           child: new SingleChildScrollView(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              buildLogOutbtn(),
               Image.asset(
                 'img/person.png',
                 height: 73,
                 width: 74,
+              ),
+              SizedBox(
+                height: 15,
               ),
               // ignore: prefer_const_constructors
               Text(
@@ -240,7 +277,7 @@ class _MemberListState extends State<MemberList> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
               Text(
                 (_username == "") ? "Fetching value..." : '$_username',
@@ -273,6 +310,9 @@ class _MemberListState extends State<MemberList> {
                   color: Colors.black,
                 ),
               ),
+              SizedBox(
+                height: 15,
+              ),
               Text(
                 'Member List and Products',
                 style: GoogleFonts.rubik(
@@ -284,126 +324,160 @@ class _MemberListState extends State<MemberList> {
               SizedBox(
                 height: 15,
               ),
-
-              FutureBuilder<List<Member>>(
-                  future: fetchTeamList(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final members = snapshot.data;
-                      // for (var i = 0; i < members.length; i++) {
-                      //   // TO DO
-                      //   var currentElement = li[i];
-                      // }
-
-                      return ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: members.length,
-                        itemBuilder: (context, index) {
-                          Member member = members[index];
-
-                          print("NEXT");
-                          print(member.name);
-                          print(member.name);
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              // Widget to display the list of project
-                              singleUserList(
-                                  member.id,
-                                  member.name,
-                                  member.saleId,
-                                  member.publishableKey,
-                                  member.productPrice,
-                                  index),
-                              SizedBox(
-                                height: 15,
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-
-                    // By default, show a loading spinner.
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ],
-          ))),
-      Expanded(
-          child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            Card(
-              color: Color(0xffFFF6FF),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.white70, width: 1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("Total: \$$totalPrice"),
-                      Text("Selected: $totalProduct\\10"),
-                      Text("Select at least 10 products")
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () async {
-                            print("BUY NOW CLICKED");
+                  FutureBuilder<List<Member>>(
+                      future: fetchTeamList(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final members = snapshot.data;
+                          // for (var i = 0; i < members.length; i++) {
+                          //   // TO DO
+                          //   var currentElement = li[i];
+                          // }
 
-                            Stripe.publishableKey =
-                                "pk_test_51LGRPpDFaRhQ7wqHWzL4PjnEEqE02FvQAt6FIDfdytcvNtpIX400PMpbPVFGMYOpaM8m66j22yXIfI3Cnua3BceZ00zIZf6aTB";
-                            Stripe.merchantIdentifier = "test";
-                            final billingDetails = BillingDetails(
-                              email: 'email@stripe.com',
-                              phone: '+48888000888',
-                              address: Address(
-                                city: 'Houston',
-                                country: 'US',
-                                line1: '1459  Circle Drive',
-                                line2: '',
-                                state: 'Texas',
-                                postalCode: '77063',
-                              ),
-                            );
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: members.length,
+                            itemBuilder: (context, index) {
+                              Member member = members[index];
 
-                            Stripe.instance
-                                .dangerouslyUpdateCardDetails(CardDetails(
-                              number: "4242424242424242",
-                              expirationMonth: 6,
-                              expirationYear: 2023,
-                              cvc: "314",
-                            ));
+                              print("NEXT");
+                              print(member.name);
+                              print(member.name);
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  // Widget to display the list of project
+                                  singleUserList(
+                                      member.id,
+                                      member.name,
+                                      member.saleId,
+                                      member.publishableKey,
+                                      member.productPrice,
+                                      index),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
 
-                            final paymentMethod = await Stripe.instance
-                                .createToken(
-                                    CreateTokenParams(type: TokenType.Card));
-
-                            print(paymentMethod);
-                          },
-                          child: Text("Buy Now"))
-                    ],
-                  )
+                        // By default, show a loading spinner.
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      })
                 ],
               ),
-            ),
-          ],
-        ), // << Put your content here
-      )),
+            ],
+          ))),
+      Spacer(),
+      Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: [
+              Card(
+                color: Color(0xffFFF6FF),
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.white70, width: 1),
+                    borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(20.0),
+                      topRight: const Radius.circular(20.0),
+                    )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Total: \$$totalPrice",
+                            style: GoogleFonts.rubik(
+                                color: Color(0xff800080), fontSize: 9),
+                          ),
+                          Text(
+                            "Selected: $totalProduct\\10",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xff800080),
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            "Select at least 10 products",
+                            style: GoogleFonts.roboto(
+                                color: Color(0xff800080), fontSize: 11),
+                          )
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () async {
+                              print("BUY NOW CLICKED");
+
+                              Stripe.publishableKey =
+                                  "pk_test_51LGRPpDFaRhQ7wqHWzL4PjnEEqE02FvQAt6FIDfdytcvNtpIX400PMpbPVFGMYOpaM8m66j22yXIfI3Cnua3BceZ00zIZf6aTB";
+                              Stripe.merchantIdentifier = "test";
+                              final billingDetails = BillingDetails(
+                                email: 'email@stripe.com',
+                                phone: '+48888000888',
+                                address: Address(
+                                  city: 'Houston',
+                                  country: 'US',
+                                  line1: '1459  Circle Drive',
+                                  line2: '',
+                                  state: 'Texas',
+                                  postalCode: '77063',
+                                ),
+                              );
+
+                              Stripe.instance
+                                  .dangerouslyUpdateCardDetails(CardDetails(
+                                number: "4242424242424242",
+                                expirationMonth: 6,
+                                expirationYear: 2023,
+                                cvc: "314",
+                              ));
+
+                              final paymentMethod = await Stripe.instance
+                                  .createToken(
+                                      CreateTokenParams(type: TokenType.Card));
+
+                              print(paymentMethod);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff800080),
+                            ),
+                            child: Text(
+                              "Buy Now",
+                              style: GoogleFonts.rubik(
+                                  color: Colors.white, fontSize: 15),
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ), // << Put your content here
+        ),
+      )
     ]));
   }
 }

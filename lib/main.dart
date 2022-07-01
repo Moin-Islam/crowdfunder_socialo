@@ -9,6 +9,7 @@ import 'package:flutter_demo/Pages/stripe_module.dart';
 import './Pages/custom_intro.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
+import 'package:flutter_demo/Pages/forget_password.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.amber,
         ),
-        home: AccountSetting());
+        home: SignIn());
   }
 }
 
