@@ -188,7 +188,7 @@ class _StripeAccountState extends State<StripeAccount> {
         width: double.infinity,
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 80),
+          padding: EdgeInsets.symmetric(vertical: 20),
           child: Column(
             children: [
               buildBackBtn(),

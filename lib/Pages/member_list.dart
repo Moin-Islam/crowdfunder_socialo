@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -262,11 +264,21 @@ class _MemberListState extends State<MemberList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildLogOutbtn(),
-              Image.asset(
-                'img/person.png',
-                height: 73,
-                width: 74,
+
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    CupertinoPageRoute(builder: (context) => StripeModuleX()),
+                    (_) => false,
+                  );
+                }, // Image tapped
+                child: Image.asset(
+                  'img/person.png',
+                  height: 73,
+                  width: 74,
+                ),
               ),
+
               SizedBox(
                 height: 15,
               ),
