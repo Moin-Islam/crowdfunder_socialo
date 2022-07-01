@@ -109,77 +109,94 @@ class _StripeModuleXState extends State<StripeModuleX> {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 50),
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  CupertinoPageRoute(builder: (context) => StripeAccount()),
-                  (_) => false,
-                );
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+          GestureDetector(
+            onTap: () {
+              print("CLICKED");
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => StripeAccount()),
+                  (Route<dynamic> route) => false);
+            },
+            child: Card(
               color: Color(0xff800080),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white70, width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Product List and Sales',
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 60.0, left: 10, right: 10, bottom: 10),
+                    child: SizedBox(
+                      width: 90,
+                      child: Text(
+                        'Product List and Sale',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
                             fontWeight: FontWeight.normal),
                       ),
-                    ],
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.add_chart,
-                        color: Colors.white,
-                      )
-                    ],
-                  )
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.add_chart,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
-              )),
+              ),
+            ),
+          ),
           SizedBox(
             width: 15,
           ),
-          RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 50),
-              onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  CupertinoPageRoute(builder: (context) => AccountSetting()),
-                  (_) => false,
-                );
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+          GestureDetector(
+            onTap: () {
+              print("CLICKED");
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AccountSetting()),
+                  (Route<dynamic> route) => false);
+            },
+            child: Card(
               color: Color(0xff800080),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white70, width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'My Account Settings',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 60.0, left: 10, right: 10, bottom: 10),
+                    child: SizedBox(
+                      width: 90,
+                      child: Text(
+                        'My Account Settings',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ),
                   ),
-                  Icon(
-                    Icons.settings,
-                    color: Colors.white,
-                  )
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
-              ))
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -241,37 +258,31 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
   Widget BuildSelectFromPhoneBookBtn() {
     return Container(
-      height: 97,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RaisedButton(
-              onPressed: () {
-                pickContact();
-              },
-              padding: EdgeInsets.all(20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              color: Color(0xff800080),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Select from phone book',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  Icon(
-                    Icons.contact_page_sharp,
+      width: double.infinity,
+      height: 48,
+      child: RaisedButton(
+          onPressed: () {
+            pickContact();
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: Color(0xff800080),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                'Select from phone book',
+                style: TextStyle(
                     color: Colors.white,
-                  )
-                ],
-              )),
-        ],
-      ),
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+              Icon(
+                Icons.contact_page_sharp,
+                color: Colors.white,
+              )
+            ],
+          )),
     );
   }
 
@@ -453,6 +464,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 ],
               ),
               BuildSelectFromPhoneBookBtn(),
+              SizedBox(
+                height: 20,
+              ),
               BuildInviteNowBtn(),
             ]),
       ),

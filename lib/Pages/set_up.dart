@@ -5,6 +5,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -106,7 +107,8 @@ class _SetUpState extends State<SetUp> {
         });
 
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => StripeAccount()),
             (Route<dynamic> route) => false);
       }
     } else {

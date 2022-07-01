@@ -4,6 +4,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/utils/Member.dart';
@@ -83,10 +84,16 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           // setState(() {
           //   _isLoading = true;
           // });
-          signIn(emailController.text, passwordController.text).then((res) {
+          signIn(emailController.text).then((res) {
+            print(res);
             if (res["status"] == 0) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(res["message"]),
+                content: Text("Invalid Email"),
+                duration: Duration(milliseconds: 3000),
+              ));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Check Email"),
                 duration: Duration(milliseconds: 3000),
               ));
             }
@@ -120,78 +127,25 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     }*/
   }
 
-  signIn(String email, pass) async {
-    Map data = {'email': email, 'password': pass};
+  signIn(
+    String email,
+  ) async {
+    Map data = {'email': email};
     print("NAX");
     var jsonResponse = null;
     var response = await http.post(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess"),
+            "https://demo.socialo.agency/crowdfunder-api-application/authentication/requestResetPassword"),
         body: data);
     jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-
-        TokenPreference.saveAddress("token", jsonResponse['token']);
-
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString("token");
-
-        print("NAX");
-        print(token);
-
-        final user_response = await http.get(
-          Uri.parse(
-              'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
-          headers: {
-            'Authorization': '$token',
-          },
-        );
-
-        if (user_response.statusCode == 200) {
-          Map<String, dynamic> data = jsonDecode(user_response.body);
-          TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
-          TokenPreference.saveAddress("id", data["USER_DATA"][0]["id"]);
-          TokenPreference.saveAddress("status", data["USER_DATA"][0]["status"]);
-          if (data["USER_DATA"][0]["status"] == "0") {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MemberList()),
-                (Route<dynamic> route) => false);
-          } else {
-            final stripe_response = await http.get(
-              Uri.parse(
-                  'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
-              headers: {
-                'Authorization': '$token',
-              },
-            );
-
-            Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
-
-            if (stripe_data["status"] == "1") {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => StripeAccount()),
-                  (Route<dynamic> route) => false);
-            } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-                  (Route<dynamic> route) => false);
-            }
-          }
-        }
-
-        return {'status': 200};
-      }
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => SignIn()),
+          (Route<dynamic> route) => false);
+      return {"status": 1};
     } else {
-      print(response.body);
-
-      return jsonResponse;
+      return {"status": 0};
     }
   }
 
