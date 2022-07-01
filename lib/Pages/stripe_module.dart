@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class StripeModuleX extends StatefulWidget {
   const StripeModuleX({Key key}) : super(key: key);
@@ -17,7 +21,21 @@ class StripeModuleX extends StatefulWidget {
 }
 
 class _StripeModuleXState extends State<StripeModuleX> {
+  var _image;
+  String _id;
+  String name;
   var phonenumber;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
   /*Widget BuildProfileIDSection() {
     return Container(
       height: 97,
@@ -51,6 +69,42 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }*/
 
+  Future fetchUser() async {
+    String token = await getToken();
+    final response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      setState(() {
+        name = data["USER_DATA"][0]["name"];
+      });
+
+      var image1 = data["USER_DATA"][0]["profile_image"];
+      setState(() {
+        _image = base64Decode(image1);
+      });
+
+      setState(() {
+        _id = data["USER_DATA"][0]["id"];
+      });
+
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
+
   Widget BuildMiddleBtn() {
     return Container(
       child: Row(
@@ -71,19 +125,34 @@ class _StripeModuleXState extends State<StripeModuleX> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Product List and Sales',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Product List and Sales',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
                   ),
-                  Icon(
-                    Icons.add_chart,
-                    color: Colors.white,
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.add_chart,
+                        color: Colors.white,
+                      )
+                    ],
                   )
                 ],
               )),
+          SizedBox(
+            width: 15,
+          ),
           RaisedButton(
               padding: EdgeInsets.symmetric(vertical: 50),
               onPressed: () {
@@ -249,6 +318,46 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
+  Widget BuildProfileIDSection() {
+    return Container(
+        child: Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: new BorderSide(color: Color(0xff800080), width: 1.0)),
+      child: Row(
+        children: [
+          Container(
+              padding: EdgeInsets.all(20),
+              child: (_image == null || _image == '')
+                  ? CircularProgressIndicator()
+                  : new Image.memory(
+                      _image,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )),
+          Column(
+            children: [
+              Text(
+                (name == null) ? "Fetching value..." : '$name',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+              Text(
+                (_id == null) ? "Fetching value..." : 'User ID : $_id',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+            ],
+          )
+        ],
+      ),
+    ));
+  }
+
   Widget buildLogOutBtn() {
     return Align(
       alignment: Alignment.topRight,
@@ -259,7 +368,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.only(top: 55),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Icon(
@@ -298,7 +407,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 ],
               ),
               SizedBox(height: 15),
-              /*BuildProfileIDSection(),*/
+              BuildProfileIDSection(),
               SizedBox(
                 height: 20,
               ),

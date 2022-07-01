@@ -1,17 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:http/http.dart' as http;
 import "./member_list.dart";
 import 'package:flutter_demo/Pages/splash.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
 import 'package:flutter_demo/Pages/sign_in.dart';
 
 class PaymentInfo extends StatefulWidget {
-  const PaymentInfo({Key key}) : super(key: key);
+  final Map data;
+  final String price;
+
+  PaymentInfo({Key key, @required this.data, @required this.price})
+      : super(key: key);
 
   @override
   State<PaymentInfo> createState() => _PaymentInfoState();
@@ -22,7 +28,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
   TextEditingController cardholdernameController = TextEditingController();
   TextEditingController expirydateController = TextEditingController();
   TextEditingController cvvController = TextEditingController();
-
+  Map receiveData = {'team_data': []};
+  var temp = [];
   @override
   void initState() {
     super.initState();
@@ -141,20 +148,55 @@ class _PaymentInfoState extends State<PaymentInfo> {
     );
   }
 
+  StripePayment() async {
+    var a = await Stripe.instance
+        .createToken(CreateTokenParams(type: TokenType.Card));
+    return a;
+  }
+
   Widget buildSetUpAccountbtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
         onPressed: () async {
-          /*paymentMethod = await PaymentService().createPaymentMethod();
-          print(paymentMethod.id);*/
+          widget.data.keys.forEach((k) {
+            Stripe.publishableKey = widget.data[k]['publishableKey'];
+            print(widget.data[k]['publishableKey']);
+            Stripe.merchantIdentifier = "test";
+
+            Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
+              number: cardnumberController.text,
+              expirationMonth:
+                  int.parse(expirydateController.text.split('/')[0]),
+              expirationYear:
+                  int.parse(expirydateController.text.split('/')[1]),
+              cvc: cvvController.text,
+            ));
+
+            StripePayment().then((res) {
+              TokenData tokenData = res;
+
+              if (widget.data[k] != null || widget.data[k] != {}) {
+                /*receiveData['team_data'][k]
+                    .add();*/
+                temp.add({'saleId': k, 'stripeToken': tokenData.id});
+              }
+            });
+          });
+
+          receiveData['team_data'] = temp;
+          print(receiveData);
+          var response = await http.post(
+              Uri.parse(
+                  "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
+              body: receiveData);
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
         child: Text(
-          'Set Up Account',
+          'Pay Now     \$' + widget.price,
           style: TextStyle(
               color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
         ),

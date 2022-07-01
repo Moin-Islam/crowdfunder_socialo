@@ -156,74 +156,77 @@ class _MemberListState extends State<MemberList> {
         height: 133,
         width: 334,
         color: Color(0xffF4F6F8),
-        child: Column(children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  Image.asset('img/person.png', height: 46, width: 45),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        name,
-                        style: GoogleFonts.roboto(
-                            fontSize: 13, color: Colors.black),
-                      ),
-                      Text(
-                        "User ID: " + id,
-                        style: GoogleFonts.roboto(
-                            fontSize: 12, color: Color(0xff707070)),
-                      ),
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                child: ElevatedButton(
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PaymentInfo())),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Product links",
-                        style: GoogleFonts.rubik(color: Colors.white),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right_rounded,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xff800080)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18.0, top: 17),
+          child: Column(children: [
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset('img/person.png', height: 46, width: 45),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          name,
+                          style: GoogleFonts.roboto(
+                              fontSize: 13, color: Colors.black),
+                        ),
+                        Text(
+                          "User ID: " + id,
+                          style: GoogleFonts.roboto(
+                              fontSize: 12, color: Color(0xff707070)),
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PaymentInfo())),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Product links",
+                          style: GoogleFonts.rubik(color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right_rounded,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xff800080)),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              SizedBox(
-                  height: 34,
-                  width: 130,
-                  child: selectButton(
-                      index, saleId, productPrice, publishableKey)),
-            ],
-          )
-        ]));
+                SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                    height: 34,
+                    width: 130,
+                    child: selectButton(
+                        index, saleId, productPrice, publishableKey)),
+              ],
+            )
+          ]),
+        ));
   }
 
   Widget buildLogOutbtn() {
@@ -303,11 +306,11 @@ class _MemberListState extends State<MemberList> {
                 height: 15,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.only(left: 0.0, right: 40),
                 child: Container(
                   height: 1.0,
                   width: double.infinity,
-                  color: Colors.black,
+                  color: Color(0xffDCDCDC),
                 ),
               ),
               SizedBox(
@@ -404,7 +407,6 @@ class _MemberListState extends State<MemberList> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-<<<<<<< HEAD
                           Text(
                             "Total: \$$totalPrice",
                             style: GoogleFonts.rubik(
@@ -422,11 +424,6 @@ class _MemberListState extends State<MemberList> {
                             style: GoogleFonts.roboto(
                                 color: Color(0xff800080), fontSize: 11),
                           )
-=======
-                          Text("Total: \$$totalPrice"),
-                          Text("Selected: $totalProduct\\10"),
-                          Text("Select at least 10 products")
->>>>>>> origin/dev
                         ],
                       ),
                     ),
@@ -437,37 +434,17 @@ class _MemberListState extends State<MemberList> {
                             onPressed: () async {
                               print("BUY NOW CLICKED");
 
-                              Stripe.publishableKey =
-                                  "pk_test_51LGRPpDFaRhQ7wqHWzL4PjnEEqE02FvQAt6FIDfdytcvNtpIX400PMpbPVFGMYOpaM8m66j22yXIfI3Cnua3BceZ00zIZf6aTB";
-                              Stripe.merchantIdentifier = "test";
-                              final billingDetails = BillingDetails(
-                                email: 'email@stripe.com',
-                                phone: '+48888000888',
-                                address: Address(
-                                  city: 'Houston',
-                                  country: 'US',
-                                  line1: '1459  Circle Drive',
-                                  line2: '',
-                                  state: 'Texas',
-                                  postalCode: '77063',
-                                ),
-                              );
-
-                              Stripe.instance
-                                  .dangerouslyUpdateCardDetails(CardDetails(
-                                number: "4242424242424242",
-                                expirationMonth: 6,
-                                expirationYear: 2023,
-                                cvc: "314",
-                              ));
-
-                              final paymentMethod = await Stripe.instance
-                                  .createToken(
-                                      CreateTokenParams(type: TokenType.Card));
-
-                              print(paymentMethod);
+                              if (totalProduct != 0) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            PaymentInfo(
+                                              data: productSelect,
+                                              price: totalPrice.toString(),
+                                            )),
+                                    (Route<dynamic> route) => false);
+                              }
                             },
-<<<<<<< HEAD
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xff800080),
                             ),
@@ -476,9 +453,6 @@ class _MemberListState extends State<MemberList> {
                               style: GoogleFonts.rubik(
                                   color: Colors.white, fontSize: 15),
                             ))
-=======
-                            child: Text("Buy Now"))
->>>>>>> origin/dev
                       ],
                     )
                   ],
