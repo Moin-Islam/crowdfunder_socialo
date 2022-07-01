@@ -404,6 +404,7 @@ class _MemberListState extends State<MemberList> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+<<<<<<< HEAD
                           Text(
                             "Total: \$$totalPrice",
                             style: GoogleFonts.rubik(
@@ -421,6 +422,11 @@ class _MemberListState extends State<MemberList> {
                             style: GoogleFonts.roboto(
                                 color: Color(0xff800080), fontSize: 11),
                           )
+=======
+                          Text("Total: \$$totalPrice"),
+                          Text("Selected: $totalProduct\\10"),
+                          Text("Select at least 10 products")
+>>>>>>> origin/dev
                         ],
                       ),
                     ),
@@ -461,6 +467,7 @@ class _MemberListState extends State<MemberList> {
 
                               print(paymentMethod);
                             },
+<<<<<<< HEAD
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xff800080),
                             ),
@@ -469,6 +476,9 @@ class _MemberListState extends State<MemberList> {
                               style: GoogleFonts.rubik(
                                   color: Colors.white, fontSize: 15),
                             ))
+=======
+                            child: Text("Buy Now"))
+>>>>>>> origin/dev
                       ],
                     )
                   ],

@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class StripeModuleX extends StatefulWidget {
   const StripeModuleX({Key key}) : super(key: key);
@@ -15,6 +17,7 @@ class StripeModuleX extends StatefulWidget {
 }
 
 class _StripeModuleXState extends State<StripeModuleX> {
+  var phonenumber;
   /*Widget BuildProfileIDSection() {
     return Container(
       height: 97,
@@ -153,6 +156,20 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
+  void _sendSMS(String message, List<String> recipents) async {
+    String _result = await sendSMS(message: message, recipients: recipents)
+        .catchError((onError) {
+      print(onError);
+    });
+    print(_result);
+  }
+
+  pickContact() async {
+    final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
+    phonenumber = contact.phoneNumber.number;
+    print(contact.phoneNumber.number);
+  }
+
   Widget BuildSelectFromPhoneBookBtn() {
     return Container(
       height: 97,
@@ -161,7 +178,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RaisedButton(
-              onPressed: () => "",
+              onPressed: () {
+                pickContact();
+              },
               padding: EdgeInsets.all(20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
@@ -191,7 +210,18 @@ class _StripeModuleXState extends State<StripeModuleX> {
     return Container(
       height: 48,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          String message = "This is a test message!";
+          List<String> recipents;
+          if (phonenumberController.text == null ||
+              phonenumberController.text == "") {
+            recipents = [phonenumber];
+          } else {
+            recipents = [phonenumberController.text];
+          }
+
+          _sendSMS(message, recipents);
+        },
         style: ButtonStyle(
           side: MaterialStateProperty.all(BorderSide(
               color: Color(0xff800080), width: 1.0, style: BorderStyle.solid)),

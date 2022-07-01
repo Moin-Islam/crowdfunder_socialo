@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -7,6 +8,7 @@ import 'package:intro_slider/slide_object.dart';
 import 'package:intro_slider/scrollbar_behavior_enum.dart';
 import 'package:modals/modals.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -17,10 +19,26 @@ class IntroScreen extends StatefulWidget {
 class IntroScreenState extends State<IntroScreen> {
   List<Slide> slides = [];
 
+  fetchSeenScreen() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("intro_screen");
+
+    if (token != null) {
+      if (token == "seen") {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SignIn()));
+      }
+    }
+    /*if (token != "") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AccountSetting()));
+    }*/
+  }
+
   @override
   void initState() {
+    fetchSeenScreen();
     super.initState();
-
     slides.add(new Slide(
       widgetDescription: Column(children: [
         Text("Welcome To The Team",
@@ -512,6 +530,9 @@ class IntroScreenState extends State<IntroScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => HomeScreen()),
     // );
+
+    TokenPreference.saveAddress("intro_screen", "seen");
+
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 
