@@ -31,6 +31,7 @@ class _MemberListState extends State<MemberList> {
   Map productSelect = {};
   int totalPrice = 0;
   int totalProduct = 0;
+  var _image;
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _MemberListState extends State<MemberList> {
         _username = res;
       });
     });
+
+    fetchUser();
+
     // userid = getUserId();
 
     fetchTeamList().then((res) {
@@ -65,6 +69,30 @@ class _MemberListState extends State<MemberList> {
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
+  }
+
+  fetchUser() async {
+    String token = await getToken();
+    final response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      print("NAXXXXXXXX");
+      print(data);
+
+      var image1 = data["USER_DATA"][0]["profile_image"];
+
+      setState(() {
+        _image = base64Decode(image1);
+      });
+    }
   }
 
   Future<List<Member>> fetchTeamList() async {
@@ -266,18 +294,19 @@ class _MemberListState extends State<MemberList> {
               buildLogOutbtn(),
 
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    CupertinoPageRoute(builder: (context) => StripeModuleX()),
-                    (_) => false,
-                  );
-                }, // Image tapped
-                child: Image.asset(
-                  'img/person.png',
-                  height: 73,
-                  width: 74,
-                ),
-              ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      CupertinoPageRoute(builder: (context) => StripeModuleX()),
+                      (_) => false,
+                    );
+                  }, // Image tapped
+                  child: (_image == null || _image == '')
+                      ? CircularProgressIndicator()
+                      : new Image.memory(
+                          _image,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )),
 
               SizedBox(
                 height: 15,

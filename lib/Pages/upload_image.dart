@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -128,7 +129,7 @@ class _UploadImageState extends State<UploadImage> {
     );
   }
 
-  Future singUp() async {
+  singUp() async {
     if (convertedImage != null) {
       widget.data["profile_image"] = convertedImage;
     }
@@ -181,11 +182,22 @@ class _UploadImageState extends State<UploadImage> {
                     print("BUTTON");
 
                     singUp().then((res) {
+                      print(res);
                       if (res["status"] == 0) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(res["message"]),
                           duration: Duration(milliseconds: 3000),
                         ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(res["message"]),
+                          duration: Duration(milliseconds: 3000),
+                        ));
+
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => SignIn()),
+                            (Route<dynamic> route) => false);
                       }
 
                       // if (res.status == 0) {

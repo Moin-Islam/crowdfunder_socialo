@@ -27,6 +27,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   bool isRememberMe = false;
   bool _isLoading = false;
+  var token = "";
 
   fetchUserLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
@@ -42,9 +43,7 @@ class _SignInState extends State<SignIn> {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AccountSetting()));
+        checkUserStatus(token);
       }
     }
   }
@@ -52,7 +51,7 @@ class _SignInState extends State<SignIn> {
   @override
   void initState() {
     super.initState();
-    fetchToken();
+    fetchUserLoggedIn();
   }
 
   final TextEditingController emailController = new TextEditingController();
@@ -256,6 +255,53 @@ class _SignInState extends State<SignIn> {
     }*/
   }
 
+  checkUserStatus(String token) async {
+    final user_response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (user_response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(user_response.body);
+      TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+      TokenPreference.saveAddress("id", data["USER_DATA"][0]["id"]);
+      TokenPreference.saveAddress("status", data["USER_DATA"][0]["status"]);
+      TokenPreference.saveAddress(
+          "profile_image", data["USER_DATA"][0]["profile_image"]);
+
+      print(data["USER_DATA"][0]["status"]);
+      if (data["USER_DATA"][0]["status"] == "0") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+      } else {
+        final stripe_response = await http.get(
+          Uri.parse(
+              'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
+          headers: {
+            'Authorization': '$token',
+          },
+        );
+
+        Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
+
+        if (stripe_data["public_key"] != "") {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AccountSetting()),
+              (Route<dynamic> route) => false);
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+              (Route<dynamic> route) => false);
+        }
+      }
+    }
+  }
+
   signIn(String email, pass) async {
     Map data = {'email': email, 'password': pass};
     print("NAX");
@@ -267,10 +313,13 @@ class _SignInState extends State<SignIn> {
     jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
+      print(response.body);
+
       if (jsonResponse != null) {
         setState(() {
           _isLoading = false;
         });
+        print(response.body);
 
         TokenPreference.saveAddress("token", jsonResponse['token']);
 
@@ -280,47 +329,7 @@ class _SignInState extends State<SignIn> {
         print("NAX");
         print(token);
 
-        final user_response = await http.get(
-          Uri.parse(
-              'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
-          headers: {
-            'Authorization': '$token',
-          },
-        );
-
-        if (user_response.statusCode == 200) {
-          Map<String, dynamic> data = jsonDecode(user_response.body);
-          TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
-          TokenPreference.saveAddress("id", data["USER_DATA"][0]["id"]);
-          TokenPreference.saveAddress("status", data["USER_DATA"][0]["status"]);
-          if (data["USER_DATA"][0]["status"] == "0") {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MemberList()),
-                (Route<dynamic> route) => false);
-          } else {
-            final stripe_response = await http.get(
-              Uri.parse(
-                  'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
-              headers: {
-                'Authorization': '$token',
-              },
-            );
-
-            Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
-
-            if (stripe_data["status"] == "1") {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => StripeAccount()),
-                  (Route<dynamic> route) => false);
-            } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-                  (Route<dynamic> route) => false);
-            }
-          }
-        }
+        checkUserStatus(token);
 
         return {'status': 200};
       }

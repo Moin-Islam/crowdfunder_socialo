@@ -39,7 +39,7 @@ class IntroScreenState extends State<IntroScreen> {
   void initState() {
     fetchSeenScreen();
     super.initState();
-    slides.add(new Slide(
+    slides.add(Slide(
       widgetDescription: Column(children: [
         Text("Welcome To The Team",
             style: GoogleFonts.rubik(

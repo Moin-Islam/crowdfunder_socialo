@@ -6,6 +6,7 @@ import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,10 +22,15 @@ class SetUp extends StatefulWidget {
 }
 
 class _SetUpState extends State<SetUp> {
+  String _public_key;
+  String _private_key;
+  TextEditingController publickeyController = TextEditingController();
+  TextEditingController privatekeyController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    fetchPayment();
+    fetchStripe();
   }
   /*final abc = FlutterSecureStorage();
 
@@ -60,7 +66,7 @@ class _SetUpState extends State<SetUp> {
     return prefs.getString('token');
   }
 
-  fetchPayment() async {
+  fetchStripe() async {
     String token = await getToken();
     var jsonResponse = null;
     var response = await http.get(
@@ -73,19 +79,42 @@ class _SetUpState extends State<SetUp> {
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      if (data["STRIPE_DATA"][0]["public_key"] != "" &&
+          data["STRIPE_DATA"][0]["secret_key"] != "") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => StripeModuleX()),
+            (Route<dynamic> route) => false);
+        return;
+      }
+
+      setState(() {
+        _public_key = data["STRIPE_DATA"][0]["public_key"];
+      });
+
+      setState(() {
+        _private_key = data["STRIPE_DATA"][0]["secret_key"];
+      });
+      publickeyController.text =
+          (_public_key == "") ? "Public Key" : '$_public_key';
+      privatekeyController.text =
+          (_private_key == "") ? "Private Key" : '$_private_key';
+
+      print(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
     }
-
-    Map<String, dynamic> data = jsonDecode(response.body);
-    TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
-
-    // nameController.text = data["USER_DATA"][0]["name"];
-    // name = data["USER_DATA"][0]["name"];
-    // emailController.text = data["USER_DATA"][0]["email_address"];
-    // purposeController.text = data["USER_DATA"][0]["purpose"];
   }
 
   paymentSetup() async {
-    Map data = {'public_key': "hi", 'secret_key': "helo"};
+    Map data = {
+      'public_key': publickeyController.text,
+      'secret_key': privatekeyController.text
+    };
     String token = await getToken();
     print(token);
     print(data);
@@ -131,10 +160,12 @@ class _SetUpState extends State<SetUp> {
             borderRadius: BorderRadius.circular(10),
           ),
           height: 48,
-          child: TextField(
+          child: TextFormField(
+            controller: publickeyController,
             keyboardType: TextInputType.text,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
+              hintText: "Public Key",
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left: 14),
               focusedBorder: OutlineInputBorder(
@@ -159,10 +190,12 @@ class _SetUpState extends State<SetUp> {
               borderRadius: BorderRadius.circular(10),
             ),
             height: 48,
-            child: TextField(
+            child: TextFormField(
+              controller: privatekeyController,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
+                  hintText: "Secret Key",
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(left: 14),
                   focusedBorder: OutlineInputBorder(
@@ -184,7 +217,7 @@ class _SetUpState extends State<SetUp> {
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.only(left: 40),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Icon(
@@ -237,7 +270,7 @@ class _SetUpState extends State<SetUp> {
                   ])),
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

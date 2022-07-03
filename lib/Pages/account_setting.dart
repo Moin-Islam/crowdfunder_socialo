@@ -95,7 +95,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': '$token',
       },
@@ -113,11 +113,6 @@ class _AccountSettingtate extends State<AccountSetting> {
         name = data["USER_DATA"][0]["name"];
       });
 
-      var image1 = data["USER_DATA"][0]["profile_image"];
-      setState(() {
-        _image = base64Decode(image1);
-      });
-
       setState(() {
         // _purpose = data["USER_DATA"][0]["purpose"];
         _purpose = "Purpose";
@@ -131,6 +126,11 @@ class _AccountSettingtate extends State<AccountSetting> {
 
       emailController.text = (_email == "") ? "Email Address" : '$_email';
       purposeController.text = (_purpose == "") ? "Purpose" : '$_purpose';
+      var image1 = data["USER_DATA"][0]["profile_image"];
+
+      setState(() {
+        _image = base64Decode(image1);
+      });
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(response.body);

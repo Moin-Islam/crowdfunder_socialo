@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
+import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import "./member_list.dart";
@@ -191,6 +192,13 @@ class _PaymentInfoState extends State<PaymentInfo> {
               Uri.parse(
                   "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
               body: receiveData);
+
+          print(response);
+
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StripeAccount()),
+              (Route<dynamic> route) => false);
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

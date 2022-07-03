@@ -13,6 +13,8 @@ import 'package:flutter_sms/flutter_sms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/token_preference.dart';
+
 class StripeModuleX extends StatefulWidget {
   const StripeModuleX({Key key}) : super(key: key);
 
@@ -24,6 +26,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
   var _image;
   String _id;
   String name;
+  String invitation_code = "";
   var phonenumber;
 
   @override
@@ -73,7 +76,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': '$token',
       },
@@ -81,9 +84,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
-
       setState(() {
         name = data["USER_DATA"][0]["name"];
+      });
+
+      setState(() {
+        invitation_code = data["USER_DATA"][0]["invitation_code"];
       });
 
       var image1 = data["USER_DATA"][0]["profile_image"];
@@ -129,7 +135,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 60.0, left: 10, right: 10, bottom: 10),
+                        top: 60.0, left: 10, right: 25, bottom: 15),
                     child: SizedBox(
                       width: 90,
                       child: Text(
@@ -174,7 +180,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 60.0, left: 10, right: 10, bottom: 10),
+                        top: 60.0, left: 10, right: 25, bottom: 15),
                     child: SizedBox(
                       width: 90,
                       child: Text(
@@ -253,6 +259,10 @@ class _StripeModuleXState extends State<StripeModuleX> {
   pickContact() async {
     final PhoneContact contact = await FlutterContactPicker.pickPhoneContact();
     phonenumber = contact.phoneNumber.number;
+
+    setState(() {
+      phonenumberController.text = contact.phoneNumber.number;
+    });
     print(contact.phoneNumber.number);
   }
 
@@ -291,7 +301,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
       height: 48,
       child: ElevatedButton(
         onPressed: () {
-          String message = "This is a test message!";
+          String message =
+              "Hi, this is $name I just discovered an App that will generate all the money you need. Check it out! You'll be glad you did. Use my Invitation Code when you Sign Up. So here's how it works: Watch this video: https://bit.ly/CFpromo1 \n Download the App: (Download link) \n Sign-up using my invitation code : $invitation_code \n Qualify to raise money by helping your team with \n a one-time purchase Set-up your payment processor so you can Get paid. Share with 3 close contacts. This is the \"side-hustle\" everyone's been looking for!";
           List<String> recipents;
           if (phonenumberController.text == null ||
               phonenumberController.text == "") {
@@ -374,12 +385,14 @@ class _StripeModuleXState extends State<StripeModuleX> {
       alignment: Alignment.topRight,
       child: FlatButton(
           onPressed: () {
+            TokenPreference.saveAddress("token", "");
+
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
               (_) => false,
             );
           },
-          padding: EdgeInsets.only(top: 55),
+          padding: EdgeInsets.only(top: 55, left: 25),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Icon(
