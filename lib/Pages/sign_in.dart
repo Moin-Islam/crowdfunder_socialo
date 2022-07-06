@@ -7,6 +7,7 @@ import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_demo/utils/Member.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -291,7 +292,7 @@ class _SignInState extends State<SignIn> {
         if (stripe_data["public_key"] != "") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (BuildContext context) => AccountSetting()),
+                  builder: (BuildContext context) => StripeModuleX()),
               (Route<dynamic> route) => false);
         } else {
           Navigator.of(context).pushAndRemoveUntil(

@@ -7,6 +7,8 @@ import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import "./member_list.dart";
 import 'package:flutter_demo/Pages/splash.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,10 +27,19 @@ class PaymentInfo extends StatefulWidget {
 }
 
 class _PaymentInfoState extends State<PaymentInfo> {
+  var _log;
+
+  var maskFormatter =
+      MaskTextInputFormatter(mask: '##/####', filter: {"#": RegExp(r'[0-9]')});
+
+  var cardFormatter = MaskTextInputFormatter(
+      mask: '#### #### #### ####', filter: {"#": RegExp(r'[0-9]')});
+
   TextEditingController cardnumberController = TextEditingController();
   TextEditingController cardholdernameController = TextEditingController();
   TextEditingController expirydateController = TextEditingController();
   TextEditingController cvvController = TextEditingController();
+
   Map receiveData = {'team_data': []};
   var temp = [];
   @override
@@ -49,6 +60,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
             ),
             height: 48,
             child: TextFormField(
+              inputFormatters: [cardFormatter],
               controller: cardnumberController,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
@@ -105,12 +117,14 @@ class _PaymentInfoState extends State<PaymentInfo> {
             ),
             height: 48,
             child: TextFormField(
+              inputFormatters: [maskFormatter],
               controller: expirydateController,
               keyboardType: TextInputType.datetime,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(left: 14),
+                hintText: 'Month / Year',
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -149,6 +163,11 @@ class _PaymentInfoState extends State<PaymentInfo> {
     );
   }
 
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   StripePayment() async {
     var a = await Stripe.instance
         .createToken(CreateTokenParams(type: TokenType.Card));
@@ -161,13 +180,15 @@ class _PaymentInfoState extends State<PaymentInfo> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () async {
+          String token = await getToken();
+
           widget.data.keys.forEach((k) {
             Stripe.publishableKey = widget.data[k]['publishableKey'];
             print(widget.data[k]['publishableKey']);
             Stripe.merchantIdentifier = "test";
 
             Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
-              number: cardnumberController.text,
+              number: cardFormatter.getUnmaskedText(),
               expirationMonth:
                   int.parse(expirydateController.text.split('/')[0]),
               expirationYear:
@@ -191,14 +212,22 @@ class _PaymentInfoState extends State<PaymentInfo> {
           var response = await http.post(
               Uri.parse(
                   "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
-              body: receiveData);
+              headers: {
+                'Authorization': '$token',
+              },
+              body: json.encode(receiveData));
 
-          print(response);
+          print("response");
+          print(response.body);
 
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => StripeAccount()),
-              (Route<dynamic> route) => false);
+          setState(() {
+            _log = response.body;
+          });
+
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //         builder: (BuildContext context) => StripeAccount()),
+          //     (Route<dynamic> route) => false);
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -218,7 +247,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
       child: FlatButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(builder: (context) => SignIn()),
+              CupertinoPageRoute(builder: (context) => MemberList()),
               (_) => false,
             );
           },
@@ -226,7 +255,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Icon(
-            Icons.logout,
+            Icons.arrow_back,
             color: Color(0xff800080),
           )),
     );
@@ -340,7 +369,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       ),
                     ),
                     buildCVV(),
-                    buildSetUpAccountbtn()
+                    buildSetUpAccountbtn(),
+                    Text((_log == null) ? "Logs" : '$_log')
                   ],
                 ),
               ),

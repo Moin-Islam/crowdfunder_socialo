@@ -5,6 +5,7 @@ import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_layouts/flutter_layouts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -180,20 +181,25 @@ class _MemberListState extends State<MemberList> {
         ));
   }
 
-  Widget singleUserList(String id, String name, String saleId,
+  Widget singleUserList(String id, String name, String img, String saleId,
       String publishableKey, String productPrice, int index) {
+    var image = base64Decode(img);
     return Container(
-        height: 133,
-        width: 334,
+        height: 150,
         color: Color(0xffF4F6F8),
         child: Padding(
-          padding: const EdgeInsets.only(left: 18.0, top: 17),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 17),
           child: Column(children: [
             Column(
               children: [
                 Row(
                   children: [
-                    Image.asset('img/person.png', height: 46, width: 45),
+                    (image == null || image == '')
+                        ? CircularProgressIndicator()
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: MemoryImage(image), //here
+                          ),
                     SizedBox(
                       width: 20,
                     ),
@@ -264,6 +270,8 @@ class _MemberListState extends State<MemberList> {
       alignment: Alignment.topRight,
       child: FlatButton(
           onPressed: () {
+            TokenPreference.saveAddress("token", "");
+
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
               (_) => false,
@@ -279,230 +287,241 @@ class _MemberListState extends State<MemberList> {
     );
   }
 
+  Widget title() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.only(left: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildLogOutbtn(),
+
+          GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  CupertinoPageRoute(builder: (context) => StripeModuleX()),
+                  (_) => false,
+                );
+              }, // Image tapped
+              child: (_image == null || _image == '')
+                  ? CircularProgressIndicator()
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: MemoryImage(_image), //here
+                    )),
+
+          SizedBox(
+            height: 15,
+          ),
+          // ignore: prefer_const_constructors
+          Text(
+            'Hello',
+            style: GoogleFonts.rubik(
+              color: Color(0xff800080),
+              fontSize: 25,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            (_username == "") ? "Fetching value..." : '$_username',
+            // "Hello",
+            style: GoogleFonts.rubik(
+              color: Color(0xff800080),
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Help your team by making a purchase',
+            style: GoogleFonts.roboto(
+              color: Colors.black38,
+              fontSize: 13,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 0.0, right: 40),
+            child: Container(
+              height: 1.0,
+              width: double.infinity,
+              color: Color(0xffDCDCDC),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            'Member List and Products',
+            style: GoogleFonts.rubik(
+              color: Color(0xff800080),
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget hero() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: FutureBuilder<List<Member>>(
+          future: fetchTeamList(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final members = snapshot.data;
+              // for (var i = 0; i < members.length; i++) {
+              //   // TO DO
+              //   var currentElement = li[i];
+              // }
+
+              return Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: members.length,
+                    itemBuilder: (context, index) {
+                      Member member = members[index];
+
+                      print("NEXT");
+                      print(member.name);
+                      print(member.name);
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          // Widget to display the list of project
+                          singleUserList(
+                              member.id,
+                              member.name,
+                              member.userImage,
+                              member.saleId,
+                              member.publishableKey,
+                              member.productPrice,
+                              index),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            // By default, show a loading spinner.
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
+    );
+  }
+
+  Widget fotterButton() {
+    return Container(
+        height: 108,
+        padding: EdgeInsets.only(
+          top: 30,
+          bottom: 30,
+          right: 20,
+        ),
+        decoration: BoxDecoration(
+            color: Color(0xffFFF6FF),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Total: \$$totalPrice",
+                    style: GoogleFonts.rubik(
+                        color: Color(0xff800080), fontSize: 9),
+                  ),
+                  Text(
+                    "Selected: $totalProduct\\10",
+                    style: GoogleFonts.rubik(
+                      color: Color(0xff800080),
+                      fontSize: 13,
+                    ),
+                  ),
+                  Text(
+                    "Select at least 10 products",
+                    style: GoogleFonts.roboto(
+                        color: Color(0xff800080), fontSize: 11),
+                  )
+                ],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    onPressed: () async {
+                      print("BUY NOW CLICKED");
+
+                      if (totalProduct != 0) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => PaymentInfo(
+                                      data: productSelect,
+                                      price: totalPrice.toString(),
+                                    )),
+                            (Route<dynamic> route) => false);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xff800080),
+                    ),
+                    child: Text(
+                      "Buy Now",
+                      style:
+                          GoogleFonts.rubik(color: Colors.white, fontSize: 15),
+                    ))
+              ],
+            )
+          ],
+        ));
+  }
+
+// width: double.infinity,
+//                 padding: EdgeInsets.only(top: 30, left: 20),
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(children: [
-      Container(
-          width: double.infinity,
-          padding: EdgeInsets.only(top: 30, left: 20),
-          child: new SingleChildScrollView(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildLogOutbtn(),
-
-              GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      CupertinoPageRoute(builder: (context) => StripeModuleX()),
-                      (_) => false,
-                    );
-                  }, // Image tapped
-                  child: (_image == null || _image == '')
-                      ? CircularProgressIndicator()
-                      : new Image.memory(
-                          _image,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        )),
-
-              SizedBox(
-                height: 15,
-              ),
-              // ignore: prefer_const_constructors
-              Text(
-                'Hello',
-                style: GoogleFonts.rubik(
-                  color: Color(0xff800080),
-                  fontSize: 25,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                (_username == "") ? "Fetching value..." : '$_username',
-                // "Hello",
-                style: GoogleFonts.rubik(
-                  color: Color(0xff800080),
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Help your team by making a purchase',
-                style: GoogleFonts.roboto(
-                  color: Colors.black38,
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 0.0, right: 40),
-                child: Container(
-                  height: 1.0,
-                  width: double.infinity,
-                  color: Color(0xffDCDCDC),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Member List and Products',
-                style: GoogleFonts.rubik(
-                  color: Color(0xff800080),
-                  fontSize: 15,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  FutureBuilder<List<Member>>(
-                      future: fetchTeamList(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final members = snapshot.data;
-                          // for (var i = 0; i < members.length; i++) {
-                          //   // TO DO
-                          //   var currentElement = li[i];
-                          // }
-
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: members.length,
-                            itemBuilder: (context, index) {
-                              Member member = members[index];
-
-                              print("NEXT");
-                              print(member.name);
-                              print(member.name);
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  // Widget to display the list of project
-                                  singleUserList(
-                                      member.id,
-                                      member.name,
-                                      member.saleId,
-                                      member.publishableKey,
-                                      member.productPrice,
-                                      index),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-
-                        // By default, show a loading spinner.
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      })
-                ],
-              ),
-            ],
-          ))),
-      Spacer(),
-      Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Card(
-                color: Color(0xffFFF6FF),
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white70, width: 1),
-                    borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(20.0),
-                      topRight: const Radius.circular(20.0),
-                    )),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total: \$$totalPrice",
-                            style: GoogleFonts.rubik(
-                                color: Color(0xff800080), fontSize: 9),
-                          ),
-                          Text(
-                            "Selected: $totalProduct\\10",
-                            style: GoogleFonts.rubik(
-                              color: Color(0xff800080),
-                              fontSize: 13,
-                            ),
-                          ),
-                          Text(
-                            "Select at least 10 products",
-                            style: GoogleFonts.roboto(
-                                color: Color(0xff800080), fontSize: 11),
-                          )
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                            onPressed: () async {
-                              print("BUY NOW CLICKED");
-
-                              if (totalProduct != 0) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            PaymentInfo(
-                                              data: productSelect,
-                                              price: totalPrice.toString(),
-                                            )),
-                                    (Route<dynamic> route) => false);
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Color(0xff800080),
-                            ),
-                            child: Text(
-                              "Buy Now",
-                              style: GoogleFonts.rubik(
-                                  color: Colors.white, fontSize: 15),
-                            ))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ), // << Put your content here
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            title(),
+            hero(),
+          ],
         ),
-      )
-    ]));
+      ),
+      bottomNavigationBar: fotterButton(),
+    );
   }
 }

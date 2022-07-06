@@ -97,7 +97,7 @@ class _AccountSettingtate extends State<AccountSetting> {
       Uri.parse(
           'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
-        'Authorization': '$token',
+        'Authorization': token,
       },
     );
 
@@ -124,8 +124,8 @@ class _AccountSettingtate extends State<AccountSetting> {
 
       nameController.text = data["USER_DATA"][0]["name"];
 
-      emailController.text = (_email == "") ? "Email Address" : '$_email';
-      purposeController.text = (_purpose == "") ? "Purpose" : '$_purpose';
+      emailController.text = (_email == "") ? "Email Address" : _email;
+      purposeController.text = (_purpose == "") ? "Purpose" : _purpose;
       var image1 = data["USER_DATA"][0]["profile_image"];
 
       setState(() {
@@ -149,7 +149,7 @@ class _AccountSettingtate extends State<AccountSetting> {
       Uri.parse(
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
-        'Authorization': '$token',
+        'Authorization': token,
       },
     );
 
@@ -165,9 +165,9 @@ class _AccountSettingtate extends State<AccountSetting> {
         _private_key = data["STRIPE_DATA"][0]["secret_key"];
       });
       publickeyController.text =
-          (_public_key == "") ? "Public Key" : '$_public_key';
+          (_public_key == "") ? "Public Key" : _public_key;
       privatekeyController.text =
-          (_private_key == "") ? "Private Key" : '$_private_key';
+          (_private_key == "") ? "Private Key" : _private_key;
 
       print(response.body);
 
@@ -585,7 +585,7 @@ class _AccountSettingtate extends State<AccountSetting> {
           Column(
             children: [
               Text(
-                (name == null) ? "Fetching value..." : '$name',
+                (name == null) ? "Fetching value..." : name,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,

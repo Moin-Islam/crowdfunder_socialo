@@ -1,5 +1,6 @@
 class Member {
   final String name;
+  final String userImage;
   final String id;
   final String saleId;
   final String publishableKey;
@@ -8,6 +9,7 @@ class Member {
   const Member(
       {this.name,
       this.id,
+      this.userImage,
       this.saleId,
       this.publishableKey,
       this.productPrice});
@@ -17,6 +19,7 @@ class Member {
         name: json["user_name"],
         id: json['user_id'],
         saleId: json['saleId'],
+        userImage: json['user_image'],
         publishableKey: json['publishable_key'],
         productPrice: json["product_price"]);
   }

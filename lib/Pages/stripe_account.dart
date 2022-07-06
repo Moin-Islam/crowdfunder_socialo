@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/material/icons.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_demo/utils/Product.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class StripeAccount extends StatefulWidget {
   const StripeAccount({Key key}) : super(key: key);
@@ -14,6 +20,44 @@ class StripeAccount extends StatefulWidget {
 }
 
 class _StripeAccountState extends State<StripeAccount> {
+  @override
+  void initState() {
+    super.initState();
+    fetchProduct();
+  }
+
+  Future<String> getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  Future<List<Product>> fetchProduct() async {
+    String token = await getToken();
+
+    var response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/products/fetchProductSales'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map data = jsonDecode(response.body);
+      var body = jsonDecode(data["list_data"]);
+
+      return body.map<Product>(Product.fromJson).toList();
+
+      // if (jsonResponse != null) {
+      //   Navigator.of(context).pushAndRemoveUntil(
+      //       MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+      //       (Route<dynamic> route) => false);
+      // }
+    } else {
+      throw Exception('Failed to load User');
+    }
+  }
+
   Widget buildUserProfile() {
     return Container(
         child: Card(
@@ -50,58 +94,8 @@ class _StripeAccountState extends State<StripeAccount> {
     ));
   }
 
-  Widget buildBonusProduct() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(30),
-      color: Color(0xff800080),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'This is Bonus Product',
-                style: GoogleFonts.roboto(fontSize: 13, color: Colors.white),
-              ),
-              Icon(
-                Icons.turn_right,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text('this is bonus product',
-              style: GoogleFonts.roboto(fontSize: 12, color: Colors.white)),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: Container(
-              height: 1.0,
-              width: double.infinity,
-              color: Colors.white,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Total Sale : 6',
-                  style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
-              Text('Total Earnings : \$6',
-                  style: GoogleFonts.rubik(fontSize: 13, color: Colors.white)),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget buildProductList() {
+  Widget buildProductList(String productID, String productName,
+      String productURL, String productPrice, String saleCount) {
     return Container(
       width: double.infinity,
       color: Color(0xffF4F6F8),
@@ -113,12 +107,19 @@ class _StripeAccountState extends State<StripeAccount> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Product 1',
+                'Product ' + productID,
                 style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
               ),
-              Icon(
-                Icons.turn_right,
+              IconButton(
+                icon: Icon(Icons.turn_right),
                 color: Color(0xff800080),
+                onPressed: () async {
+                  if (await canLaunch(productURL))
+                    await launch(productURL);
+                  else
+                    // can't launch url, there is some error
+                    throw "Could not launch $productURL";
+                },
               ),
             ],
           ),
@@ -126,7 +127,7 @@ class _StripeAccountState extends State<StripeAccount> {
             height: 15,
           ),
           Text(
-            'Lorem Ipsum',
+            productName,
             style: GoogleFonts.roboto(fontSize: 12, color: Color(0xff707070)),
           ),
           SizedBox(
@@ -147,11 +148,11 @@ class _StripeAccountState extends State<StripeAccount> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Sale : 6',
+                'Total Sale : $saleCount',
                 style:
                     GoogleFonts.rubik(fontSize: 13, color: Color(0xff800080)),
               ),
-              Text('Total Earnings : \$6',
+              Text('Total Earnings : \$$productPrice',
                   style: GoogleFonts.rubik(
                       fontSize: 13, color: Color(0xff800080))),
             ],
@@ -217,26 +218,6 @@ class _StripeAccountState extends State<StripeAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Bonus Product',
-                    style: GoogleFonts.rubik(
-                        color: Color(0xff800080),
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              buildBonusProduct(),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
                     'All Product List',
                     style: GoogleFonts.rubik(
                         color: Color(0xff800080),
@@ -248,15 +229,59 @@ class _StripeAccountState extends State<StripeAccount> {
               SizedBox(
                 height: 20,
               ),
-              buildProductList(),
-              SizedBox(
-                height: 20,
-              ),
-              buildProductList(),
-              SizedBox(
-                height: 20,
-              ),
-              buildProductList(),
+              FutureBuilder<List<Product>>(
+                  future: fetchProduct(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final members = snapshot.data;
+                      // for (var i = 0; i < members.length; i++) {
+                      //   // TO DO
+                      //   var currentElement = li[i];
+                      // }
+
+                      return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: members.length,
+                        itemBuilder: (context, index) {
+                          Product member = members[index];
+
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              // Widget to display the list of project
+                              // singleUserList(
+                              //     member.id,
+                              //     member.name,
+                              //     member.saleId,
+                              //     member.publishableKey,
+                              //     member.productPrice,
+                              //     index),
+
+                              buildProductList(
+                                  member.productID,
+                                  member.productName,
+                                  member.productURL,
+                                  member.productPrice,
+                                  member.saleCount),
+
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    // By default, show a loading spinner.
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
             ],
           ),
         ),

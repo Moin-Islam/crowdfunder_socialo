@@ -25,6 +25,7 @@ class StripeModuleX extends StatefulWidget {
 class _StripeModuleXState extends State<StripeModuleX> {
   var _image;
   String _id;
+  String _earning;
   String name;
   String invitation_code = "";
   var phonenumber;
@@ -92,13 +93,17 @@ class _StripeModuleXState extends State<StripeModuleX> {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
       });
 
-      var image1 = data["USER_DATA"][0]["profile_image"];
       setState(() {
-        _image = base64Decode(image1);
+        _id = data["USER_DATA"][0]["id"];
       });
 
       setState(() {
-        _id = data["USER_DATA"][0]["id"];
+        _earning = data["USER_DATA"][0]["total_earning"];
+      });
+
+      var image1 = data["USER_DATA"][0]["profile_image"];
+      setState(() {
+        _image = base64Decode(image1);
       });
 
       // If the server did return a 200 OK response,
@@ -422,7 +427,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Earning : \$128.50',
+                    (_earning == null)
+                        ? "Fetching value..."
+                        : 'Total Earning : \$$_earning',
                     style: GoogleFonts.rubik(
                         color: Color(0xff800080),
                         fontSize: 15,
