@@ -152,9 +152,29 @@ class _StripeAccountState extends State<StripeAccount> {
                 style:
                     GoogleFonts.rubik(fontSize: 13, color: Color(0xff800080)),
               ),
-              Text('Total Earnings : \$$productPrice',
-                  style: GoogleFonts.rubik(
-                      fontSize: 13, color: Color(0xff800080))),
+              ElevatedButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => StripeAccount())),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Product links",
+                          style: GoogleFonts.rubik(color: Colors.white),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right_rounded,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xff800080)),
+                    ),
+                  ),
             ],
           )
         ],

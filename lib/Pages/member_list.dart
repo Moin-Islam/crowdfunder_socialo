@@ -233,8 +233,9 @@ class _MemberListState extends State<MemberList> {
                     child: Row(
                       children: [
                         Text(
-                          "Product links",
-                          style: GoogleFonts.rubik(color: Colors.white),
+                          "Total: \$$totalPrice",
+                          style: GoogleFonts.rubik(
+                              color: Color(0xff800080), fontSize: 9),
                         ),
                         SizedBox(
                           width: 10,
