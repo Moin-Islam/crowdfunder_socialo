@@ -188,31 +188,44 @@ class _SignInState extends State<SignIn> {
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: RaisedButton(
         elevation: 5,
-        onPressed: () {
-          // setState(() {
-          //   _isLoading = true;
-          // });
-          signIn(emailController.text, passwordController.text).then((res) {
-            if (res["status"] == 0) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(res["message"]),
-                duration: Duration(milliseconds: 3000),
-              ));
-            }
+        onPressed: _isLoading
+            ? null
+            : () {
+                // setState(() {
+                //   _isLoading = true;
+                // });
+                signIn(emailController.text, passwordController.text)
+                    .then((res) {
+                  if (res["status"] == 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(res["message"]),
+                      duration: Duration(milliseconds: 3000),
+                    ));
+                  }
 
-            // if (res.status == 0) {
-            //
-            // }
-          });
-        },
+                  // if (res.status == 0) {
+                  //
+                  // }
+                });
+              },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Color(0xff800080),
-        child: Text(
-          'Sign In',
-          style: GoogleFonts.rubik(
-              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
-        ),
+        child: _isLoading
+            ? Text(
+                'Loading...',
+                style: GoogleFonts.rubik(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              )
+            : Text(
+                'Sign In',
+                style: GoogleFonts.rubik(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
       ),
     );
   }
@@ -301,9 +314,17 @@ class _SignInState extends State<SignIn> {
         }
       }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   signIn(String email, pass) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     Map data = {'email': email, 'password': pass};
     print("NAX");
     var jsonResponse = null;
@@ -317,9 +338,6 @@ class _SignInState extends State<SignIn> {
       print(response.body);
 
       if (jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
         print(response.body);
 
         TokenPreference.saveAddress("token", jsonResponse['token']);
@@ -336,6 +354,10 @@ class _SignInState extends State<SignIn> {
       }
     } else {
       print(response.body);
+
+      setState(() {
+        _isLoading = false;
+      });
 
       return jsonResponse;
     }

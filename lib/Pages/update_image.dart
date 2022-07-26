@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,8 @@ class UpdateImage extends StatefulWidget {
 
 class _UpdateImageState extends State<UpdateImage> {
   File image;
+  Uint8List bytes;
+
   var convertedImage;
 
   Future<String> getToken() async {
@@ -33,9 +36,11 @@ class _UpdateImageState extends State<UpdateImage> {
 
     if (image == null) return;
 
-    final bytes = File(image.path).readAsBytesSync();
+    bytes = File(image.path).readAsBytesSync();
     String img64 = base64Encode(bytes);
-    convertedImage = img64;
+    setState(() {
+      convertedImage = img64;
+    });
   }
 
   Future captureImage() async {
@@ -44,9 +49,22 @@ class _UpdateImageState extends State<UpdateImage> {
 
     print(image);
 
-    final bytes = File(image.path).readAsBytesSync();
+    bytes = File(image.path).readAsBytesSync();
     String img64 = base64Encode(bytes);
-    convertedImage = img64;
+    setState(() {
+      convertedImage = img64;
+    });
+  }
+
+  Widget displayImage() {
+    return Container(
+        padding: EdgeInsets.all(20),
+        child: (bytes == null)
+            ? SizedBox(height: 1)
+            : CircleAvatar(
+                radius: 30.0,
+                backgroundImage: MemoryImage(bytes), //here
+              ));
   }
 
   Widget buildUseCameraBtn() {
@@ -108,32 +126,6 @@ class _UpdateImageState extends State<UpdateImage> {
         ));
   }
 
-  Widget buildSignUpBtn() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUp()));
-      },
-      child: RichText(
-          text: TextSpan(children: [
-        TextSpan(
-            text: 'Don\'t have any Account?',
-            style: GoogleFonts.roboto(
-                color: Colors.black38,
-                fontSize: 13,
-                fontWeight: FontWeight.normal)),
-        TextSpan(
-            text: ' Sign Up',
-            style: GoogleFonts.roboto(
-              color: Color(0xff800080),
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.underline,
-            ))
-      ])),
-    );
-  }
-
   singUp() async {
     String token = await getToken();
 
@@ -167,23 +159,8 @@ class _UpdateImageState extends State<UpdateImage> {
             padding: EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RaisedButton(
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUp())),
-                  padding: EdgeInsets.all(13),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  color: Color(0xff800080),
-                  child: Text(
-                    'Previous',
-                    style: GoogleFonts.rubik(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ),
                 RaisedButton(
                   onPressed: () {
                     print("BUTTON");
@@ -224,7 +201,7 @@ class _UpdateImageState extends State<UpdateImage> {
                       borderRadius: BorderRadius.circular(10)),
                   color: Color(0xff800080),
                   child: Text(
-                    'Sign Up',
+                    'Update Image',
                     style: GoogleFonts.rubik(
                         color: Colors.white,
                         fontSize: 15,
@@ -266,13 +243,15 @@ class _UpdateImageState extends State<UpdateImage> {
                 child: Column(
                   children: [
                     Text(
-                      'Upload Your Image',
+                      'Update Your Image',
                       style: TextStyle(
                         color: Color(0xff800080),
                         fontSize: 18,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
+                    SizedBox(height: 25),
+                    displayImage(),
                     SizedBox(height: 25),
                     buildUseCameraBtn(),
                     SizedBox(height: 25),
@@ -303,8 +282,6 @@ class _UpdateImageState extends State<UpdateImage> {
                     SizedBox(height: 25),
                     buildGalleryBtn(),
                     SizedBox(height: 55),
-                    buildSignUpBtn(),
-                    SizedBox(height: 25),
                     buildBottomButtons(),
                   ],
                 ),

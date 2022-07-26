@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,16 +22,21 @@ class UploadImage extends StatefulWidget {
 
 class _UploadImageState extends State<UploadImage> {
   File image;
+  Uint8List bytes;
   String convertedImage;
+  var _isLoading = false;
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (image == null) return;
 
-    final bytes = File(image.path).readAsBytesSync();
+    bytes = File(image.path).readAsBytesSync();
     String img64 = base64Encode(bytes);
-    convertedImage = img64;
+
+    setState(() {
+      convertedImage = img64;
+    });
   }
 
   Future captureImage() async {
@@ -39,9 +45,11 @@ class _UploadImageState extends State<UploadImage> {
 
     print(image);
 
-    final bytes = File(image.path).readAsBytesSync();
+    bytes = File(image.path).readAsBytesSync();
     String img64 = base64Encode(bytes);
-    convertedImage = img64;
+    setState(() {
+      convertedImage = img64;
+    });
   }
 
   Widget buildUseCameraBtn() {
@@ -150,6 +158,17 @@ class _UploadImageState extends State<UploadImage> {
     return jsonResponse;
   }
 
+  Widget displayImage() {
+    return Container(
+        padding: EdgeInsets.all(20),
+        child: (bytes == null)
+            ? SizedBox(height: 1)
+            : CircleAvatar(
+                radius: 30.0,
+                backgroundImage: MemoryImage(bytes), //here
+              ));
+  }
+
   Widget buildBottomButtons() {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -178,40 +197,58 @@ class _UploadImageState extends State<UploadImage> {
                   ),
                 ),
                 RaisedButton(
-                  onPressed: () {
-                    print("BUTTON");
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Signing Up please wait"),
+                            duration: Duration(milliseconds: 3000),
+                          ));
 
-                    singUp().then((res) {
-                      print(res);
-                      if (res["status"] == 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(res["message"]),
-                          duration: Duration(milliseconds: 3000),
-                        ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(res["message"]),
-                          duration: Duration(milliseconds: 3000),
-                        ));
+                          setState(() {
+                            _isLoading = true;
+                          });
 
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => SignIn()),
-                            (Route<dynamic> route) => false);
-                      }
+                          print("BUTTON");
 
-                      // if (res.status == 0) {
-                      //
-                      // }
-                    });
-                    // print(response.statusCode);
-                    // if (response.statusCode != 200) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //     content: Text("Your Text"),
-                    //     duration: Duration(milliseconds: 300),
-                    //   ));
-                    // }
-                  },
+                          singUp().then((res) {
+                            print(res);
+                            if (res["status"] == 0) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(res["message"]),
+                                duration: Duration(milliseconds: 3000),
+                              ));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(res["message"]),
+                                duration: Duration(milliseconds: 3000),
+                              ));
+
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          SignIn()),
+                                  (Route<dynamic> route) => false);
+                            }
+
+                            setState(() {
+                              _isLoading = false;
+                            });
+
+                            // if (res.status == 0) {
+                            //
+                            // }
+                          });
+                          // print(response.statusCode);
+                          // if (response.statusCode != 200) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //     content: Text("Your Text"),
+                          //     duration: Duration(milliseconds: 300),
+                          //   ));
+                          // }
+                        },
                   padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
@@ -266,6 +303,8 @@ class _UploadImageState extends State<UploadImage> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
+                    SizedBox(height: 25),
+                    displayImage(),
                     SizedBox(height: 25),
                     buildUseCameraBtn(),
                     SizedBox(height: 25),

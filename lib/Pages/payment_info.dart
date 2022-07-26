@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
+import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -28,6 +29,7 @@ class PaymentInfo extends StatefulWidget {
 
 class _PaymentInfoState extends State<PaymentInfo> {
   var _log;
+  var _isLoading = false;
 
   var maskFormatter =
       MaskTextInputFormatter(mask: '##/####', filter: {"#": RegExp(r'[0-9]')});
@@ -179,64 +181,94 @@ class _PaymentInfoState extends State<PaymentInfo> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () async {
-          String token = await getToken();
+        onPressed: _isLoading
+            ? null
+            : () async {
+                setState(() {
+                  _isLoading = true;
+                });
+                String token = await getToken();
 
-          widget.data.keys.forEach((k) {
-            Stripe.publishableKey = widget.data[k]['publishableKey'];
-            print(widget.data[k]['publishableKey']);
-            Stripe.merchantIdentifier = "test";
+                widget.data.keys.forEach((k) {
+                  Stripe.publishableKey = widget.data[k]['publishableKey'];
+                  print(widget.data[k]['publishableKey']);
+                  Stripe.merchantIdentifier = "test";
 
-            Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
-              number: cardFormatter.getUnmaskedText(),
-              expirationMonth:
-                  int.parse(expirydateController.text.split('/')[0]),
-              expirationYear:
-                  int.parse(expirydateController.text.split('/')[1]),
-              cvc: cvvController.text,
-            ));
+                  Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
+                    number: cardFormatter.getUnmaskedText(),
+                    expirationMonth:
+                        int.parse(expirydateController.text.split('/')[0]),
+                    expirationYear:
+                        int.parse(expirydateController.text.split('/')[1]),
+                    cvc: cvvController.text,
+                  ));
 
-            StripePayment().then((res) {
-              TokenData tokenData = res;
+                  StripePayment().then((res) {
+                    TokenData tokenData = res;
 
-              if (widget.data[k] != null || widget.data[k] != {}) {
-                /*receiveData['team_data'][k]
+                    if (widget.data[k] != null || widget.data[k] != {}) {
+                      /*receiveData['team_data'][k]
                     .add();*/
-                temp.add({'saleId': k, 'stripeToken': tokenData.id});
-              }
-            });
-          });
+                      temp.add({'saleId': k, 'stripeToken': tokenData.id});
+                    }
+                  });
+                });
 
-          receiveData['team_data'] = temp;
-          print(receiveData);
-          var response = await http.post(
-              Uri.parse(
-                  "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
-              headers: {
-                'Authorization': '$token',
+                receiveData['team_data'] = temp;
+
+                print("NAXXX");
+                print(receiveData);
+                var response = await http.post(
+                    Uri.parse(
+                        "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
+                    headers: {
+                      'Authorization': '$token',
+                    },
+                    body: json.encode(receiveData));
+
+                print("response");
+                print(response.body);
+
+                Map<String, dynamic> data = jsonDecode(response.body);
+
+                setState(() {
+                  _log = response.body;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(data['message']),
+                  duration: Duration(milliseconds: 3000),
+                ));
+
+                setState(() {
+                  _isLoading = false;
+                });
+
+                if (data["status"] == 1) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => MemberList()),
+                      (Route<dynamic> route) => false);
+                }
               },
-              body: json.encode(receiveData));
-
-          print("response");
-          print(response.body);
-
-          setState(() {
-            _log = response.body;
-          });
-
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(
-          //         builder: (BuildContext context) => StripeAccount()),
-          //     (Route<dynamic> route) => false);
-        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
-        child: Text(
-          'Pay Now     \$' + widget.price,
-          style: TextStyle(
-              color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal),
-        ),
+        child: _isLoading
+            ? Text(
+                'Processing payment please wait',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              )
+            : Text(
+                'Pay Now     \$' + widget.price,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
       ),
     );
   }
@@ -273,7 +305,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
               width: double.infinity,
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,47 +320,47 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment(0.0, 0.0),
-                          width: 130,
-                          height: 133,
-                          decoration: BoxDecoration(
-                              color: Color(0xff800080),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Text(
-                            'Visa',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 50),
-                        Container(
-                          alignment: Alignment(0.0, 0.0),
-                          width: 130,
-                          height: 133,
-                          decoration: BoxDecoration(
-                              color: Color(0xffF4F6F8),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Text(
-                            'Stripe',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     Container(
+                    //       alignment: Alignment(0.0, 0.0),
+                    //       width: 130,
+                    //       height: 133,
+                    //       decoration: BoxDecoration(
+                    //           color: Color(0xff800080),
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(10))),
+                    //       child: Text(
+                    //         'Visa',
+                    //         style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontSize: 18,
+                    //           fontWeight: FontWeight.normal,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 50),
+                    //     Container(
+                    //       alignment: Alignment(0.0, 0.0),
+                    //       width: 130,
+                    //       height: 133,
+                    //       decoration: BoxDecoration(
+                    //           color: Color(0xffF4F6F8),
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(10))),
+                    //       child: Text(
+                    //         'Stripe',
+                    //         style: TextStyle(
+                    //           color: Colors.black,
+                    //           fontSize: 18,
+                    //           fontWeight: FontWeight.normal,
+                    //         ),
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(height: 20),
                     Text(
                       'Card Number \*',

@@ -5,6 +5,7 @@ import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_demo/Pages/update_image.dart';
 import 'package:flutter_demo/utils/Stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -577,12 +578,22 @@ class _AccountSettingtate extends State<AccountSetting> {
               padding: EdgeInsets.all(20),
               child: (_image == null || _image == '')
                   ? CircularProgressIndicator()
-                  : new Image.memory(
-                      _image,
-                      height: 50,
-                      fit: BoxFit.cover,
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          CupertinoPageRoute(
+                              builder: (context) => UpdateImage()),
+                          (_) => false,
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 30.0,
+                        backgroundImage: MemoryImage(_image), //here
+                      ),
                     )),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 (name == null) ? "Fetching value..." : name,

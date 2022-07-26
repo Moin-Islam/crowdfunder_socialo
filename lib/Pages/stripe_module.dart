@@ -27,7 +27,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
   String _id;
   String _earning;
   String name;
-  String invitation_code = "";
+  String invitation_code;
   var phonenumber;
 
   @override
@@ -185,7 +185,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 60.0, left: 10, right: 25, bottom: 15),
+                        top: 60.0, left: 10, right: 15, bottom: 15),
                     child: SizedBox(
                       width: 90,
                       child: Text(
@@ -357,12 +357,13 @@ class _StripeModuleXState extends State<StripeModuleX> {
               padding: EdgeInsets.all(20),
               child: (_image == null || _image == '')
                   ? CircularProgressIndicator()
-                  : new Image.memory(
-                      _image,
-                      height: 50,
-                      fit: BoxFit.cover,
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: MemoryImage(_image), //here
                     )),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 (name == null) ? "Fetching value..." : '$name',
@@ -372,10 +373,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
                     fontWeight: FontWeight.normal),
               ),
               Text(
-                (_id == null) ? "Fetching value..." : 'User ID : $_id',
+                (invitation_code == null)
+                    ? "Fetching value..."
+                    : 'code: $invitation_code',
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 11,
                     fontWeight: FontWeight.normal),
               ),
             ],

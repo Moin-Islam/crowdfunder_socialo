@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
@@ -36,6 +37,26 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
+  Widget buildBackBtn() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => SignIn()),
+              (_) => false,
+            );
+          },
+          padding: EdgeInsets.all(15),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Icon(
+            Icons.arrow_back,
+            color: Color(0xff800080),
+          )),
+    );
+  }
 
   Widget buildEmail() {
     return Column(
@@ -160,9 +181,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             Container(
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 120),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 50),
                 child: Column(
                   children: [
+                    buildBackBtn(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

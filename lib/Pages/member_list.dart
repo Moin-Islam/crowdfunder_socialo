@@ -204,6 +204,8 @@ class _MemberListState extends State<MemberList> {
                       width: 20,
                     ),
                     Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
@@ -228,21 +230,13 @@ class _MemberListState extends State<MemberList> {
               children: [
                 SizedBox(
                   child: ElevatedButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PaymentInfo())),
+                    onPressed: () {},
                     child: Row(
                       children: [
                         Text(
-                          "Total: \$$totalPrice",
+                          "Price: \$$productPrice",
                           style: GoogleFonts.rubik(
-                              color: Color(0xff800080), fontSize: 9),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right_rounded,
-                          color: Colors.white,
+                              color: Color(0xffffffff), fontSize: 13),
                         ),
                       ],
                     ),
@@ -401,8 +395,7 @@ class _MemberListState extends State<MemberList> {
                       Member member = members[index];
 
                       print("NEXT");
-                      print(member.name);
-                      print(member.name);
+                      print(member.productPrice);
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,

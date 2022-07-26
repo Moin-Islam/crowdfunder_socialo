@@ -20,15 +20,59 @@ class StripeAccount extends StatefulWidget {
 }
 
 class _StripeAccountState extends State<StripeAccount> {
+  var _image;
+  String name;
+  String invitation_code;
+  String _earning;
+
   @override
   void initState() {
     super.initState();
+    fetchUser();
     fetchProduct();
   }
 
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
+  }
+
+  Future fetchUser() async {
+    String token = await getToken();
+    final response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      setState(() {
+        name = data["USER_DATA"][0]["name"];
+      });
+
+      setState(() {
+        _earning = data["USER_DATA"][0]["total_earning"];
+      });
+      setState(() {
+        invitation_code = data["USER_DATA"][0]["invitation_code"];
+      });
+
+      var image1 = data["USER_DATA"][0]["profile_image"];
+      setState(() {
+        _image = base64Decode(image1);
+      });
+
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
   }
 
   Future<List<Product>> fetchProduct() async {
@@ -61,30 +105,37 @@ class _StripeAccountState extends State<StripeAccount> {
   Widget buildUserProfile() {
     return Container(
         child: Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: new BorderSide(color: Color(0xff800080), width: 1.0)),
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(20),
-            child: new Image.asset(
-              'img/person.png',
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-          ),
+              padding: EdgeInsets.all(20),
+              child: (_image == null || _image == '')
+                  ? CircularProgressIndicator()
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: MemoryImage(_image), //here
+                    )),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ilias Kanchon',
-                style: GoogleFonts.rubik(
+                (name == null) ? "Fetching value..." : '$name',
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
               ),
               Text(
-                'User ID : 12314',
-                style: GoogleFonts.roboto(
+                (invitation_code == null)
+                    ? "Fetching value..."
+                    : 'code: $invitation_code',
+                style: TextStyle(
                     color: Colors.black,
-                    fontSize: 13,
+                    fontSize: 11,
                     fontWeight: FontWeight.normal),
               ),
             ],
@@ -153,28 +204,32 @@ class _StripeAccountState extends State<StripeAccount> {
                     GoogleFonts.rubik(fontSize: 13, color: Color(0xff800080)),
               ),
               ElevatedButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => StripeAccount())),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Product links",
-                          style: GoogleFonts.rubik(color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right_rounded,
-                          color: Colors.white,
-                        ),
-                      ],
+                onPressed: () async {
+                  if (await canLaunch(productURL))
+                    await launch(productURL);
+                  else
+                    // can't launch url, there is some error
+                    throw "Could not launch $productURL";
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      "Product links",
+                      style: GoogleFonts.rubik(color: Colors.white),
                     ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xff800080)),
+                    SizedBox(
+                      width: 10,
                     ),
-                  ),
+                    Icon(
+                      Icons.keyboard_arrow_right_rounded,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xff800080)),
+                ),
+              ),
             ],
           )
         ],
@@ -218,7 +273,9 @@ class _StripeAccountState extends State<StripeAccount> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Earning : \$128.50',
+                    (_earning == null)
+                        ? "Fetching value..."
+                        : 'Total Earning : \$$_earning',
                     style: GoogleFonts.rubik(
                         color: Color(0xff800080),
                         fontSize: 15,
