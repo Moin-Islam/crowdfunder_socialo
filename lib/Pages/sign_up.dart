@@ -235,7 +235,7 @@ class _SignUpState extends State<SignUp> {
       'confirm_password': confirmpassword,
       'profile_image': "aaaa",
       'purpose': purpose,
-      'invitation_code': "xqrBfmdT8ZoVcKeuRAzMDNH1h4Sv3iFs",
+      'invitation_code': invitation,
     };
     print(data);
 

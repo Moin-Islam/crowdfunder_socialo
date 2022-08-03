@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/material/icons.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
@@ -23,6 +24,10 @@ class _StripeAccountState extends State<StripeAccount> {
   var _image;
   String name;
   String invitation_code;
+  String short_invitation_code;
+  int startIndex = 0;
+  int endIndex = 5;
+
   String _earning;
 
   @override
@@ -58,6 +63,7 @@ class _StripeAccountState extends State<StripeAccount> {
       });
       setState(() {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
+        short_invitation_code=invitation_code.substring(startIndex,endIndex);
       });
 
       var image1 = data["USER_DATA"][0]["profile_image"];
@@ -129,15 +135,20 @@ class _StripeAccountState extends State<StripeAccount> {
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
               ),
-              Text(
+              Row(
+                children: [
+                  Text(
                 (invitation_code == null)
                     ? "Fetching value..."
-                    : 'code: $invitation_code',
+                    : 'invitation code: $short_invitation_code',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
                     fontWeight: FontWeight.normal),
               ),
+              IconButton(onPressed:Clipboard.setData(ClipboardData(invitation_code)) ,icon: Icons.copy,)
+                ],
+              )
             ],
           )
         ],
@@ -158,7 +169,7 @@ class _StripeAccountState extends State<StripeAccount> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Product ' + productID,
+                 productName,
                 style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
               ),
               IconButton(

@@ -29,11 +29,13 @@ class _StripeModuleXState extends State<StripeModuleX> {
   String name;
   String invitation_code;
   var phonenumber;
+  String message;
 
   @override
   void initState() {
     super.initState();
     fetchUser();
+    fetchMessage();
   }
 
   Future<String> getToken() async {
@@ -104,6 +106,32 @@ class _StripeModuleXState extends State<StripeModuleX> {
       var image1 = data["USER_DATA"][0]["profile_image"];
       setState(() {
         _image = base64Decode(image1);
+      });
+
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
+
+  Future fetchMessage() async {
+    String token = await getToken();
+    final response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/profile/fetchInvitationMessage'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(response.body);
+      setState(() {
+        message = data["USER_DATA"][0]["message"];
       });
 
       // If the server did return a 200 OK response,
@@ -306,8 +334,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
       height: 48,
       child: ElevatedButton(
         onPressed: () {
-          String message =
-              "Hi, this is $name I just discovered an App that will generate all the money you need. Check it out! You'll be glad you did. Use my Invitation Code when you Sign Up. So here's how it works: Watch this video: https://bit.ly/CFpromo1 \n Download the App: (Download link) \n Sign-up using my invitation code : $invitation_code \n Qualify to raise money by helping your team with \n a one-time purchase Set-up your payment processor so you can Get paid. Share with 3 close contacts. This is the \"side-hustle\" everyone's been looking for!";
+          /*String message =
+              "Hi, this is $name I just discovered an App that will generate all the money you need. Check it out! You'll be glad you did. Use my Invitation Code when you Sign Up. So here's how it works: Watch this video: https://bit.ly/CFpromo1 \n Download the App: (Download link) \n Sign-up using my invitation code : $invitation_code \n Qualify to raise money by helping your team with \n a one-time purchase Set-up your payment processor so you can Get paid. Share with 3 close contacts. This is the \"side-hustle\" everyone's been looking for!";*/
           List<String> recipents;
           if (phonenumberController.text == null ||
               phonenumberController.text == "") {

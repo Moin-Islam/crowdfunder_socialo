@@ -34,6 +34,10 @@ class _AccountSettingtate extends State<AccountSetting> {
   String _public_key;
   String _private_key;
   String _id;
+  String invitation_code;
+  String short_invitation_code;
+  int startIndex = 0;
+  int endIndex = 5;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -115,8 +119,13 @@ class _AccountSettingtate extends State<AccountSetting> {
       });
 
       setState(() {
+        invitation_code = data["USER_DATA"][0]["invitation_code"];
+        short_invitation_code=invitation_code.substring(startIndex,endIndex);
+      });
+
+      setState(() {
         // _purpose = data["USER_DATA"][0]["purpose"];
-        _purpose = "Purpose";
+        _purpose = data["USER_DATA"][0]["purpose"];
       });
 
       setState(() {
@@ -578,37 +587,35 @@ class _AccountSettingtate extends State<AccountSetting> {
               padding: EdgeInsets.all(20),
               child: (_image == null || _image == '')
                   ? CircularProgressIndicator()
-                  : GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          CupertinoPageRoute(
-                              builder: (context) => UpdateImage()),
-                          (_) => false,
-                        );
-                      },
-                      child: CircleAvatar(
-                        radius: 30.0,
-                        backgroundImage: MemoryImage(_image), //here
-                      ),
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: MemoryImage(_image), //here
                     )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                (name == null) ? "Fetching value..." : name,
+                (name == null) ? "Fetching value..." : '$name',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
               ),
-              Text(
-                (_id == null) ? "Fetching value..." : 'User ID : $_id',
+              Row(
+                children: [
+                  Text(
+                (invitation_code == null)
+                    ? "Fetching value..."
+                    : 'invitation code: $short_invitation_code',
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 15,
+                    fontSize: 11,
                     fontWeight: FontWeight.normal),
               ),
+              IconButton(onPressed:Clipboard.setData(ClipboardData(invitation_code)) ,icon: Icons.copy,)
+                ],
+              )
             ],
           )
         ],
