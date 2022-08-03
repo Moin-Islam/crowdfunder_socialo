@@ -575,6 +575,13 @@ class _AccountSettingtate extends State<AccountSetting> {
     );
   }
 
+  Clipbooard () {
+    Clipboard.setData(ClipboardData(text : invitation_code));
+  }
+  Iccon () {
+    Icons.copy;
+  }
+
   Widget buildUserProfile() {
     return Container(
         child: Card(
@@ -613,7 +620,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                     fontSize: 11,
                     fontWeight: FontWeight.normal),
               ),
-              IconButton(onPressed:Clipboard.setData(ClipboardData(invitation_code)) ,icon: Icons.copy,)
+              IconButton(onPressed:Clipbooard(),icon: Iccon(),)
                 ],
               )
             ],

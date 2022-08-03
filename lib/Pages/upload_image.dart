@@ -36,6 +36,7 @@ class _UploadImageState extends State<UploadImage> {
 
     setState(() {
       convertedImage = img64;
+      print(convertedImage);
     });
   }
 
@@ -49,6 +50,7 @@ class _UploadImageState extends State<UploadImage> {
     String img64 = base64Encode(bytes);
     setState(() {
       convertedImage = img64;
+      
     });
   }
 
@@ -159,6 +161,7 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   Widget displayImage() {
+    print(bytes);
     return Container(
         padding: EdgeInsets.all(20),
         child: (bytes == null)
