@@ -6,6 +6,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -176,6 +177,62 @@ class _PaymentInfoState extends State<PaymentInfo> {
     return a;
   }
 
+
+  checkUserStatus(String token) async {
+    final user_response = await http.get(
+      Uri.parse(
+          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+      headers: {
+        'Authorization': '$token',
+      },
+    );
+
+    if (user_response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(user_response.body);
+      TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
+      TokenPreference.saveAddress("id", data["USER_DATA"][0]["id"]);
+      TokenPreference.saveAddress("status", data["USER_DATA"][0]["status"]);
+      TokenPreference.saveAddress(
+          "profile_image", data["USER_DATA"][0]["profile_image"]);
+
+      print(data["USER_DATA"][0]["status"]);
+      if (data["USER_DATA"][0]["status"] == "0") {
+        
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+
+
+      } else {
+        final stripe_response = await http.get(
+          Uri.parse(
+              'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
+          headers: {
+            'Authorization': '$token',
+          },
+        );
+
+        Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
+        print("NAX");
+        print(stripe_data["STRIPE_DATA"][0]["public_key"]);
+
+        if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StripeModuleX()),
+              (Route<dynamic> route) => false);
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+              (Route<dynamic> route) => false);
+        }
+      }
+    }
+
+
+  }
+
+
   Widget buildSetUpAccountbtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
@@ -245,10 +302,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                 });
 
                 if (data["status"] == 1) {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => MemberList()),
-                      (Route<dynamic> route) => false);
+                  checkUserStatus(token);
                 }
               },
         padding: EdgeInsets.all(15),

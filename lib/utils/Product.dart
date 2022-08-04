@@ -4,13 +4,15 @@ class Product {
   final String productURL;
   final String productPrice;
   final String productName;
+  final String productDescription;
 
   const Product(
       {this.productID,
       this.productName,
       this.productURL,
       this.productPrice,
-      this.saleCount});
+      this.saleCount,
+      this.productDescription});
 
   static Product fromJson(json) {
     return Product(
@@ -18,6 +20,7 @@ class Product {
         productName: json['product_name'],
         productURL: json['product_url'],
         productPrice: json['product_price'],
-        saleCount: json["sale_count"]);
+        saleCount: json["sale_count"],
+        productDescription: json["product_description"]);
   }
 }

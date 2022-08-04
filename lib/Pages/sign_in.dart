@@ -278,6 +278,8 @@ class _SignInState extends State<SignIn> {
       },
     );
 
+    print(user_response);
+
     if (user_response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(user_response.body);
       TokenPreference.saveAddress("name", data["USER_DATA"][0]["name"]);
@@ -288,9 +290,12 @@ class _SignInState extends State<SignIn> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
+        
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => MemberList()),
             (Route<dynamic> route) => false);
+
+
       } else {
         final stripe_response = await http.get(
           Uri.parse(
@@ -301,8 +306,10 @@ class _SignInState extends State<SignIn> {
         );
 
         Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
+        print("NAX");
+        print(stripe_data["STRIPE_DATA"][0]["public_key"]);
 
-        if (stripe_data["public_key"] != "") {
+        if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) => StripeModuleX()),

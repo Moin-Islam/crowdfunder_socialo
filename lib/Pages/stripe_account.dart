@@ -112,9 +112,7 @@ class _StripeAccountState extends State<StripeAccount> {
     Clipboard.setData(ClipboardData(text :invitation_code));
   }
 
-  Iccon () {
-    Icons.copy;
-  }
+
 
   Widget buildUserProfile() {
     return Container(
@@ -152,9 +150,9 @@ class _StripeAccountState extends State<StripeAccount> {
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
-                    fontWeight: FontWeight.normal),
+                    fontWeight: FontWeight.normal), 
               ),
-              IconButton(onPressed:Clipbooard() ,icon: Iccon(),)
+              IconButton(onPressed:Clipbooard() ,icon: const Icon(Icons.copy),)
                 ],
               )
             ],
@@ -165,7 +163,7 @@ class _StripeAccountState extends State<StripeAccount> {
   }
 
   Widget buildProductList(String productID, String productName,
-      String productURL, String productPrice, String saleCount) {
+      String productURL, String productPrice, String saleCount, String productDescription) {
     return Container(
       width: double.infinity,
       color: Color(0xffF4F6F8),
@@ -197,7 +195,7 @@ class _StripeAccountState extends State<StripeAccount> {
             height: 15,
           ),
           Text(
-            productName,
+            productDescription,
             style: GoogleFonts.roboto(fontSize: 12, color: Color(0xff707070)),
           ),
           SizedBox(
@@ -360,7 +358,8 @@ class _StripeAccountState extends State<StripeAccount> {
                                   member.productName,
                                   member.productURL,
                                   member.productPrice,
-                                  member.saleCount),
+                                  member.saleCount,
+                                  member.productDescription),
 
                               SizedBox(
                                 height: 20,

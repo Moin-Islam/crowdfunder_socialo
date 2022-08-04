@@ -23,6 +23,7 @@ class UploadImage extends StatefulWidget {
 class _UploadImageState extends State<UploadImage> {
   File image;
   Uint8List bytes;
+  Uint8List bytesss;
   String convertedImage;
   var _isLoading = false;
 
@@ -36,7 +37,7 @@ class _UploadImageState extends State<UploadImage> {
 
     setState(() {
       convertedImage = img64;
-      print(convertedImage);
+      
     });
   }
 
@@ -143,6 +144,14 @@ class _UploadImageState extends State<UploadImage> {
     if (convertedImage != null) {
       widget.data["profile_image"] = convertedImage;
     }
+    else {
+      /*final image1 = await ImagePicker().pickImage(source: );*/
+
+      bytesss = File("img/profilepicture.jpg").readAsBytesSync();
+      String img644 = base64Encode(bytesss);
+      widget.data["profile_image"] = img644;
+
+    }
     print(widget.data);
     var jsonResponse = null;
 
@@ -170,6 +179,7 @@ class _UploadImageState extends State<UploadImage> {
                 radius: 30.0,
                 backgroundImage: MemoryImage(bytes), //here
               ));
+              
   }
 
   Widget buildBottomButtons() {
