@@ -31,6 +31,9 @@ class _SignInState extends State<SignIn> {
   var token = "";
 
   fetchUserLoggedIn() async {
+    setState(() {
+      _isLoading = true;
+    });
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
 
@@ -45,13 +48,24 @@ class _SignInState extends State<SignIn> {
 
       if (response.statusCode == 200) {
         checkUserStatus(token);
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
       }
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isLoading = true;
+    });
     fetchUserLoggedIn();
   }
 
@@ -290,12 +304,9 @@ class _SignInState extends State<SignIn> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
-        
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => MemberList()),
             (Route<dynamic> route) => false);
-
-
       } else {
         final stripe_response = await http.get(
           Uri.parse(

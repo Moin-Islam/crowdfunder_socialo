@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
+import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
@@ -23,6 +24,8 @@ class UpdateImage extends StatefulWidget {
 class _UpdateImageState extends State<UpdateImage> {
   File image;
   Uint8List bytes;
+
+  bool _isLoading = false;
 
   var convertedImage;
 
@@ -133,20 +136,15 @@ class _UpdateImageState extends State<UpdateImage> {
     Map data = {"profile_image": convertedImage};
 
     print(data);
-    var response = await http.put(
+    var response = await http.post(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/profile/updateProfileImage"),
         headers: {
           'Authorization': '$token',
         },
-        body: jsonEncode(data));
-
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      // jsonResponse = json.decode(response.body);
-      print("NAX");
-    }
+        body: data);
+    var jsonResponse = json.decode(response.body);
+    return jsonResponse;
   }
 
   Widget buildBottomButtons() {
@@ -162,40 +160,51 @@ class _UpdateImageState extends State<UpdateImage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 RaisedButton(
-                  onPressed: () {
-                    print("BUTTON");
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          print("BUTTON");
 
-                    singUp().then((res) {
-                      print(res);
-                      if (res["status"] == 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(res["message"]),
-                          duration: Duration(milliseconds: 3000),
-                        ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(res["message"]),
-                          duration: Duration(milliseconds: 3000),
-                        ));
+                          singUp().then((res) {
+                            print("resy");
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            if (res["http_response_code"] != 200) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(res["message"]),
+                                duration: Duration(milliseconds: 3000),
+                              ));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(res["message"]),
+                                duration: Duration(milliseconds: 3000),
+                              ));
 
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => SignIn()),
-                            (Route<dynamic> route) => false);
-                      }
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          AccountSetting()),
+                                  (Route<dynamic> route) => false);
+                            }
 
-                      // if (res.status == 0) {
-                      //
-                      // }
-                    });
-                    // print(response.statusCode);
-                    // if (response.statusCode != 200) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //     content: Text("Your Text"),
-                    //     duration: Duration(milliseconds: 300),
-                    //   ));
-                    // }
-                  },
+                            // if (res.status == 0) {
+                            //
+                            // }
+                          });
+                          // print(response.statusCode);
+                          // if (response.statusCode != 200) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //     content: Text("Your Text"),
+                          //     duration: Duration(milliseconds: 300),
+                          //   ));
+                          // }
+                        },
                   padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),

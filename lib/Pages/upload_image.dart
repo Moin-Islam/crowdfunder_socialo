@@ -8,6 +8,7 @@ import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
+import 'package:flutter_demo/utils/blankProfile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,6 @@ class _UploadImageState extends State<UploadImage> {
 
     setState(() {
       convertedImage = img64;
-      
     });
   }
 
@@ -51,7 +51,6 @@ class _UploadImageState extends State<UploadImage> {
     String img64 = base64Encode(bytes);
     setState(() {
       convertedImage = img64;
-      
     });
   }
 
@@ -143,14 +142,8 @@ class _UploadImageState extends State<UploadImage> {
   singUp() async {
     if (convertedImage != null) {
       widget.data["profile_image"] = convertedImage;
-    }
-    else {
-      /*final image1 = await ImagePicker().pickImage(source: );*/
-
-      bytesss = File("img/profilepicture.jpg").readAsBytesSync();
-      String img644 = base64Encode(bytesss);
-      widget.data["profile_image"] = img644;
-
+    } else {
+      widget.data["profile_image"] = blank_image;
     }
     print(widget.data);
     var jsonResponse = null;
@@ -160,7 +153,9 @@ class _UploadImageState extends State<UploadImage> {
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
         body: widget.data);
 
-    jsonResponse = json.decode(response.body);
+    // jsonResponse = json.decode(response.body);
+
+    print(response.body);
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
@@ -179,7 +174,6 @@ class _UploadImageState extends State<UploadImage> {
                 radius: 30.0,
                 backgroundImage: MemoryImage(bytes), //here
               ));
-              
   }
 
   Widget buildBottomButtons() {

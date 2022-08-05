@@ -130,8 +130,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
+      print(response);
       setState(() {
-        message = data["USER_DATA"][0]["message"];
+        message = data["invitation_message"];
       });
 
       // If the server did return a 200 OK response,
@@ -343,6 +344,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
           } else {
             recipents = [phonenumberController.text];
           }
+
+          print(message);
 
           _sendSMS(message, recipents);
         },
