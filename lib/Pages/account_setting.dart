@@ -36,6 +36,7 @@ class _AccountSettingtate extends State<AccountSetting> {
   String _id;
   String invitation_code;
   String short_invitation_code;
+   
   int startIndex = 0;
   int endIndex = 5;
 
@@ -68,9 +69,6 @@ class _AccountSettingtate extends State<AccountSetting> {
     newpassword,
     confirmpassword,
   ) async {
-    setState(() {
-      _isLoading = true;
-    });
     String token = await getToken();
     Map data = {
       'name': name,
@@ -89,9 +87,6 @@ class _AccountSettingtate extends State<AccountSetting> {
         },
         body: jsonEncode(data));
     jsonResponse = json.decode(response.body);
-    setState(() {
-      _isLoading = false;
-    });
 
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
@@ -126,7 +121,7 @@ class _AccountSettingtate extends State<AccountSetting> {
 
       setState(() {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
-        short_invitation_code = invitation_code.substring(startIndex, endIndex);
+        short_invitation_code=invitation_code.substring(startIndex,endIndex);
       });
 
       setState(() {
@@ -199,9 +194,6 @@ class _AccountSettingtate extends State<AccountSetting> {
     String public,
     String private,
   ) async {
-    setState(() {
-      _isLoading = true;
-    });
     String token = await getToken();
     Map data = {
       'public_key': public,
@@ -216,9 +208,7 @@ class _AccountSettingtate extends State<AccountSetting> {
         },
         body: jsonEncode(data));
     jsonResponse = json.decode(response.body);
-    setState(() {
-      _isLoading = false;
-    });
+
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       return jsonResponse;
@@ -450,23 +440,21 @@ class _AccountSettingtate extends State<AccountSetting> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           RaisedButton(
-            onPressed: _isLoading
-                ? null
-                : () {
-                    accountSetting(
-                      nameController.text,
-                      emailController.text,
-                      purposeController.text,
-                      currentpasswordController.text,
-                      newpasswordController.text,
-                      confirmpasswordController.text,
-                    ).then((res) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(res["message"]),
-                        duration: Duration(milliseconds: 3000),
-                      ));
-                    });
-                  },
+            onPressed: () {
+              accountSetting(
+                nameController.text,
+                emailController.text,
+                purposeController.text,
+                currentpasswordController.text,
+                newpasswordController.text,
+                confirmpasswordController.text,
+              ).then((res) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(res["message"]),
+                  duration: Duration(milliseconds: 3000),
+                ));
+              });
+            },
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -547,17 +535,15 @@ class _AccountSettingtate extends State<AccountSetting> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: _isLoading
-            ? null
-            : () {
-                saveStripe(publickeyController.text, privatekeyController.text)
-                    .then((res) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(res["message"]),
-                    duration: Duration(milliseconds: 3000),
-                  ));
-                });
-              },
+        onPressed: () {
+          saveStripe(publickeyController.text, privatekeyController.text)
+              .then((res) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(res["message"]),
+              duration: Duration(milliseconds: 3000),
+            ));
+          });
+        },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
@@ -590,9 +576,14 @@ class _AccountSettingtate extends State<AccountSetting> {
     );
   }
 
-  Clipbooard() {
-    Clipboard.setData(ClipboardData(text: invitation_code));
+  Clipbooard () {
+
+    Clipboard.setData(ClipboardData(text : invitation_code));
+    
   }
+
+
+
 
   Widget buildUserProfile() {
     return Container(
@@ -602,20 +593,19 @@ class _AccountSettingtate extends State<AccountSetting> {
           side: new BorderSide(color: Color(0xff800080), width: 1.0)),
       child: Row(
         children: [
-          InkWell(
-            child: Container(
-                padding: EdgeInsets.all(20),
-                child: (_image == null || _image == '')
-                    ? CircularProgressIndicator()
-                    : CircleAvatar(
+          Container(
+              padding: EdgeInsets.all(20),
+              child: (_image == null || _image == '')
+                  ? CircularProgressIndicator()
+                  : GestureDetector(
+                    onTap: () {
+                      
+                    },
+                    child: CircleAvatar(
                         radius: 30.0,
                         backgroundImage: MemoryImage(_image), //here
-                      )),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UpdateImage()));
-            },
-          ),
+                      ),
+                  )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,18 +620,15 @@ class _AccountSettingtate extends State<AccountSetting> {
               Row(
                 children: [
                   Text(
-                    (invitation_code == null)
-                        ? "Fetching value..."
-                        : 'invitation code: $short_invitation_code',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 11,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  IconButton(
-                    onPressed: Clipbooard(),
-                    icon: const Icon(Icons.copy),
-                  )
+                (invitation_code == null)
+                    ? "Fetching value..."
+                    : 'invitation code: $short_invitation_code' + ".....",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 11,
+                    fontWeight: FontWeight.normal),
+              ),
+              IconButton(onPressed:Clipbooard(),icon: const Icon(Icons.copy),)
                 ],
               )
             ],

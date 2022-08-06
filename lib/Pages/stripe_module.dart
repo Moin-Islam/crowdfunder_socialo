@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/src/services/clipboard.dart';
 
 import '../utils/token_preference.dart';
 
@@ -30,6 +31,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
   String invitation_code;
   var phonenumber;
   String message;
+  String short_invitation_code;
+  int startIndex = 0;
+  int endIndex = 5;
 
   @override
   void initState() {
@@ -93,6 +97,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
       setState(() {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
+        short_invitation_code=invitation_code.substring(startIndex,endIndex);
       });
 
       setState(() {
@@ -376,6 +381,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
+  Clipbooard () {
+
+    Clipboard.setData(ClipboardData(text : invitation_code));
+    
+  }
+
   Widget BuildProfileIDSection() {
     return Container(
         child: Card(
@@ -403,7 +414,9 @@ class _StripeModuleXState extends State<StripeModuleX> {
                     fontSize: 15,
                     fontWeight: FontWeight.normal),
               ),
-              Text(
+              Row(
+                children: [
+                  Text(
                 (invitation_code == null)
                     ? "Fetching value..."
                     : 'code: $invitation_code',
@@ -411,7 +424,11 @@ class _StripeModuleXState extends State<StripeModuleX> {
                     color: Colors.black,
                     fontSize: 11,
                     fontWeight: FontWeight.normal),
-              ),
+              
+                ),
+                IconButton(onPressed:Clipbooard(),icon: const Icon(Icons.copy),)
+                ],
+              )
             ],
           )
         ],

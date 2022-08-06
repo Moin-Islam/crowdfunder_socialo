@@ -146,7 +146,7 @@ class _StripeAccountState extends State<StripeAccount> {
                   Text(
                 (invitation_code == null)
                     ? "Fetching value..."
-                    : 'invitation code: $short_invitation_code',
+                    : 'invitation code: $short_invitation_code' + ".....",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
