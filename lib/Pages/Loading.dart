@@ -87,23 +87,10 @@ class _LoadingState extends State<Loading> {
             MaterialPageRoute(builder: (BuildContext context) => MemberList()),
             (Route<dynamic> route) => false);
       } else {
-        final stripe_response = await http.get(
-          Uri.parse(
-              'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
-          headers: {
-            'Authorization': '$token',
-          },
-        );
-
-        Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
         print("NAX");
+        print(data["USER_DATA"][0]["stripe_status"]);
 
-        if (stripe_data["message"] == "Data not found") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => StripeModuleX()),
-              (Route<dynamic> route) => false);
-        } else if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
+        if (data["USER_DATA"][0]["stripe_status"] == "1") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) => StripeModuleX()),

@@ -171,12 +171,41 @@ class _PaymentInfoState extends State<PaymentInfo> {
     return prefs.getString('token');
   }
 
-  StripePayment() async {
-    var a = await Stripe.instance
-        .createToken(CreateTokenParams(type: TokenType.Card));
-    return a;
-  }
+  StripePayment(id, BuildContext context) async {
+    Stripe.publishableKey = widget.data[id]['publishableKey'];
+    print(widget.data[id]['publishableKey']);
+    Stripe.merchantIdentifier = "test";
+    TokenData tokenData;
 
+    var res = await Stripe.instance
+        .createToken(CreateTokenParams(type: TokenType.Card))
+        .then((res) {
+      print(res);
+      print("NAXY");
+      tokenData = res;
+      print("NAXY");
+      print(tokenData.id);
+    }).onError((error, stackTrace) {
+      print("onError sent message: $error");
+      if (error is StripeException) {
+        print("Error from Stripe: ${error.error.localizedMessage}");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error.error.localizedMessage),
+          duration: Duration(milliseconds: 3000),
+        ));
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+
+    if (widget.data[id] != null || widget.data[id] != {}) {
+      /*receiveData['team_data'][k]
+                    .add();*/
+      temp.add({'saleId': id, 'stripeToken': tokenData.id});
+    }
+  }
 
   checkUserStatus(String token) async {
     final user_response = await http.get(
@@ -197,43 +226,35 @@ class _PaymentInfoState extends State<PaymentInfo> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
-        
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => MemberList()),
             (Route<dynamic> route) => false);
-
-
       } else {
-        final stripe_response = await http.get(
-          Uri.parse(
-              'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
-          headers: {
-            'Authorization': '$token',
-          },
-        );
-
-        Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
-        print("NAX");
-        print(stripe_data["STRIPE_DATA"][0]["public_key"]);
-
-        if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
+        if (data["USER_DATA"][0]["status"] == "0") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (BuildContext context) => StripeModuleX()),
+                  builder: (BuildContext context) => MemberList()),
               (Route<dynamic> route) => false);
         } else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-              (Route<dynamic> route) => false);
+          print("NAX");
+          print(data["USER_DATA"][0]["stripe_status"]);
+
+          if (data["USER_DATA"][0]["stripe_status"] == "1") {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => StripeModuleX()),
+                (Route<dynamic> route) => false);
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+                (Route<dynamic> route) => false);
+          }
         }
       }
     }
-
-
   }
 
-
-  Widget buildSetUpAccountbtn() {
+  Widget buildSetUpAccountbtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
@@ -245,31 +266,24 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   _isLoading = true;
                 });
                 String token = await getToken();
+                await Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
+                  number: cardFormatter.getUnmaskedText(),
+                  expirationMonth:
+                      int.parse(expirydateController.text.split('/')[0]),
+                  expirationYear:
+                      int.parse(expirydateController.text.split('/')[1]),
+                  cvc: cvvController.text,
+                ));
+                for (var id in widget.data.keys) {
+                  await StripePayment(id, context);
+                }
 
-                widget.data.keys.forEach((k) {
-                  Stripe.publishableKey = widget.data[k]['publishableKey'];
-                  print(widget.data[k]['publishableKey']);
-                  Stripe.merchantIdentifier = "test";
+                // widget.data.keys.forEach(await (id) {
+                //     StripePayment(id);
+                // });
 
-                  Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
-                    number: cardFormatter.getUnmaskedText(),
-                    expirationMonth:
-                        int.parse(expirydateController.text.split('/')[0]),
-                    expirationYear:
-                        int.parse(expirydateController.text.split('/')[1]),
-                    cvc: cvvController.text,
-                  ));
-
-                  StripePayment().then((res) {
-                    TokenData tokenData = res;
-
-                    if (widget.data[k] != null || widget.data[k] != {}) {
-                      /*receiveData['team_data'][k]
-                    .add();*/
-                      temp.add({'saleId': k, 'stripeToken': tokenData.id});
-                    }
-                  });
-                });
+                // StripePayment().then((res) {}
+                //   );
 
                 receiveData['team_data'] = temp;
 
@@ -289,7 +303,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                 Map<String, dynamic> data = jsonDecode(response.body);
 
                 setState(() {
-                  _log = response.body;
+                  _log = json.encode(receiveData) + response.body;
                 });
 
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -455,7 +469,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                       ),
                     ),
                     buildCVV(),
-                    buildSetUpAccountbtn(),
+                    buildSetUpAccountbtn(context),
                     Text((_log == null) ? "Logs" : '$_log')
                   ],
                 ),

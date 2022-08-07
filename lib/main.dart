@@ -21,11 +21,29 @@ class MyApp extends StatelessWidget {
   //This widget is the root of your application
   @override
   Widget build(BuildContext context) {
+    const MaterialColor kPrimaryColor = const MaterialColor(
+      0xff800080,
+      const <int, Color>{
+        50: const Color(0xff800080),
+        100: const Color(0xff800080),
+        200: const Color(0xff800080),
+        300: const Color(0xff800080),
+        400: const Color(0xff800080),
+        500: const Color(0xff800080),
+        600: const Color(0xff800080),
+        700: const Color(0xff800080),
+        800: const Color(0xff800080),
+        900: const Color(0xff800080),
+      },
+    );
+
     return MaterialApp(
         title: 'Crowd Funder',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.amber,
+          primarySwatch: kPrimaryColor,
+          textSelectionTheme:
+              const TextSelectionThemeData(cursorColor: kPrimaryColor),
         ),
         home: IntroScreen());
   }

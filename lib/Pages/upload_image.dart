@@ -155,11 +155,7 @@ class _UploadImageState extends State<UploadImage> {
 
     // jsonResponse = json.decode(response.body);
 
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
-    }
+    jsonResponse = json.decode(response.body);
 
     return jsonResponse;
   }

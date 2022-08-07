@@ -196,10 +196,14 @@ class _MemberListState extends State<MemberList> {
                   children: [
                     (image == null || image == '')
                         ? CircularProgressIndicator()
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: MemoryImage(image), //here
-                          ),
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Image.memory(
+                              image,
+                              gaplessPlayback: true,
+                              width: 60,
+                              height: 60,
+                            )),
                     SizedBox(
                       width: 20,
                     ),
