@@ -30,45 +30,6 @@ class _SignInState extends State<SignIn> {
   bool _isLoading = false;
   var token = "";
 
-  fetchUserLoggedIn() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("token");
-
-    if (token != null) {
-      final response = await http.get(
-        Uri.parse(
-            'https://demo.socialo.agency/crowdfunder-api-application/authentication/auth'),
-        headers: {
-          'Authorization': '$token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        checkUserStatus(token);
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _isLoading = true;
-    });
-    fetchUserLoggedIn();
-  }
-
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
@@ -318,9 +279,13 @@ class _SignInState extends State<SignIn> {
 
         Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
         print("NAX");
-        print(stripe_data["STRIPE_DATA"][0]["public_key"]);
 
-        if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
+        if (stripe_data["message"] == "Data not found") {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StripeModuleX()),
+              (Route<dynamic> route) => false);
+        } else if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) => StripeModuleX()),

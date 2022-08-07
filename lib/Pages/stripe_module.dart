@@ -34,7 +34,6 @@ class _StripeModuleXState extends State<StripeModuleX> {
   String short_invitation_code;
   int startIndex = 0;
   int endIndex = 5;
-
   @override
   void initState() {
     super.initState();
@@ -97,7 +96,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
       setState(() {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
-        short_invitation_code=invitation_code.substring(startIndex,endIndex);
+        short_invitation_code = invitation_code.substring(startIndex, endIndex);
       });
 
       setState(() {
@@ -381,10 +380,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
-  Clipbooard () {
-
-    Clipboard.setData(ClipboardData(text : invitation_code));
-    
+  Clipbooard() {
+    Clipboard.setData(ClipboardData(text: invitation_code));
   }
 
   Widget BuildProfileIDSection() {
@@ -417,16 +414,18 @@ class _StripeModuleXState extends State<StripeModuleX> {
               Row(
                 children: [
                   Text(
-                (invitation_code == null)
-                    ? "Fetching value..."
-                    : 'code: $invitation_code',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 11,
-                    fontWeight: FontWeight.normal),
-              
-                ),
-                IconButton(onPressed:Clipbooard(),icon: const Icon(Icons.copy),)
+                    (invitation_code == null)
+                        ? "Fetching value..."
+                        : 'invitation code: $short_invitation_code' + ".....",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 11,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  IconButton(
+                    onPressed: Clipbooard(),
+                    icon: const Icon(Icons.copy),
+                  )
                 ],
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Pages/Loading.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +27,7 @@ class IntroScreenState extends State<IntroScreen> {
     if (token != null) {
       if (token == "seen") {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignIn()));
+            context, MaterialPageRoute(builder: (context) => Loading()));
       }
     }
     /*if (token != "") {
@@ -533,7 +534,7 @@ class IntroScreenState extends State<IntroScreen> {
 
     TokenPreference.saveAddress("intro_screen", "seen");
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Loading()));
   }
 
   void onNextPress() {
