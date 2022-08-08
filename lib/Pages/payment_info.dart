@@ -225,11 +225,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
           "profile_image", data["USER_DATA"][0]["profile_image"]);
 
       print(data["USER_DATA"][0]["status"]);
-      if (data["USER_DATA"][0]["status"] == "0") {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-            (Route<dynamic> route) => false);
-      } else {
+      
         if (data["USER_DATA"][0]["status"] == "0") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -250,7 +246,6 @@ class _PaymentInfoState extends State<PaymentInfo> {
                 (Route<dynamic> route) => false);
           }
         }
-      }
     }
   }
 

@@ -265,37 +265,25 @@ class _SignInState extends State<SignIn> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-            (Route<dynamic> route) => false);
-      } else {
-        final stripe_response = await http.get(
-          Uri.parse(
-              'https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo'),
-          headers: {
-            'Authorization': '$token',
-          },
-        );
-
-        Map<String, dynamic> stripe_data = jsonDecode(stripe_response.body);
-        print("NAX");
-
-        if (stripe_data["message"] == "Data not found") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (BuildContext context) => StripeModuleX()),
-              (Route<dynamic> route) => false);
-        } else if (stripe_data["STRIPE_DATA"][0]["public_key"] != "") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => StripeModuleX()),
+                  builder: (BuildContext context) => MemberList()),
               (Route<dynamic> route) => false);
         } else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-              (Route<dynamic> route) => false);
+          print("NAX");
+          print(data["USER_DATA"][0]["stripe_status"]);
+
+          if (data["USER_DATA"][0]["stripe_status"] == "1") {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => StripeModuleX()),
+                (Route<dynamic> route) => false);
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+                (Route<dynamic> route) => false);
+          }
         }
-      }
     }
 
     setState(() {
