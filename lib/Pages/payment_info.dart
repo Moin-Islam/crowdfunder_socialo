@@ -465,7 +465,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     ),
                     buildCVV(),
                     buildSetUpAccountbtn(context),
-                    Text((_log == null) ? "Logs" : '$_log')
+                    //Text((_log == null) ? "Logs" : '$_log')
                   ],
                 ),
               ),

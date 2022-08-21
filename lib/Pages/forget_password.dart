@@ -28,6 +28,7 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   bool isRememberMe = false;
   bool _isLoading = false;
+  
 
   @override
   void initState() {
@@ -94,35 +95,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     );
   }
 
-  Widget buildLoginBtn() {
+  Widget buildLoginBtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25),
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 50),
       child: RaisedButton(
         elevation: 5,
-        onPressed: () {
-          // setState(() {
-          //   _isLoading = true;
-          // });
-          signIn(emailController.text).then((res) {
-            print(res);
-            if (res["status"] == 0) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Invalid Email"),
-                duration: Duration(milliseconds: 3000),
-              ));
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text("Check Email"),
-                duration: Duration(milliseconds: 3000),
-              ));
-            }
-
-            // if (res.status == 0) {
-            //
-            // }
-          });
+        onPressed: _isLoading ? null : () {
+           setState(() {
+            _isLoading = true;
+           });
+          signIn(emailController.text, context);
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -150,6 +134,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   signIn(
     String email,
+    BuildContext context
   ) async {
     Map data = {'email': email};
     print("NAX");
@@ -161,12 +146,28 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
+      
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(jsonResponse["message"]),
+                duration: Duration(milliseconds: 3000),
+              ));
+            
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => SignIn()),
           (Route<dynamic> route) => false);
-      return {"status": 1};
+      
+      setState(() {
+        _isLoading = false;
+      });
     } else {
-      return {"status": 0};
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(jsonResponse["message"]),
+                duration: Duration(milliseconds: 3000),
+              ));
+      
     }
   }
 
@@ -234,7 +235,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                     buildEmail(),
                     SizedBox(height: 20),
-                    buildLoginBtn(),
+                    buildLoginBtn(context),
                   ],
                 ),
               ),

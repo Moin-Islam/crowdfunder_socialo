@@ -227,6 +227,9 @@ class _SignUpState extends State<SignUp> {
 
   signUp(String name, email, purpose, password, confirmpassword,
       invitation) async {
+    setState(() {
+      _isLoading = true;
+    });
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {
       'name': name,
@@ -240,6 +243,10 @@ class _SignUpState extends State<SignUp> {
     print(data);
 
     if (data != null) {
+      setState(() {
+      _isLoading = true;
+    });
+      
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => UploadImage(data: data)),
@@ -288,10 +295,8 @@ class _SignUpState extends State<SignUp> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
-        onPressed: () {
-          setState(() {
-            _isLoading = true;
-          });
+        onPressed: _isLoading ? null : () {
+          
           print(nameController.text);
 
           signUp(

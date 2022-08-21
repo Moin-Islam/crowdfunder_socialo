@@ -173,7 +173,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 60.0, left: 10, right: 25, bottom: 15),
+                        top: 60.0, left: 15, right: 5, bottom: 15),
                     child: SizedBox(
                       width: 90,
                       child: Text(
@@ -218,7 +218,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 60.0, left: 10, right: 15, bottom: 15),
+                        top: 60.0, left: 15, right: 5, bottom: 15),
                     child: SizedBox(
                       width: 90,
                       child: Text(
@@ -380,11 +380,13 @@ class _StripeModuleXState extends State<StripeModuleX> {
     );
   }
 
-  Clipbooard() {
-    Clipboard.setData(ClipboardData(text: invitation_code));
+  Clipbooard(BuildContext context) {
+     Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+});;
   }
 
-  Widget BuildProfileIDSection() {
+  Widget BuildProfileIDSection(BuildContext context) {
     return Container(
         child: Card(
       shape: RoundedRectangleBorder(
@@ -422,10 +424,12 @@ class _StripeModuleXState extends State<StripeModuleX> {
                         fontSize: 11,
                         fontWeight: FontWeight.normal),
                   ),
-                  IconButton(
-                    onPressed: Clipbooard(),
-                    icon: const Icon(Icons.copy),
-                  )
+                  TextButton(onPressed:(() async {
+                
+    Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+});;
+              }),child: const Icon(Icons.copy),)
                 ],
               )
             ],
@@ -488,7 +492,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                 ],
               ),
               SizedBox(height: 15),
-              BuildProfileIDSection(),
+              BuildProfileIDSection(context),
               SizedBox(
                 height: 20,
               ),

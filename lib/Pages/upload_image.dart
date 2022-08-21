@@ -26,7 +26,7 @@ class _UploadImageState extends State<UploadImage> {
   Uint8List bytes;
   Uint8List bytesss;
   String convertedImage;
-  var _isLoading = false;
+  bool _isLoading = false;
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -122,7 +122,7 @@ class _UploadImageState extends State<UploadImage> {
       child: RichText(
           text: TextSpan(children: [
         TextSpan(
-            text: 'Don\'t have any Account?',
+            text: 'Already have an account?',
             style: GoogleFonts.roboto(
                 color: Colors.black38,
                 fontSize: 13,
@@ -203,10 +203,7 @@ class _UploadImageState extends State<UploadImage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Signing Up please wait"),
-                            duration: Duration(milliseconds: 3000),
-                          ));
+                          
 
                           setState(() {
                             _isLoading = true;
@@ -216,18 +213,26 @@ class _UploadImageState extends State<UploadImage> {
 
                           singUp().then((res) {
                             print(res);
+                            
                             if (res["status"] == 0) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
                                 duration: Duration(milliseconds: 3000),
                               ));
+                               setState(() {
+                              _isLoading = false;
+                            });
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
                                 duration: Duration(milliseconds: 3000),
                               ));
+                               setState(() {
+                              _isLoading = false;
+                            });
+                             
 
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
@@ -236,9 +241,7 @@ class _UploadImageState extends State<UploadImage> {
                                   (Route<dynamic> route) => false);
                             }
 
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            
 
                             // if (res.status == 0) {
                             //

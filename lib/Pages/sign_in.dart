@@ -213,11 +213,11 @@ class _SignInState extends State<SignIn> {
           textAlign: TextAlign.center,
           text: TextSpan(children: [
             TextSpan(
-              text: 'Don\'t have any Account? ',
+              text: 'Don\'t already have an account? ',
               style: GoogleFonts.roboto(
                   color: Colors.black38,
                   fontSize: 13,
-                  fontWeight: FontWeight.normal),
+                  fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: 'Sign Up Now',

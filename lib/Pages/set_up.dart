@@ -26,6 +26,7 @@ class _SetUpState extends State<SetUp> {
   String _private_key;
   TextEditingController publickeyController = TextEditingController();
   TextEditingController privatekeyController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -59,7 +60,6 @@ class _SetUpState extends State<SetUp> {
     );
   }
 
-  bool _isLoading = false;
 
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -110,7 +110,11 @@ class _SetUpState extends State<SetUp> {
     }
   }
 
-  paymentSetup() async {
+  paymentSetup(BuildContext context) async {
+
+    setState(() {
+        _isLoading = true;
+      });
     Map data = {
       'public_key': publickeyController.text,
       'secret_key': privatekeyController.text
@@ -126,9 +130,17 @@ class _SetUpState extends State<SetUp> {
           'Authorization': '$token',
         },
         body: jsonEncode(data));
+    setState(() {
+        _isLoading= false;
+      });
+      jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      jsonResponse = json.decode(response.body);
+      
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(jsonResponse["message"]),
+                      duration: Duration(milliseconds: 3000),
+                    ));
 
       if (jsonResponse != null) {
         setState(() {
@@ -137,10 +149,14 @@ class _SetUpState extends State<SetUp> {
 
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (BuildContext context) => StripeAccount()),
+                builder: (BuildContext context) => StripeModuleX()),
             (Route<dynamic> route) => false);
       }
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(jsonResponse["message"]),
+                      duration: Duration(milliseconds: 3000),
+                    ));
       setState(() {
         _isLoading = false;
       });
@@ -227,13 +243,14 @@ class _SetUpState extends State<SetUp> {
     );
   }
 
-  Widget buildSetUpAccountbtn() {
+  Widget buildSetUpAccountbtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () {
-          paymentSetup();
+        onPressed: _isLoading ? null :() {
+          paymentSetup(context);
+
         },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -308,7 +325,7 @@ class _SetUpState extends State<SetUp> {
                     ),
                     SizedBox(height: 20),
                     buildPrivateKey(),
-                    buildSetUpAccountbtn(),
+                    buildSetUpAccountbtn(context),
                   ],
                 ),
               ),

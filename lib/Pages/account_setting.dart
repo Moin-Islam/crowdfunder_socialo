@@ -27,6 +27,7 @@ class _AccountSettingtate extends State<AccountSetting> {
   Future<Stripe> futureStripe;
   File image;
   bool _isLoading = false;
+  bool _isLoading2 = false;
   String name;
   String _email;
   var _image;
@@ -36,7 +37,8 @@ class _AccountSettingtate extends State<AccountSetting> {
   String _id;
   String invitation_code;
   String short_invitation_code;
-   
+  bool apiload = true;
+
   int startIndex = 0;
   int endIndex = 5;
 
@@ -52,8 +54,16 @@ class _AccountSettingtate extends State<AccountSetting> {
   @override
   void initState() {
     super.initState();
-    futureUser = fetchUser();
-    futureStripe = fetchStripe();
+
+    allapiload();
+  }
+
+  allapiload() async {
+    futureUser = await fetchUser();
+    futureStripe = await fetchStripe();
+    setState(() {
+      apiload = false;
+    });
   }
 
   Future<String> getToken() async {
@@ -69,6 +79,9 @@ class _AccountSettingtate extends State<AccountSetting> {
     newpassword,
     confirmpassword,
   ) async {
+     setState(() {
+        _isLoading = true;
+      });
     String token = await getToken();
     Map data = {
       'name': name,
@@ -86,18 +99,27 @@ class _AccountSettingtate extends State<AccountSetting> {
           'Authorization': token,
         },
         body: jsonEncode(data));
+    
     jsonResponse = json.decode(response.body);
 
+    setState(() {
+        _isLoading = false;
+      });
+
     if (response.statusCode == 200) {
+     
       jsonResponse = json.decode(response.body);
+     
 
       return jsonResponse;
+      
+      
     } else {
       return jsonResponse;
     }
   }
 
-  Future<User> fetchUser() async {
+  fetchUser() async {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
@@ -121,7 +143,7 @@ class _AccountSettingtate extends State<AccountSetting> {
 
       setState(() {
         invitation_code = data["USER_DATA"][0]["invitation_code"];
-        short_invitation_code=invitation_code.substring(startIndex,endIndex);
+        short_invitation_code = invitation_code.substring(startIndex, endIndex);
       });
 
       setState(() {
@@ -145,7 +167,6 @@ class _AccountSettingtate extends State<AccountSetting> {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(response.body);
-      return User.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -153,7 +174,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     }
   }
 
-  Future<Stripe> fetchStripe() async {
+  fetchStripe() async {
     String token = await getToken();
     var jsonResponse = null;
     var response = await http.get(
@@ -181,11 +202,10 @@ class _AccountSettingtate extends State<AccountSetting> {
           (_private_key == "") ? "Private Key" : _private_key;
 
       print(response.body);
-
-      return Stripe.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
+
       throw Exception('Failed to load album');
     }
   }
@@ -194,6 +214,10 @@ class _AccountSettingtate extends State<AccountSetting> {
     String public,
     String private,
   ) async {
+
+    setState(() {
+        _isLoading2 = true;
+      });
     String token = await getToken();
     Map data = {
       'public_key': public,
@@ -209,10 +233,23 @@ class _AccountSettingtate extends State<AccountSetting> {
         body: jsonEncode(data));
     jsonResponse = json.decode(response.body);
 
+    setState(() {
+        _isLoading2 = false;
+      });
+
     if (response.statusCode == 200) {
+      setState(() {
+                  _isLoading2 = true;
+                });
       jsonResponse = json.decode(response.body);
+      setState(() {
+                  _isLoading2 = false;
+                });
       return jsonResponse;
     } else {
+      setState(() {
+                  _isLoading2 = false;
+                });
       return jsonResponse;
     }
   }
@@ -440,21 +477,26 @@ class _AccountSettingtate extends State<AccountSetting> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           RaisedButton(
-            onPressed: () {
-              accountSetting(
-                nameController.text,
-                emailController.text,
-                purposeController.text,
-                currentpasswordController.text,
-                newpasswordController.text,
-                confirmpasswordController.text,
-              ).then((res) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(res["message"]),
-                  duration: Duration(milliseconds: 3000),
-                ));
-              });
-            },
+            onPressed: _isLoading
+                ? null
+                : () {
+                    accountSetting(
+                      nameController.text,
+                      emailController.text,
+                      purposeController.text,
+                      currentpasswordController.text,
+                      newpasswordController.text,
+                      confirmpasswordController.text,
+                    ).then((res) {
+                      
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(res["message"]),
+                        duration: Duration(milliseconds: 3000),
+                      ));
+                     
+                    });
+                  },
             padding: EdgeInsets.all(15),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -535,15 +577,19 @@ class _AccountSettingtate extends State<AccountSetting> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () {
-          saveStripe(publickeyController.text, privatekeyController.text)
-              .then((res) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(res["message"]),
-              duration: Duration(milliseconds: 3000),
-            ));
-          });
-        },
+        onPressed: _isLoading2
+            ? null
+            : () {
+                saveStripe(publickeyController.text, privatekeyController.text)
+                    .then((res) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(res["message"]),
+                    duration: Duration(milliseconds: 3000),
+                  ));
+                });
+
+                
+              },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),
@@ -576,16 +622,15 @@ class _AccountSettingtate extends State<AccountSetting> {
     );
   }
 
-  Clipbooard () {
-
-    Clipboard.setData(ClipboardData(text : invitation_code));
-    
+  Clipbooard(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: invitation_code)).then((_) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+    });
+    ;
   }
 
-
-
-
-  Widget buildUserProfile() {
+  Widget buildUserProfile(BuildContext context) {
     return Container(
         child: Card(
       shape: RoundedRectangleBorder(
@@ -598,14 +643,15 @@ class _AccountSettingtate extends State<AccountSetting> {
               child: (_image == null || _image == '')
                   ? CircularProgressIndicator()
                   : GestureDetector(
-                    onTap: () {
-                      
-                    },
-                    child: CircleAvatar(
+                      onTap: () {Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(builder: (context) => UpdateImage()),
+              (_) => false,
+            );},
+                      child: CircleAvatar(
                         radius: 30.0,
                         backgroundImage: MemoryImage(_image), //here
                       ),
-                  )),
+                    )),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -620,15 +666,25 @@ class _AccountSettingtate extends State<AccountSetting> {
               Row(
                 children: [
                   Text(
-                (invitation_code == null)
-                    ? "Fetching value..."
-                    : 'invitation code: $short_invitation_code' + ".....",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 11,
-                    fontWeight: FontWeight.normal),
-              ),
-              IconButton(onPressed:Clipbooard(),icon: const Icon(Icons.copy),)
+                    (invitation_code == null)
+                        ? "Fetching value..."
+                        : 'invitation code: $short_invitation_code' + ".....",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 11,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  TextButton(
+                    onPressed: (() async {
+                      Clipboard.setData(ClipboardData(text: invitation_code))
+                          .then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Copied to Clipbaord")));
+                      });
+                      ;
+                    }),
+                    child: const Icon(Icons.copy),
+                  )
                 ],
               )
             ],
@@ -641,67 +697,71 @@ class _AccountSettingtate extends State<AccountSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            width: double.infinity,
-            child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                child: Column(children: [
-                  buildBackBtn(),
-                  buildUserProfile(),
-                  SizedBox(height: 20),
-                  buildName(),
-                  SizedBox(height: 20),
-                  buildEmail(),
-                  SizedBox(height: 20),
-                  buildPuropose(),
-                  SizedBox(height: 20),
-                  buildCurrentPassword(),
-                  SizedBox(height: 20),
-                  buildNewPassword(),
-                  SizedBox(height: 20),
-                  buildConfirmPassword(),
-                  buildSaveChangesBtn(),
-                  SizedBox(height: 40),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Stripe Account Info',
-                        style: GoogleFonts.rubik(
-                          color: Color(0xff800080),
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+        body: apiload
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                width: double.infinity,
+                child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                    child: Column(children: [
+                      buildBackBtn(),
+                      buildUserProfile(context),
                       SizedBox(height: 20),
-                      Text(
-                        'Input the public key \*',
-                        style: GoogleFonts.roboto(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+                      buildName(),
                       SizedBox(height: 20),
-                      buildPublicKey(),
+                      buildEmail(),
                       SizedBox(height: 20),
-                      Text(
-                        'Input the Private Key \*',
-                        style: GoogleFonts.roboto(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+                      buildPuropose(),
                       SizedBox(height: 20),
-                      buildPrivateKey(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      buildSetUpAccountbtn()
-                    ],
-                  )
-                ]))));
+                      buildCurrentPassword(),
+                      SizedBox(height: 20),
+                      buildNewPassword(),
+                      SizedBox(height: 20),
+                      buildConfirmPassword(),
+                      buildSaveChangesBtn(),
+                      SizedBox(height: 40),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Stripe Account Info',
+                            style: GoogleFonts.rubik(
+                              color: Color(0xff800080),
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Input the public key \*',
+                            style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          buildPublicKey(),
+                          SizedBox(height: 20),
+                          Text(
+                            'Input the Private Key \*',
+                            style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          buildPrivateKey(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          buildSetUpAccountbtn()
+                        ],
+                      )
+                    ]))));
   }
 }

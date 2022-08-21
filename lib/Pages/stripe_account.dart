@@ -108,13 +108,15 @@ class _StripeAccountState extends State<StripeAccount> {
     }
   }
 
-  Clipbooard() {
-    Clipboard.setData(ClipboardData(text :invitation_code));
+  Clipbooard(BuildContext context) {
+     Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+});;
   }
 
 
 
-  Widget buildUserProfile() {
+  Widget buildUserProfile(BuildContext context) {
     return Container(
         child: Card(
       shape: RoundedRectangleBorder(
@@ -152,7 +154,12 @@ class _StripeAccountState extends State<StripeAccount> {
                     fontSize: 11,
                     fontWeight: FontWeight.normal), 
               ),
-              IconButton(onPressed:Clipbooard() ,icon: const Icon(Icons.copy),)
+              TextButton(onPressed:(() async {
+                
+    Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+});;
+              }),child: const Icon(Icons.copy),)
                 ],
               )
             ],
@@ -303,7 +310,7 @@ class _StripeAccountState extends State<StripeAccount> {
               SizedBox(
                 height: 20,
               ),
-              buildUserProfile(),
+              buildUserProfile(context),
               SizedBox(
                 height: 20,
               ),
