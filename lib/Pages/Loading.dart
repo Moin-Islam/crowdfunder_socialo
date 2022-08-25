@@ -10,6 +10,7 @@ import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_demo/Pages/welcome_page.dart';
 import 'package:flutter_demo/utils/Member.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,6 +38,10 @@ class _LoadingState extends State<Loading> {
 
   fetchUserLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("remember_token")) {
+      final token = prefs.getString("remember_token");
+      prefs.setString("token", token);
+    }
     final token = prefs.getString("token");
 
     if (token != null) {
@@ -52,12 +57,13 @@ class _LoadingState extends State<Loading> {
         checkUserStatus(token);
       } else {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => SignIn()),
+            MaterialPageRoute(
+                builder: (BuildContext context) => WelcomeScreen()),
             (Route<dynamic> route) => false);
       }
     } else {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => SignIn()),
+          MaterialPageRoute(builder: (BuildContext context) => WelcomeScreen()),
           (Route<dynamic> route) => false);
     }
   }

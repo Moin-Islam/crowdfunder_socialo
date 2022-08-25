@@ -265,25 +265,24 @@ class _SignInState extends State<SignIn> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+      } else {
+        print("NAX");
+        print(data["USER_DATA"][0]["stripe_status"]);
+
+        if (data["USER_DATA"][0]["stripe_status"] == "1") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (BuildContext context) => MemberList()),
+                  builder: (BuildContext context) => StripeModuleX()),
               (Route<dynamic> route) => false);
         } else {
-          print("NAX");
-          print(data["USER_DATA"][0]["stripe_status"]);
-
-          if (data["USER_DATA"][0]["stripe_status"] == "1") {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => StripeModuleX()),
-                (Route<dynamic> route) => false);
-          } else {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-                (Route<dynamic> route) => false);
-          }
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+              (Route<dynamic> route) => false);
         }
+      }
     }
 
     setState(() {
@@ -310,13 +309,19 @@ class _SignInState extends State<SignIn> {
 
       if (jsonResponse != null) {
         print(response.body);
-
-        TokenPreference.saveAddress("token", jsonResponse['token']);
-
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString("token");
+        var token;
+        if (isRememberMe) {
+          TokenPreference.saveAddress("remember_token", jsonResponse["token"]);
+          final prefs = await SharedPreferences.getInstance();
+          token = prefs.getString("remember_token");
+        } else {
+          TokenPreference.saveAddress("token", jsonResponse["token"]);
+          final prefs = await SharedPreferences.getInstance();
+          token = prefs.getString("token");
+        }
 
         print("NAX");
+        print(isRememberMe);
         print(token);
 
         checkUserStatus(token);

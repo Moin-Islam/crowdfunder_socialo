@@ -268,7 +268,17 @@ class _MemberListState extends State<MemberList> {
     return Align(
       alignment: Alignment.topRight,
       child: FlatButton(
-          onPressed: () {
+          onPressed: () async {
+            String token = await getToken();
+
+            await http.delete(
+              Uri.parse(
+                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+              headers: {
+                'Authorization': '$token',
+              },
+            );
+
             TokenPreference.saveAddress("token", "");
 
             Navigator.of(context).pushAndRemoveUntil(

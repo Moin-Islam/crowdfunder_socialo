@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../utils/token_preference.dart';
 import 'custom_intro.dart';
 
 class SignUp extends StatefulWidget {
@@ -17,7 +18,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool _isLoading = false;
-
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController nameController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
@@ -26,6 +27,34 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController purposeController = new TextEditingController();
   final TextEditingController invitationController =
       new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    updateController();
+  }
+
+  updateController() async {
+    nameController.text = await getStorageValue("profile_name");
+    emailController.text = await getStorageValue("profile_email");
+    purposeController.text = await getStorageValue("profile_purpose");
+    invitationController.text =
+        await getStorageValue("profile_invitation_code");
+  }
+
+  getStorageValue(parameter) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(parameter)) {
+      print(parameter);
+      print(prefs.containsKey(parameter));
+      return prefs.getString(parameter);
+    } else {
+      print(parameter);
+      print(prefs.containsKey(parameter));
+      return "";
+    }
+  }
 
   Widget buildName() {
     return Column(
@@ -68,29 +97,34 @@ class _SignUpState extends State<SignUp> {
       children: [
         Container(
           alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Color(0xffF4F6F8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 48,
           child: TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter email';
+              } else if (value != null && !value.contains('@')) {
+                return 'Please enter valid email';
+              }
+              return null;
+            },
             style: GoogleFonts.roboto(color: Colors.black, fontSize: 13),
             decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                fillColor: Color(0xffF4F6F8),
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
                 ),
                 prefixIcon: Icon(
-                  Icons.email,
+                  Icons.lock,
                   color: Colors.black,
                 ),
                 hintText: 'Email',
-                hintStyle:
-                    GoogleFonts.roboto(color: Colors.black38, fontSize: 13)),
+                hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
       ],
@@ -138,18 +172,25 @@ class _SignUpState extends State<SignUp> {
       children: [
         Container(
           alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Color(0xffF4F6F8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 48,
           child: TextFormField(
             controller: passwordController,
             obscureText: true,
             style: TextStyle(color: Colors.black),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter password';
+              } else if (value.length < 8) {
+                print("HELO");
+                return 'Password must be at least 8 characters long';
+              }
+              return null;
+            },
             decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                fillColor: Color(0xffF4F6F8),
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -158,7 +199,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.lock,
                   color: Colors.black,
                 ),
-                hintText: 'password',
+                hintText: 'Password',
                 hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
@@ -172,18 +213,27 @@ class _SignUpState extends State<SignUp> {
       children: [
         Container(
           alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Color(0xffF4F6F8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          height: 48,
           child: TextFormField(
             controller: confirmpasswordController,
             obscureText: true,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter password';
+              } else if (value.length < 8) {
+                print("HELO");
+                return 'Password must be at least 8 characters long';
+              } else if (value != passwordController.text) {
+                return 'Passwords do not match';
+              }
+              return null;
+            },
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 14),
+                fillColor: Color(0xffF4F6F8),
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -192,7 +242,7 @@ class _SignUpState extends State<SignUp> {
                   Icons.lock,
                   color: Colors.black,
                 ),
-                hintText: 'Confirm Password',
+                hintText: 'Confirm password',
                 hintStyle: TextStyle(color: Colors.black38)),
           ),
         )
@@ -240,13 +290,18 @@ class _SignUpState extends State<SignUp> {
       'purpose': purpose,
       'invitation_code': invitation,
     };
+
+    TokenPreference.saveAddress("profile_name", name);
+    TokenPreference.saveAddress("profile_email", email);
+    TokenPreference.saveAddress("profile_purpose", purpose);
+    TokenPreference.saveAddress("profile_invitation_code", invitation);
     print(data);
 
     if (data != null) {
       setState(() {
-      _isLoading = true;
-    });
-      
+        _isLoading = true;
+      });
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (BuildContext context) => UploadImage(data: data)),
@@ -295,19 +350,20 @@ class _SignUpState extends State<SignUp> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5,
-        onPressed: _isLoading ? null : () {
-          
-          print(nameController.text);
-
-          signUp(
-            nameController.text,
-            emailController.text,
-            purposeController.text,
-            passwordController.text,
-            confirmpasswordController.text,
-            invitationController.text,
-          );
-        },
+        onPressed: _isLoading
+            ? null
+            : () {
+                if (_formKey.currentState != null &&
+                    _formKey.currentState.validate()) {
+                  signUp(
+                      nameController.text,
+                      emailController.text,
+                      purposeController.text,
+                      passwordController.text,
+                      confirmpasswordController.text,
+                      invitationController.text);
+                }
+              },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         color: Color(0xff800080),
@@ -350,18 +406,22 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    buildName(),
-                    SizedBox(height: 20),
-                    buildEmail(),
-                    SizedBox(height: 20),
-                    buildPuropose(),
-                    SizedBox(height: 20),
-                    buildInvitation(),
-                    SizedBox(height: 20),
-                    buildPassword(),
-                    SizedBox(height: 20),
-                    buildRecheckPassword(),
+                    Form(
+                        key: _formKey,
+                        child: Column(children: [
+                          SizedBox(height: 20),
+                          buildName(),
+                          SizedBox(height: 20),
+                          buildEmail(),
+                          SizedBox(height: 20),
+                          buildPuropose(),
+                          SizedBox(height: 20),
+                          buildInvitation(),
+                          SizedBox(height: 20),
+                          buildPassword(),
+                          SizedBox(height: 20),
+                          buildRecheckPassword(),
+                        ])),
                     SizedBox(height: 20),
                     buildLoginBtn(),
                     SizedBox(height: 40),

@@ -60,7 +60,6 @@ class _SetUpState extends State<SetUp> {
     );
   }
 
-
   Future<String> getToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
@@ -111,10 +110,9 @@ class _SetUpState extends State<SetUp> {
   }
 
   paymentSetup(BuildContext context) async {
-
     setState(() {
-        _isLoading = true;
-      });
+      _isLoading = true;
+    });
     Map data = {
       'public_key': publickeyController.text,
       'secret_key': privatekeyController.text
@@ -131,16 +129,15 @@ class _SetUpState extends State<SetUp> {
         },
         body: jsonEncode(data));
     setState(() {
-        _isLoading= false;
-      });
-      jsonResponse = json.decode(response.body);
+      _isLoading = false;
+    });
+    jsonResponse = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(jsonResponse["message"]),
-                      duration: Duration(milliseconds: 3000),
-                    ));
+        content: Text(jsonResponse["message"]),
+        duration: Duration(milliseconds: 3000),
+      ));
 
       if (jsonResponse != null) {
         setState(() {
@@ -154,9 +151,9 @@ class _SetUpState extends State<SetUp> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(jsonResponse["message"]),
-                      duration: Duration(milliseconds: 3000),
-                    ));
+        content: Text(jsonResponse["message"]),
+        duration: Duration(milliseconds: 3000),
+      ));
       setState(() {
         _isLoading = false;
       });
@@ -227,7 +224,16 @@ class _SetUpState extends State<SetUp> {
     return Align(
       alignment: Alignment.topRight,
       child: FlatButton(
-          onPressed: () {
+          onPressed: () async {
+            String token = await getToken();
+
+            await http.delete(
+              Uri.parse(
+                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+              headers: {
+                'Authorization': '$token',
+              },
+            );
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
               (_) => false,
@@ -248,10 +254,11 @@ class _SetUpState extends State<SetUp> {
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: _isLoading ? null :() {
-          paymentSetup(context);
-
-        },
+        onPressed: _isLoading
+            ? null
+            : () {
+                paymentSetup(context);
+              },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         color: Color(0xff800080),

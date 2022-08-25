@@ -31,7 +31,7 @@ class PaymentInfo extends StatefulWidget {
 class _PaymentInfoState extends State<PaymentInfo> {
   var _log;
   var _isLoading = false;
-
+  final _formKey = GlobalKey<FormState>();
   var maskFormatter =
       MaskTextInputFormatter(mask: '##/####', filter: {"#": RegExp(r'[0-9]')});
 
@@ -57,19 +57,23 @@ class _PaymentInfoState extends State<PaymentInfo> {
       children: [
         Container(
             alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 48,
             child: TextFormField(
               inputFormatters: [cardFormatter],
               controller: cardnumberController,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter your card number';
+                }
+                return null;
+              },
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 14),
+                fillColor: Colors.white,
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(left: 14, top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -86,18 +90,22 @@ class _PaymentInfoState extends State<PaymentInfo> {
       children: [
         Container(
             alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 48,
             child: TextFormField(
               controller: cardholdernameController,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Colors.black),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter your card holder name';
+                }
+                return null;
+              },
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 14),
+                fillColor: Colors.white,
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(left: 14, top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -114,20 +122,24 @@ class _PaymentInfoState extends State<PaymentInfo> {
       children: [
         Container(
             alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 48,
             child: TextFormField(
               inputFormatters: [maskFormatter],
               controller: expirydateController,
               keyboardType: TextInputType.datetime,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter your expiry date';
+                }
+                return null;
+              },
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 14),
-                hintText: 'Month / Year',
+                fillColor: Colors.white,
+                isDense: true,
+                filled: true,
+                hintText: "MM/YY",
+                contentPadding: EdgeInsets.only(left: 14, top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -144,18 +156,22 @@ class _PaymentInfoState extends State<PaymentInfo> {
       children: [
         Container(
             alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            height: 48,
             child: TextFormField(
               controller: cvvController,
               keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter your cvv';
+                }
+                return null;
+              },
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 14),
+                fillColor: Colors.white,
+                isDense: true,
+                filled: true,
+                contentPadding: EdgeInsets.only(left: 14, top: 14, bottom: 14),
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
@@ -225,27 +241,26 @@ class _PaymentInfoState extends State<PaymentInfo> {
           "profile_image", data["USER_DATA"][0]["profile_image"]);
 
       print(data["USER_DATA"][0]["status"]);
-      
-        if (data["USER_DATA"][0]["status"] == "0") {
+
+      if (data["USER_DATA"][0]["status"] == "0") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
+            (Route<dynamic> route) => false);
+      } else {
+        print("NAX");
+        print(data["USER_DATA"][0]["stripe_status"]);
+
+        if (data["USER_DATA"][0]["stripe_status"] == "1") {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (BuildContext context) => MemberList()),
+                  builder: (BuildContext context) => StripeModuleX()),
               (Route<dynamic> route) => false);
         } else {
-          print("NAX");
-          print(data["USER_DATA"][0]["stripe_status"]);
-
-          if (data["USER_DATA"][0]["stripe_status"] == "1") {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => StripeModuleX()),
-                (Route<dynamic> route) => false);
-          } else {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-                (Route<dynamic> route) => false);
-          }
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
+              (Route<dynamic> route) => false);
         }
+      }
     }
   }
 
@@ -257,61 +272,65 @@ class _PaymentInfoState extends State<PaymentInfo> {
         onPressed: _isLoading
             ? null
             : () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                String token = await getToken();
-                await Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
-                  number: cardFormatter.getUnmaskedText(),
-                  expirationMonth:
-                      int.parse(expirydateController.text.split('/')[0]),
-                  expirationYear:
-                      int.parse(expirydateController.text.split('/')[1]),
-                  cvc: cvvController.text,
-                ));
-                for (var id in widget.data.keys) {
-                  await StripePayment(id, context);
-                }
+                if (_formKey.currentState != null &&
+                    _formKey.currentState.validate()) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  String token = await getToken();
+                  await Stripe.instance
+                      .dangerouslyUpdateCardDetails(CardDetails(
+                    number: cardFormatter.getUnmaskedText(),
+                    expirationMonth:
+                        int.parse(expirydateController.text.split('/')[0]),
+                    expirationYear:
+                        int.parse(expirydateController.text.split('/')[1]),
+                    cvc: cvvController.text,
+                  ));
+                  for (var id in widget.data.keys) {
+                    await StripePayment(id, context);
+                  }
 
-                // widget.data.keys.forEach(await (id) {
-                //     StripePayment(id);
-                // });
+                  // widget.data.keys.forEach(await (id) {
+                  //     StripePayment(id);
+                  // });
 
-                // StripePayment().then((res) {}
-                //   );
+                  // StripePayment().then((res) {}
+                  //   );
 
-                receiveData['team_data'] = temp;
+                  receiveData['team_data'] = temp;
 
-                print("NAXXX");
-                print(receiveData);
-                var response = await http.post(
-                    Uri.parse(
-                        "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
-                    headers: {
-                      'Authorization': '$token',
-                    },
-                    body: json.encode(receiveData));
+                  print("NAXXX");
+                  print(receiveData);
+                  var response = await http.post(
+                      Uri.parse(
+                          "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
+                      headers: {
+                        'Authorization': '$token',
+                      },
+                      body: json.encode(receiveData));
 
-                print("response");
-                print(response.body);
+                  print("response");
+                  print(response.body);
 
-                Map<String, dynamic> data = jsonDecode(response.body);
+                  Map<String, dynamic> data = jsonDecode(response.body);
 
-                setState(() {
-                  _log = json.encode(receiveData) + response.body;
-                });
+                  setState(() {
+                    _log = json.encode(receiveData) + response.body;
+                  });
 
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(data['message']),
-                  duration: Duration(milliseconds: 3000),
-                ));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(data['message']),
+                    duration: Duration(milliseconds: 3000),
+                  ));
 
-                setState(() {
-                  _isLoading = false;
-                });
+                  setState(() {
+                    _isLoading = false;
+                  });
 
-                if (data["status"] == 1) {
-                  checkUserStatus(token);
+                  if (data["status"] == 1) {
+                    checkUserStatus(token);
+                  }
                 }
               },
         padding: EdgeInsets.all(15),
@@ -425,45 +444,54 @@ class _PaymentInfoState extends State<PaymentInfo> {
                     //   ],
                     // ),
                     SizedBox(height: 20),
-                    Text(
-                      'Card Number \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    buildCardNumber(),
-                    SizedBox(height: 20),
-                    Text(
-                      'Card Holder Name \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    buildCardHolderName(),
-                    SizedBox(height: 20),
-                    Text(
-                      'Expiry Date \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    buildExpiryDate(),
-                    SizedBox(height: 20),
-                    Text(
-                      'CVV \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    buildCVV(),
+                    Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Card Number \*',
+                              style: GoogleFonts.roboto(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            buildCardNumber(),
+                            SizedBox(height: 20),
+                            Text(
+                              'Card Holder Name \*',
+                              style: GoogleFonts.roboto(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            buildCardHolderName(),
+                            SizedBox(height: 20),
+                            Text(
+                              'Expiry Date \*',
+                              style: GoogleFonts.roboto(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            buildExpiryDate(),
+                            SizedBox(height: 20),
+                            Text(
+                              'CVV \*',
+                              style: GoogleFonts.roboto(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            buildCVV(),
+                          ],
+                        )),
+
                     buildSetUpAccountbtn(context),
                     //Text((_log == null) ? "Logs" : '$_log')
                   ],

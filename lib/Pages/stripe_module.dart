@@ -381,9 +381,11 @@ class _StripeModuleXState extends State<StripeModuleX> {
   }
 
   Clipbooard(BuildContext context) {
-     Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
-});;
+    Clipboard.setData(ClipboardData(text: invitation_code)).then((_) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
+    });
+    ;
   }
 
   Widget BuildProfileIDSection(BuildContext context) {
@@ -424,12 +426,17 @@ class _StripeModuleXState extends State<StripeModuleX> {
                         fontSize: 11,
                         fontWeight: FontWeight.normal),
                   ),
-                  TextButton(onPressed:(() async {
-                
-    Clipboard.setData(ClipboardData(text : invitation_code)).then((_){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to Clipbaord")));
-});;
-              }),child: const Icon(Icons.copy),)
+                  TextButton(
+                    onPressed: (() async {
+                      Clipboard.setData(ClipboardData(text: invitation_code))
+                          .then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Copied to Clipbaord")));
+                      });
+                      ;
+                    }),
+                    child: const Icon(Icons.copy),
+                  )
                 ],
               )
             ],
@@ -443,7 +450,17 @@ class _StripeModuleXState extends State<StripeModuleX> {
     return Align(
       alignment: Alignment.topRight,
       child: FlatButton(
-          onPressed: () {
+          onPressed: () async {
+            String token = await getToken();
+
+            await http.delete(
+              Uri.parse(
+                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+              headers: {
+                'Authorization': '$token',
+              },
+            );
+
             TokenPreference.saveAddress("token", "");
 
             Navigator.of(context).pushAndRemoveUntil(

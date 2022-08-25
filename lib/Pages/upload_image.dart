@@ -27,6 +27,8 @@ class _UploadImageState extends State<UploadImage> {
   Uint8List bytesss;
   String convertedImage;
   bool _isLoading = false;
+  var param_logs;
+  var response_logs;
 
   Future pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -148,6 +150,10 @@ class _UploadImageState extends State<UploadImage> {
     print(widget.data);
     var jsonResponse = null;
 
+    setState(() {
+      param_logs = widget.data;
+    });
+
     var response = await http.post(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
@@ -156,6 +162,10 @@ class _UploadImageState extends State<UploadImage> {
     // jsonResponse = json.decode(response.body);
 
     jsonResponse = json.decode(response.body);
+
+    setState(() {
+      response_logs = jsonResponse;
+    });
 
     return jsonResponse;
   }
@@ -203,8 +213,6 @@ class _UploadImageState extends State<UploadImage> {
                   onPressed: _isLoading
                       ? null
                       : () {
-                          
-
                           setState(() {
                             _isLoading = true;
                           });
@@ -213,26 +221,25 @@ class _UploadImageState extends State<UploadImage> {
 
                           singUp().then((res) {
                             print(res);
-                            
+
                             if (res["status"] == 0) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
                                 duration: Duration(milliseconds: 3000),
                               ));
-                               setState(() {
-                              _isLoading = false;
-                            });
+                              setState(() {
+                                _isLoading = false;
+                              });
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
                                 duration: Duration(milliseconds: 3000),
                               ));
-                               setState(() {
-                              _isLoading = false;
-                            });
-                             
+                              setState(() {
+                                _isLoading = false;
+                              });
 
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
@@ -240,8 +247,6 @@ class _UploadImageState extends State<UploadImage> {
                                           SignIn()),
                                   (Route<dynamic> route) => false);
                             }
-
-                            
 
                             // if (res.status == 0) {
                             //
@@ -344,6 +349,13 @@ class _UploadImageState extends State<UploadImage> {
                     buildSignUpBtn(),
                     SizedBox(height: 25),
                     buildBottomButtons(),
+                    Text("LOGS...."),
+                    Text(param_logs == null
+                        ? "Params Logs"
+                        : param_logs.toString()),
+                    Text(response_logs == null
+                        ? "Response Logs"
+                        : response_logs.toString()),
                   ],
                 ),
               ),

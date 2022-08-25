@@ -129,25 +129,32 @@ class _UpdateImageState extends State<UpdateImage> {
         ));
   }
 
-  singUp() async {
-    String token = await getToken();
+  singUp(context) async {
+    if (convertedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Please Select an Image"),
+        duration: Duration(milliseconds: 3000),
+      ));
+    } else {
+      String token = await getToken();
 
-    print(convertedImage);
-    Map data = {"profile_image": convertedImage};
+      print(convertedImage);
+      Map data = {"profile_image": convertedImage};
 
-    print(data);
-    var response = await http.post(
-        Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/profile/updateProfileImage"),
-        headers: {
-          'Authorization': '$token',
-        },
-        body: data);
-    var jsonResponse = json.decode(response.body);
-    return jsonResponse;
+      print(data);
+      var response = await http.post(
+          Uri.parse(
+              "https://demo.socialo.agency/crowdfunder-api-application/profile/updateProfileImage"),
+          headers: {
+            'Authorization': '$token',
+          },
+          body: data);
+      var jsonResponse = json.decode(response.body);
+      return jsonResponse;
+    }
   }
 
-  Widget buildBottomButtons() {
+  Widget buildBottomButtons(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -157,8 +164,25 @@ class _UpdateImageState extends State<UpdateImage> {
             padding: EdgeInsets.symmetric(vertical: 10),
             width: double.infinity,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                RaisedButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountSetting())),
+                  padding: EdgeInsets.all(13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  color: Color(0xff800080),
+                  child: Text(
+                    'Previous',
+                    style: GoogleFonts.rubik(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal),
+                  ),
+                ),
                 RaisedButton(
                   onPressed: _isLoading
                       ? null
@@ -168,7 +192,7 @@ class _UpdateImageState extends State<UpdateImage> {
                           });
                           print("BUTTON");
 
-                          singUp().then((res) {
+                          singUp(context).then((res) {
                             print("resy");
                             setState(() {
                               _isLoading = false;
@@ -291,7 +315,7 @@ class _UpdateImageState extends State<UpdateImage> {
                     SizedBox(height: 25),
                     buildGalleryBtn(),
                     SizedBox(height: 55),
-                    buildBottomButtons(),
+                    buildBottomButtons(context),
                   ],
                 ),
               ),
