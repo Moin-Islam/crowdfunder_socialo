@@ -312,6 +312,7 @@ class _SignInState extends State<SignIn> {
         var token;
         if (isRememberMe) {
           TokenPreference.saveAddress("remember_token", jsonResponse["token"]);
+          TokenPreference.saveAddress("token", jsonResponse["token"]);
           final prefs = await SharedPreferences.getInstance();
           token = prefs.getString("remember_token");
         } else {

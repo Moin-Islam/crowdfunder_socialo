@@ -234,6 +234,10 @@ class _SetUpState extends State<SetUp> {
                 'Authorization': '$token',
               },
             );
+
+            TokenPreference.saveAddress("remember_token", "");
+            TokenPreference.saveAddress("token", "");
+
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
               (_) => false,

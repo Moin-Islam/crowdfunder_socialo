@@ -74,6 +74,8 @@ class _MemberListState extends State<MemberList> {
 
   fetchUser() async {
     String token = await getToken();
+    print("NAX TOKEn");
+    print(token);
     final response = await http.get(
       Uri.parse(
           'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
@@ -81,6 +83,8 @@ class _MemberListState extends State<MemberList> {
         'Authorization': '$token',
       },
     );
+
+    print(response);
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
@@ -280,6 +284,7 @@ class _MemberListState extends State<MemberList> {
             );
 
             TokenPreference.saveAddress("token", "");
+            TokenPreference.saveAddress("remember_token", "");
 
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),

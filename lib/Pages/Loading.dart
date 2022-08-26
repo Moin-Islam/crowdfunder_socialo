@@ -40,11 +40,13 @@ class _LoadingState extends State<Loading> {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("remember_token")) {
       final token = prefs.getString("remember_token");
-      prefs.setString("token", token);
+      await prefs.setString("token", token);
+    } else {
+      await prefs.setString("token", "");
     }
     final token = prefs.getString("token");
 
-    if (token != null) {
+    if (token != null && token != "") {
       final response = await http.get(
         Uri.parse(
             'https://demo.socialo.agency/crowdfunder-api-application/authentication/auth'),

@@ -462,6 +462,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
             );
 
             TokenPreference.saveAddress("token", "");
+            TokenPreference.saveAddress("remember_token", "");
 
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
