@@ -49,6 +49,8 @@ class _StripeAccountState extends State<StripeAccount> {
           'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': '$token',
+        'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -89,6 +91,8 @@ class _StripeAccountState extends State<StripeAccount> {
           'https://demo.socialo.agency/crowdfunder-api-application/products/fetchProductSales'),
       headers: {
         'Authorization': '$token',
+        'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -148,7 +152,7 @@ class _StripeAccountState extends State<StripeAccount> {
                   Text(
                 (invitation_code == null)
                     ? "Fetching value..."
-                    : 'invitation code: $short_invitation_code' + ".....",
+                    : 'Invitation code: $short_invitation_code' + ".....",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 11,
@@ -343,6 +347,7 @@ class _StripeAccountState extends State<StripeAccount> {
                       return ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                         itemCount: members.length,
                         itemBuilder: (context, index) {
                           Product member = members[index];
@@ -371,6 +376,7 @@ class _StripeAccountState extends State<StripeAccount> {
                               SizedBox(
                                 height: 20,
                               ),
+
                             ],
                           );
                         },

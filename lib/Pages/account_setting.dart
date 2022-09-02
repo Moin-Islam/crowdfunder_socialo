@@ -97,6 +97,7 @@ class _AccountSettingtate extends State<AccountSetting> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
         headers: {
           'Authorization': token,
+          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
     
@@ -126,6 +127,7 @@ class _AccountSettingtate extends State<AccountSetting> {
           'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': token,
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -182,6 +184,7 @@ class _AccountSettingtate extends State<AccountSetting> {
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
         'Authorization': token,
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -229,6 +232,7 @@ class _AccountSettingtate extends State<AccountSetting> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
         headers: {
           'Authorization': token,
+          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
     jsonResponse = json.decode(response.body);
@@ -668,7 +672,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                   Text(
                     (invitation_code == null)
                         ? "Fetching value..."
-                        : 'invitation code: $short_invitation_code' + ".....",
+                        : 'Invitation code: $short_invitation_code' + ".....",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 11,

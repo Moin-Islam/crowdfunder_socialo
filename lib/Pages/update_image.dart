@@ -147,6 +147,8 @@ class _UpdateImageState extends State<UpdateImage> {
               "https://demo.socialo.agency/crowdfunder-api-application/profile/updateProfileImage"),
           headers: {
             'Authorization': '$token',
+            'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
           },
           body: data);
       var jsonResponse = json.decode(response.body);
@@ -204,6 +206,7 @@ class _UpdateImageState extends State<UpdateImage> {
                                 duration: Duration(milliseconds: 3000),
                               ));
                             } else {
+                              
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),

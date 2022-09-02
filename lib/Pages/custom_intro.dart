@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/Loading.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
+import 'package:flutter_demo/utils/token_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/intro_slider.dart';
@@ -24,12 +25,10 @@ class IntroScreenState extends State<IntroScreen> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("intro_screen");
 
-    if (token != null) {
-      if (token == "seen") {
+      if (token != null && token == "seen") {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Loading()));
       }
-    }
     /*if (token != "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => AccountSetting()));
@@ -38,8 +37,9 @@ class IntroScreenState extends State<IntroScreen> {
 
   @override
   void initState() {
-    fetchSeenScreen();
     super.initState();
+    fetchSeenScreen();
+
     slides.add(Slide(
       widgetDescription: Column(children: [
         Text("Welcome To The Team",
@@ -534,7 +534,7 @@ class IntroScreenState extends State<IntroScreen> {
 
     TokenPreference.saveAddress("intro_screen", "seen");
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Loading()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 
   void onNextPress() {

@@ -6,6 +6,7 @@ import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
+import 'package:flutter_demo/Pages/welcome_page.dart';
 import './Pages/custom_intro.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';

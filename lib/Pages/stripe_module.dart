@@ -85,6 +85,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
           'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': '$token',
+        'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -129,6 +131,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
           'https://demo.socialo.agency/crowdfunder-api-application/profile/fetchInvitationMessage'),
       headers: {
         'Authorization': '$token',
+        'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -420,7 +424,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                   Text(
                     (invitation_code == null)
                         ? "Fetching value..."
-                        : 'invitation code: $short_invitation_code' + ".....",
+                        : 'Invitation code: $short_invitation_code' + ".....",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 11,
@@ -458,6 +462,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
+                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -490,13 +495,13 @@ class _StripeModuleXState extends State<StripeModuleX> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildLogOutBtn(),
+             
               SizedBox(
-                height: 30,
+                height: 10,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     (_earning == null)
@@ -507,6 +512,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
                         fontSize: 15,
                         fontWeight: FontWeight.normal),
                   ),
+                  buildLogOutBtn(),
                 ],
               ),
               SizedBox(height: 15),

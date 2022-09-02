@@ -24,7 +24,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
         SizedBox(
           height: 20,
         ),
-        Text("Welcome Back To The CrowdFunder Team App",
+        Text("Welcome Back",
             style: GoogleFonts.rubik(
               color: Color(0xff800080),
               fontSize: 16,
@@ -32,21 +32,30 @@ class WelcomeScreenState extends State<WelcomeScreen> {
         SizedBox(
           height: 15,
         ),
-        Text(
-            " your passport to raise all the money you need to make it through life!",
-            textAlign: TextAlign.center,
-            style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
+        SizedBox(
+          width: 250,
+          child: Text(
+              "Your passport to raise all the money you need to make it through life!",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
+        ),
         SizedBox(
           height: 15,
         ),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => SignIn()),
-                  (Route<dynamic> route) => false);
-            },
-            child: Text("Continue"))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => SignIn()),
+                      (Route<dynamic> route) => false);
+                },
+                child: Text("Next  >")),
+          ],
+        )
       ]),
     ));
   }

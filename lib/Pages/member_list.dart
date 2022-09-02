@@ -81,6 +81,7 @@ class _MemberListState extends State<MemberList> {
           'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -109,6 +110,7 @@ class _MemberListState extends State<MemberList> {
           "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
       headers: {
         'Authorization': '$token',
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -280,6 +282,7 @@ class _MemberListState extends State<MemberList> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
+                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -309,7 +312,13 @@ class _MemberListState extends State<MemberList> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildLogOutbtn(),
+          SizedBox(height: 30,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            
+            children: [
+            
 
           GestureDetector(
               onTap: () {
@@ -324,6 +333,8 @@ class _MemberListState extends State<MemberList> {
                       radius: 30.0,
                       backgroundImage: MemoryImage(_image), //here
                     )),
+                    buildLogOutbtn(),
+          ],),
 
           SizedBox(
             height: 15,

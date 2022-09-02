@@ -229,6 +229,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
           'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -307,6 +308,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                           "https://demo.socialo.agency/crowdfunder-api-application/purchase/purchaseProcess"),
                       headers: {
                         'Authorization': '$token',
+                        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
                       },
                       body: json.encode(receiveData));
 
@@ -392,7 +394,10 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildLogOutBtn(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        
                     Text(
                       'Payment Info',
                       style: GoogleFonts.rubik(
@@ -401,6 +406,8 @@ class _PaymentInfoState extends State<PaymentInfo> {
                         fontWeight: FontWeight.normal,
                       ),
                     ),
+                    buildLogOutBtn(),
+                      ],),
                     SizedBox(height: 20),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.center,

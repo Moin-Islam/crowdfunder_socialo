@@ -263,9 +263,9 @@ class _SignUpState extends State<SignUp> {
                 style: GoogleFonts.roboto(
                     color: Colors.black38,
                     fontSize: 13,
-                    fontWeight: FontWeight.normal)),
+                    fontWeight: FontWeight.bold)),
             TextSpan(
-                text: 'Login now',
+                text: 'Sign In',
                 style: GoogleFonts.roboto(
                     color: Color(0xff800080),
                     fontSize: 13,

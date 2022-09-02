@@ -73,6 +73,7 @@ class _SetUpState extends State<SetUp> {
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
         'Authorization': '$token',
+        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -126,6 +127,7 @@ class _SetUpState extends State<SetUp> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
         headers: {
           'Authorization': '$token',
+          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
     setState(() {
@@ -232,6 +234,7 @@ class _SetUpState extends State<SetUp> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
+                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -303,7 +306,10 @@ class _SetUpState extends State<SetUp> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildLogOutbtn(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        
                     Text(
                       'Set Up Your Account',
                       style: TextStyle(
@@ -311,6 +317,9 @@ class _SetUpState extends State<SetUp> {
                         fontSize: 25,
                         fontWeight: FontWeight.normal,
                       ),
+                    ),
+                    buildLogOutbtn(),
+                      ],
                     ),
                     SizedBox(height: 20),
                     buildVideoLinkBtn(),

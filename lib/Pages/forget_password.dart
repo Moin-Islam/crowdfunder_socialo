@@ -142,6 +142,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     var response = await http.post(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/requestResetPassword"),
+             headers: {
+          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        },
         body: data);
     jsonResponse = json.decode(response.body);
 

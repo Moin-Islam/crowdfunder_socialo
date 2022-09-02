@@ -9,6 +9,7 @@ import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/utils/blankProfile.dart';
+import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -119,18 +120,18 @@ class _UploadImageState extends State<UploadImage> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUp()));
+            context, MaterialPageRoute(builder: (context) => SignIn()));
       },
       child: RichText(
           text: TextSpan(children: [
         TextSpan(
-            text: 'Already have an account?',
+            text: 'Already have an account? ',
             style: GoogleFonts.roboto(
                 color: Colors.black38,
                 fontSize: 13,
-                fontWeight: FontWeight.normal)),
+                fontWeight: FontWeight.bold)),
         TextSpan(
-            text: ' Sign Up',
+            text: 'Sign In',
             style: GoogleFonts.roboto(
               color: Color(0xff800080),
               fontSize: 13,
@@ -157,6 +158,10 @@ class _UploadImageState extends State<UploadImage> {
     var response = await http.post(
         Uri.parse(
             "https://demo.socialo.agency/crowdfunder-api-application/authentication/processSignUp"),
+        headers: {
+          'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        },
         body: widget.data);
 
     // jsonResponse = json.decode(response.body);
@@ -223,6 +228,7 @@ class _UploadImageState extends State<UploadImage> {
                             print(res);
 
                             if (res["status"] == 0) {
+                              print("IFFFF");
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
@@ -232,6 +238,13 @@ class _UploadImageState extends State<UploadImage> {
                                 _isLoading = false;
                               });
                             } else {
+                              print("ELSEE");
+                              TokenPreference.saveAddress("profile_name", "");
+                              TokenPreference.saveAddress("profile_email", "");
+                              TokenPreference.saveAddress(
+                                  "profile_purpose", "");
+                              TokenPreference.saveAddress(
+                                  "profile_invitation_code", "");
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
                                 content: Text(res["message"]),
@@ -349,13 +362,13 @@ class _UploadImageState extends State<UploadImage> {
                     buildSignUpBtn(),
                     SizedBox(height: 25),
                     buildBottomButtons(),
-                    Text("LOGS...."),
+                    /*Text("LOGS...."),
                     Text(param_logs == null
                         ? "Params Logs"
                         : param_logs.toString()),
                     Text(response_logs == null
                         ? "Response Logs"
-                        : response_logs.toString()),
+                        : response_logs.toString()),*/
                   ],
                 ),
               ),
