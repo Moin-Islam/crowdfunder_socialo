@@ -33,7 +33,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
   String message;
   String short_invitation_code;
   int startIndex = 0;
-  int endIndex = 5;
+  int endIndex = 4;
   @override
   void initState() {
     super.initState();
@@ -86,12 +86,13 @@ class _StripeModuleXState extends State<StripeModuleX> {
       headers: {
         'Authorization': '$token',
         'Private-key':
-              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
+      print(data);
       setState(() {
         name = data["USER_DATA"][0]["name"];
       });
@@ -132,7 +133,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
       headers: {
         'Authorization': '$token',
         'Private-key':
-              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -462,7 +463,8 @@ class _StripeModuleXState extends State<StripeModuleX> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
-                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+                'Private-key':
+                    "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -495,7 +497,6 @@ class _StripeModuleXState extends State<StripeModuleX> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
               SizedBox(
                 height: 10,
               ),

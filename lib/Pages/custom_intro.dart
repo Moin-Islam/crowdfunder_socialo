@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/Pages/Loading.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
+import 'package:flutter_demo/Pages/welcome_page.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:flutter_demo/utils/token_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,11 +25,12 @@ class IntroScreenState extends State<IntroScreen> {
   fetchSeenScreen() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("intro_screen");
+    print(token);
 
-      if (token != null && token == "seen") {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Loading()));
-      }
+    if (token != null && token == "cat") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Loading()));
+    }
     /*if (token != "") {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => AccountSetting()));
@@ -525,16 +527,19 @@ class IntroScreenState extends State<IntroScreen> {
     ));
   }
 
+  void saveToken() async {
+    await TokenPreference.saveAddress("intro_screen", "cat");
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+  }
+
   void onDonePress() {
     // Do what you want
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => HomeScreen()),
     // );
-
-    TokenPreference.saveAddress("intro_screen", "seen");
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn()));
+    saveToken();
   }
 
   void onNextPress() {

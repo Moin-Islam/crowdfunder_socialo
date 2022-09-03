@@ -37,25 +37,28 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           child: Text(
               "Your passport to raise all the money you need to make it through life!",
               textAlign: TextAlign.center,
-              style: GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
+              style:
+                  GoogleFonts.roboto(color: Color(0xff707070), fontSize: 13)),
         ),
         SizedBox(
           height: 15,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => SignIn()),
-                      (Route<dynamic> route) => false);
-                },
-                child: Text("Next  >")),
-          ],
-        )
+        Expanded(
+          child: Align(
+            alignment: FractionalOffset.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20, right: 10),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => SignIn()),
+                        (Route<dynamic> route) => false);
+                  },
+                  child: Text("Next  >")),
+            ),
+          ),
+        ),
       ]),
     ));
   }

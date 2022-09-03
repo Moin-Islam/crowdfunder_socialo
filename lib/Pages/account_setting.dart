@@ -40,7 +40,7 @@ class _AccountSettingtate extends State<AccountSetting> {
   bool apiload = true;
 
   int startIndex = 0;
-  int endIndex = 5;
+  int endIndex = 4;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -79,9 +79,9 @@ class _AccountSettingtate extends State<AccountSetting> {
     newpassword,
     confirmpassword,
   ) async {
-     setState(() {
-        _isLoading = true;
-      });
+    setState(() {
+      _isLoading = true;
+    });
     String token = await getToken();
     Map data = {
       'name': name,
@@ -97,24 +97,21 @@ class _AccountSettingtate extends State<AccountSetting> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
         headers: {
           'Authorization': token,
-          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+          'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
-    
+
     jsonResponse = json.decode(response.body);
 
     setState(() {
-        _isLoading = false;
-      });
+      _isLoading = false;
+    });
 
     if (response.statusCode == 200) {
-     
       jsonResponse = json.decode(response.body);
-     
 
       return jsonResponse;
-      
-      
     } else {
       return jsonResponse;
     }
@@ -127,7 +124,8 @@ class _AccountSettingtate extends State<AccountSetting> {
           'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
       headers: {
         'Authorization': token,
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -184,7 +182,8 @@ class _AccountSettingtate extends State<AccountSetting> {
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
         'Authorization': token,
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -217,10 +216,9 @@ class _AccountSettingtate extends State<AccountSetting> {
     String public,
     String private,
   ) async {
-
     setState(() {
-        _isLoading2 = true;
-      });
+      _isLoading2 = true;
+    });
     String token = await getToken();
     Map data = {
       'public_key': public,
@@ -232,28 +230,29 @@ class _AccountSettingtate extends State<AccountSetting> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
         headers: {
           'Authorization': token,
-          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+          'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
     jsonResponse = json.decode(response.body);
 
     setState(() {
-        _isLoading2 = false;
-      });
+      _isLoading2 = false;
+    });
 
     if (response.statusCode == 200) {
       setState(() {
-                  _isLoading2 = true;
-                });
+        _isLoading2 = true;
+      });
       jsonResponse = json.decode(response.body);
       setState(() {
-                  _isLoading2 = false;
-                });
+        _isLoading2 = false;
+      });
       return jsonResponse;
     } else {
       setState(() {
-                  _isLoading2 = false;
-                });
+        _isLoading2 = false;
+      });
       return jsonResponse;
     }
   }
@@ -492,13 +491,10 @@ class _AccountSettingtate extends State<AccountSetting> {
                       newpasswordController.text,
                       confirmpasswordController.text,
                     ).then((res) {
-                      
-
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(res["message"]),
                         duration: Duration(milliseconds: 3000),
                       ));
-                     
                     });
                   },
             padding: EdgeInsets.all(15),
@@ -591,8 +587,6 @@ class _AccountSettingtate extends State<AccountSetting> {
                     duration: Duration(milliseconds: 3000),
                   ));
                 });
-
-                
               },
         padding: EdgeInsets.all(15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -647,10 +641,13 @@ class _AccountSettingtate extends State<AccountSetting> {
               child: (_image == null || _image == '')
                   ? CircularProgressIndicator()
                   : GestureDetector(
-                      onTap: () {Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(builder: (context) => UpdateImage()),
-              (_) => false,
-            );},
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          CupertinoPageRoute(
+                              builder: (context) => UpdateImage()),
+                          (_) => false,
+                        );
+                      },
                       child: CircleAvatar(
                         radius: 30.0,
                         backgroundImage: MemoryImage(_image), //here
