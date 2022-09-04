@@ -52,7 +52,8 @@ class _LoadingState extends State<Loading> {
             'https://demo.socialo.agency/crowdfunder-api-application/authentication/auth'),
         headers: {
           'Authorization': '$token',
-          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+          'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
       );
 
@@ -60,13 +61,12 @@ class _LoadingState extends State<Loading> {
         checkUserStatus(token);
       } else {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => WelcomeScreen()),
+            MaterialPageRoute(builder: (BuildContext context) => SignIn()),
             (Route<dynamic> route) => false);
       }
     } else {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => WelcomeScreen()),
+          MaterialPageRoute(builder: (BuildContext context) => SignIn()),
           (Route<dynamic> route) => false);
     }
   }
@@ -77,7 +77,8 @@ class _LoadingState extends State<Loading> {
           'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 

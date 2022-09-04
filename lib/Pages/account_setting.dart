@@ -7,6 +7,7 @@ import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_demo/Pages/update_image.dart';
 import 'package:flutter_demo/utils/Stripe.dart';
+import 'package:flutter_demo/utils/blankProfile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -161,9 +162,15 @@ class _AccountSettingtate extends State<AccountSetting> {
       purposeController.text = (_purpose == "") ? "Purpose" : _purpose;
       var image1 = data["USER_DATA"][0]["profile_image"];
 
-      setState(() {
-        _image = base64Decode(image1);
-      });
+      if (image1 == null) {
+        setState(() {
+          _image = base64Decode(blank_image);
+        });
+      } else {
+        setState(() {
+          _image = base64Decode(image1);
+        });
+      }
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(response.body);
@@ -698,71 +705,75 @@ class _AccountSettingtate extends State<AccountSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: apiload
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Container(
-                width: double.infinity,
-                child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                    child: Column(children: [
-                      buildBackBtn(),
-                      buildUserProfile(context),
-                      SizedBox(height: 20),
-                      buildName(),
-                      SizedBox(height: 20),
-                      buildEmail(),
-                      SizedBox(height: 20),
-                      buildPuropose(),
-                      SizedBox(height: 20),
-                      buildCurrentPassword(),
-                      SizedBox(height: 20),
-                      buildNewPassword(),
-                      SizedBox(height: 20),
-                      buildConfirmPassword(),
-                      buildSaveChangesBtn(),
-                      SizedBox(height: 40),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Stripe Account Info',
-                            style: GoogleFonts.rubik(
-                              color: Color(0xff800080),
-                              fontSize: 15,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Input the public key \*',
-                            style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          buildPublicKey(),
-                          SizedBox(height: 20),
-                          Text(
-                            'Input the Private Key \*',
-                            style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          buildPrivateKey(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          buildSetUpAccountbtn()
-                        ],
-                      )
-                    ]))));
+        body: Container(
+            width: double.infinity,
+            child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                child: Column(children: [
+                  buildBackBtn(),
+                  buildUserProfile(context),
+                  SizedBox(height: 20),
+                  apiload
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Column(
+                          children: [
+                            buildName(),
+                            SizedBox(height: 20),
+                            buildEmail(),
+                            SizedBox(height: 20),
+                            buildPuropose(),
+                            SizedBox(height: 20),
+                            buildCurrentPassword(),
+                            SizedBox(height: 20),
+                            buildNewPassword(),
+                            SizedBox(height: 20),
+                            buildConfirmPassword(),
+                            buildSaveChangesBtn(),
+                            SizedBox(height: 40),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Stripe Account Info',
+                                  style: GoogleFonts.rubik(
+                                    color: Color(0xff800080),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Input the public key \*',
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                buildPublicKey(),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Input the Private Key \*',
+                                  style: GoogleFonts.roboto(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                buildPrivateKey(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                buildSetUpAccountbtn()
+                              ],
+                            )
+                          ],
+                        ),
+                ]))));
   }
 }

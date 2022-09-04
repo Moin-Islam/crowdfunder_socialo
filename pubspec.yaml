@@ -45,6 +45,7 @@ dependencies:
   mask_text_input_formatter: ^2.3.0
   url_launcher: ^6.1.4
   flutter_layouts: 0.0.2+1
+  move_to_background: ^1.0.2
 
 dev_dependencies:
   flutter_test:

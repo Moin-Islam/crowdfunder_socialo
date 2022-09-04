@@ -29,7 +29,7 @@ class IntroScreenState extends State<IntroScreen> {
 
     if (token != null && token == "cat") {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Loading()));
+          context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
     }
     /*if (token != "") {
       Navigator.push(

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/Pages/Loading.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -52,7 +53,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                            builder: (BuildContext context) => SignIn()),
+                            builder: (BuildContext context) => Loading()),
                         (Route<dynamic> route) => false);
                   },
                   child: Text("Next  >")),

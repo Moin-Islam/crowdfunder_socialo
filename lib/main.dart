@@ -11,6 +11,7 @@ import './Pages/custom_intro.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/forget_password.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -38,15 +39,21 @@ class MyApp extends StatelessWidget {
       },
     );
 
-    return MaterialApp(
-        title: 'Crowd Funder',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: kPrimaryColor,
-          textSelectionTheme:
-              const TextSelectionThemeData(cursorColor: kPrimaryColor),
-        ),
-        home: IntroScreen());
+    return WillPopScope(
+      child: MaterialApp(
+          title: 'Crowd Funder',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: kPrimaryColor,
+            textSelectionTheme:
+                const TextSelectionThemeData(cursorColor: kPrimaryColor),
+          ),
+          home: IntroScreen()),
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      },
+    );
   }
 }
 
