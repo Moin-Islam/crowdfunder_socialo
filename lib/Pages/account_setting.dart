@@ -8,6 +8,7 @@ import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_demo/Pages/update_image.dart';
 import 'package:flutter_demo/utils/Stripe.dart';
 import 'package:flutter_demo/utils/blankProfile.dart';
+import 'package:modals/modals.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -702,6 +703,97 @@ class _AccountSettingtate extends State<AccountSetting> {
     ));
   }
 
+  Widget BuildDeleteAccountBtn() {
+    return Container(
+      width: double.infinity,
+      height: 48,
+      child: RaisedButton(
+          onPressed: () {
+             showModal(ModalEntry.aligned(context,
+                              tag: 'Delete Account',
+                              alignment: Alignment.center,
+                              child: Container(
+                                color: Colors.white,
+                                width: 300,
+                                height: 200,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: new TextSpan(
+                                        text: "Delete Account",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black, fontSize: 18),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: new TextSpan(
+                                        text:
+                                            "Are you sure you want to delete your account ?",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.black87,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        FlatButton(
+                                          padding: EdgeInsets.all(15),
+                                          color: Color(0xff800080),
+                                          onPressed: () => removeAllModals(),
+                                          child: Text(
+                                            "Yes",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                        FlatButton(
+                                          padding: EdgeInsets.all(15),
+                                          color: Color(0xff800080),
+                                          onPressed: () => removeAllModals(),
+                                          child: Text(
+                                            "No",
+                                            style: GoogleFonts.roboto(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )));
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: Color(0xff800080),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Delete Account',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal),
+              ),
+            ],
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -769,7 +861,11 @@ class _AccountSettingtate extends State<AccountSetting> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                buildSetUpAccountbtn()
+                                buildSetUpAccountbtn(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                BuildDeleteAccountBtn()
                               ],
                             )
                           ],
