@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
+import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_demo/Pages/update_image.dart';
@@ -703,78 +704,125 @@ class _AccountSettingtate extends State<AccountSetting> {
     ));
   }
 
-  Widget BuildDeleteAccountBtn() {
+  Widget BuildDeleteAccountBtn(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 48,
       child: RaisedButton(
           onPressed: () {
-             showModal(ModalEntry.aligned(context,
-                              tag: 'Delete Account',
-                              alignment: Alignment.center,
-                              child: Container(
-                                color: Colors.white,
-                                width: 300,
-                                height: 200,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    RichText(
-                                      text: new TextSpan(
-                                        text: "Delete Account",
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.black, fontSize: 18),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    RichText(
-                                      text: new TextSpan(
-                                        text:
-                                            "Are you sure you want to delete your account ?",
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.black87,
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        FlatButton(
-                                          padding: EdgeInsets.all(15),
-                                          color: Color(0xff800080),
-                                          onPressed: () => removeAllModals(),
-                                          child: Text(
-                                            "Yes",
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                        ),
-                                        FlatButton(
-                                          padding: EdgeInsets.all(15),
-                                          color: Color(0xff800080),
-                                          onPressed: () => removeAllModals(),
-                                          child: Text(
-                                            "No",
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )));
+            showModal(ModalEntry.aligned(context,
+                tag: 'Delete Account',
+                alignment: Alignment.center,
+                child: Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(color: Colors.grey, spreadRadius: 1),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            text: "Delete Account",
+                            style: GoogleFonts.roboto(
+                                color: Colors.black, fontSize: 18),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        RichText(
+                          text: new TextSpan(
+                            text:
+                                "Are you sure you want to delete your account ?",
+                            style: GoogleFonts.roboto(
+                                color: Colors.black87, fontSize: 12),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 45,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FlatButton(
+                              padding: EdgeInsets.all(15),
+                              color: Color(0xff800080),
+                              onPressed: () async {
+                                String token = await getToken();
+
+                                var response = await http.delete(
+                                  Uri.parse(
+                                      'https://demo.socialo.agency/crowdfunder-api-application/profile/deleteAccount'),
+                                  headers: {
+                                    'Authorization': '$token',
+                                    'Private-key':
+                                        "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+                                  },
+                                );
+
+                                Map<String, dynamic> data =
+                                    jsonDecode(response.body);
+
+                                print(data);
+
+                                if (data["status"] == 0) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Failed to delete account. Please contact support."),
+                                    duration: Duration(milliseconds: 3000),
+                                  ));
+                                } else {
+                                  TokenPreference.saveAddress("token", "");
+                                  TokenPreference.saveAddress(
+                                      "remember_token", "");
+                                  removeAllModals();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text("Account deleted succesffuly."),
+                                    duration: Duration(milliseconds: 3000),
+                                  ));
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    CupertinoPageRoute(
+                                        builder: (context) => SignIn()),
+                                    (_) => false,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "Yes",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ),
+                            FlatButton(
+                              padding: EdgeInsets.all(15),
+                              color: Color(0xff800080),
+                              onPressed: () => removeAllModals(),
+                              child: Text(
+                                "No",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )));
           },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -865,7 +913,7 @@ class _AccountSettingtate extends State<AccountSetting> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                BuildDeleteAccountBtn()
+                                BuildDeleteAccountBtn(context)
                               ],
                             )
                           ],

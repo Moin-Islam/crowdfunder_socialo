@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:move_to_background/move_to_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
@@ -73,7 +74,8 @@ class _SetUpState extends State<SetUp> {
           "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
       headers: {
         'Authorization': '$token',
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -127,7 +129,8 @@ class _SetUpState extends State<SetUp> {
             "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
         headers: {
           'Authorization': '$token',
-          'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+          'Private-key':
+              "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
         },
         body: jsonEncode(data));
     setState(() {
@@ -234,7 +237,8 @@ class _SetUpState extends State<SetUp> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
-                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+                'Private-key':
+                    "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -280,79 +284,84 @@ class _SetUpState extends State<SetUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-            child: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0x66f0f8ff),
-                    Color(0x99f0f8ff),
-                    Color(0xccf0f8ff),
-                    Color(0xfff0f8ff),
-                  ])),
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        
-                    Text(
-                      'Set Up Your Account',
-                      style: TextStyle(
-                        color: Color(0xff800080),
-                        fontSize: 25,
-                        fontWeight: FontWeight.normal,
+    return WillPopScope(
+      child: Scaffold(
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: GestureDetector(
+              child: Stack(
+            children: [
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                      Color(0x66f0f8ff),
+                      Color(0x99f0f8ff),
+                      Color(0xccf0f8ff),
+                      Color(0xfff0f8ff),
+                    ])),
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Set Up Your Account',
+                            style: TextStyle(
+                              color: Color(0xff800080),
+                              fontSize: 25,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          buildLogOutbtn(),
+                        ],
                       ),
-                    ),
-                    buildLogOutbtn(),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    buildVideoLinkBtn(),
-                    SizedBox(height: 20),
-                    Text(
-                      'Input the Public Key \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
+                      SizedBox(height: 20),
+                      buildVideoLinkBtn(),
+                      SizedBox(height: 20),
+                      Text(
+                        'Input the Public Key \*',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    buildPublicKey(),
-                    SizedBox(height: 20),
-                    Text(
-                      'Input the Private Key \*',
-                      style: GoogleFonts.roboto(
-                        color: Colors.black,
-                        fontSize: 13,
-                        fontWeight: FontWeight.normal,
+                      SizedBox(height: 20),
+                      buildPublicKey(),
+                      SizedBox(height: 20),
+                      Text(
+                        'Input the Private Key \*',
+                        style: GoogleFonts.roboto(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    buildPrivateKey(),
-                    buildSetUpAccountbtn(context),
-                  ],
+                      SizedBox(height: 20),
+                      buildPrivateKey(),
+                      buildSetUpAccountbtn(context),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        )),
+              )
+            ],
+          )),
+        ),
       ),
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      },
     );
   }
 }

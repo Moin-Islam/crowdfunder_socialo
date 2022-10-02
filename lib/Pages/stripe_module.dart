@@ -10,6 +10,7 @@ import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:move_to_background/move_to_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/src/services/clipboard.dart';
@@ -207,10 +208,10 @@ class _StripeModuleXState extends State<StripeModuleX> {
           GestureDetector(
             onTap: () {
               print("CLICKED");
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => AccountSetting()),
-                  (Route<dynamic> route) => false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountSetting()),
+              );
             },
             child: Card(
               color: Color(0xff800080),
@@ -488,87 +489,94 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    (_earning == null)
-                        ? "Fetching value..."
-                        : 'Total Earning : \$$_earning',
-                    style: GoogleFonts.rubik(
-                        color: Color(0xff800080),
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal),
-                  ),
-                  buildLogOutBtn(),
-                ],
-              ),
-              SizedBox(height: 15),
-              BuildProfileIDSection(context),
-              SizedBox(
-                height: 20,
-              ),
-              BuildMiddleBtn(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Set Up Your Account",
+    return WillPopScope(
+      child: Scaffold(
+          body: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      (_earning == null)
+                          ? "Fetching value..."
+                          : 'Total Earning : \$$_earning',
+                      style: GoogleFonts.rubik(
+                          color: Color(0xff800080),
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal),
+                    ),
+                    buildLogOutBtn(),
+                  ],
+                ),
+                SizedBox(height: 15),
+                BuildProfileIDSection(context),
+                SizedBox(
+                  height: 20,
+                ),
+                BuildMiddleBtn(),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Set Up Your Account",
 
-                style: GoogleFonts.rubik(
-                  fontSize: 25,
-                  color: Color(0xff800080),
-                ), // Container(child: Column(children: generateItems()))
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Enter a phone number below and hit the invite button or hit Select from Contract and Choose a contract from your contract list",
-                style: GoogleFonts.roboto(
-                  fontSize: 13,
-                  color: Color(0xff707070),
-                ), // Container(child: Column(children: generateItems()))
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              BuildEnterPhoneNo(),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: new Container(
-                        margin: const EdgeInsets.only(left: 10.0, right: 15.0),
-                        child: Divider(
-                          color: Colors.black,
-                          height: 50,
-                        )),
-                  ),
-                ],
-              ),
-              BuildSelectFromPhoneBookBtn(),
-              SizedBox(
-                height: 20,
-              ),
-              BuildInviteNowBtn(),
-            ]),
-      ),
-    ));
+                  style: GoogleFonts.rubik(
+                    fontSize: 25,
+                    color: Color(0xff800080),
+                  ), // Container(child: Column(children: generateItems()))
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Enter a phone number below and hit the invite button or hit Select from Contract and Choose a contract from your contract list",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    color: Color(0xff707070),
+                  ), // Container(child: Column(children: generateItems()))
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                BuildEnterPhoneNo(),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: new Container(
+                          margin:
+                              const EdgeInsets.only(left: 10.0, right: 15.0),
+                          child: Divider(
+                            color: Colors.black,
+                            height: 50,
+                          )),
+                    ),
+                  ],
+                ),
+                BuildSelectFromPhoneBookBtn(),
+                SizedBox(
+                  height: 20,
+                ),
+                BuildInviteNowBtn(),
+              ]),
+        ),
+      )),
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      },
+    );
   }
 }

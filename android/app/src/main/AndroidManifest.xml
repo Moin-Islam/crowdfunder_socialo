@@ -12,7 +12,7 @@
         </intent>
     </queries>
    <application
-        android:label="Transistor Demo"
+        android:label="CrowdFunder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

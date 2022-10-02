@@ -48,7 +48,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           child: Align(
             alignment: FractionalOffset.bottomRight,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 20, right: 10),
+              padding: const EdgeInsets.only(bottom: 60, right: 10),
               child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushAndRemoveUntil(
@@ -56,7 +56,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
                             builder: (BuildContext context) => Loading()),
                         (Route<dynamic> route) => false);
                   },
-                  child: Text("Next  >")),
+                  child: Text("Next")),
             ),
           ),
         ),

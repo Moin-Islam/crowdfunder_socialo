@@ -7,6 +7,7 @@ import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
 import 'package:flutter_layouts/flutter_layouts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:move_to_background/move_to_background.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -81,7 +82,8 @@ class _MemberListState extends State<MemberList> {
           'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -110,7 +112,8 @@ class _MemberListState extends State<MemberList> {
           "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
       headers: {
         'Authorization': '$token',
-        'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+        'Private-key':
+            "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
       },
     );
 
@@ -282,7 +285,8 @@ class _MemberListState extends State<MemberList> {
                   'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
-                'Private-key': "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
+                'Private-key':
+                    "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"
               },
             );
 
@@ -312,29 +316,29 @@ class _MemberListState extends State<MemberList> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
-            
             children: [
-            
-
-          GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushAndRemoveUntil(
-                  CupertinoPageRoute(builder: (context) => StripeModuleX()),
-                  (_) => false,
-                );
-              }, // Image tapped
-              child: (_image == null || _image == '')
-                  ? CircularProgressIndicator()
-                  : CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: MemoryImage(_image), //here
-                    )),
-                    buildLogOutbtn(),
-          ],),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      CupertinoPageRoute(builder: (context) => StripeModuleX()),
+                      (_) => false,
+                    );
+                  }, // Image tapped
+                  child: (_image == null || _image == '')
+                      ? CircularProgressIndicator()
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: MemoryImage(_image), //here
+                        )),
+              buildLogOutbtn(),
+            ],
+          ),
 
           SizedBox(
             height: 15,
@@ -536,16 +540,22 @@ class _MemberListState extends State<MemberList> {
 //                 padding: EdgeInsets.only(top: 30, left: 20),
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            title(),
-            hero(),
-          ],
+    return WillPopScope(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              title(),
+              hero(),
+            ],
+          ),
         ),
+        bottomNavigationBar: fotterButton(),
       ),
-      bottomNavigationBar: fotterButton(),
+      onWillPop: () async {
+        MoveToBackground.moveTaskToBack();
+        return false;
+      },
     );
   }
 }

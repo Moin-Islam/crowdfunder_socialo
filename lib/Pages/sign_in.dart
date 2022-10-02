@@ -267,22 +267,24 @@ class _SignInState extends State<SignIn> {
 
       print(data["USER_DATA"][0]["status"]);
       if (data["USER_DATA"][0]["status"] == "0") {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => MemberList()),
-            (Route<dynamic> route) => false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MemberList()),
+        );
       } else {
         print("NAX");
         print(data["USER_DATA"][0]["stripe_status"]);
 
         if (data["USER_DATA"][0]["stripe_status"] == "1") {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => StripeModuleX()),
-              (Route<dynamic> route) => false);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => StripeModuleX()),
+          );
         } else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (BuildContext context) => SetUp()),
-              (Route<dynamic> route) => false);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SetUp()),
+          );
         }
       }
     }
