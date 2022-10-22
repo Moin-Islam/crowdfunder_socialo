@@ -9,11 +9,11 @@ import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/src/services/clipboard.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/token_preference.dart';
 
@@ -293,11 +293,22 @@ class _StripeModuleXState extends State<StripeModuleX> {
   }
 
   void _sendSMS(String message, List<String> recipents) async {
-    String _result = await sendSMS(message: message, recipients: recipents)
-        .catchError((onError) {
-      print(onError);
-    });
-    print(_result);
+    print(message);
+    message = "cat";
+    var uri = 'sms:' + recipents[0] + '?body=' + message;
+    print(uri);
+    if (await canLaunchUrl(Uri.parse(uri))) {
+      await launch(uri);
+    } else {
+      // iOS
+      var uri = 'sms:' + recipents[0] + '?body=' + message;
+
+      if (await canLaunch(uri)) {
+        await launch(uri);
+      } else {
+        throw 'Could not launch $uri';
+      }
+    }
   }
 
   pickContact() async {

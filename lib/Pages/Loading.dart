@@ -14,7 +14,6 @@ import 'package:flutter_demo/Pages/welcome_page.dart';
 import 'package:flutter_demo/utils/Member.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/src/services/clipboard.dart';
