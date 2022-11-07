@@ -247,7 +247,7 @@ class _SignInState extends State<SignIn> {
   checkUserStatus(String token) async {
     final user_response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          'https://crowdfunderteam.com/api/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -304,7 +304,7 @@ class _SignInState extends State<SignIn> {
     var jsonResponse = null;
     var response = await http.post(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess"),
+            "https://crowdfunderteam.com/api/authentication/processUserAccess"),
         headers: {
           'Private-key':
               "0cf0761127a8ca5b42f04509d15989677937c9cf6a004e2019f41ab7a11815dc"

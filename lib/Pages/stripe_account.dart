@@ -46,7 +46,7 @@ class _StripeAccountState extends State<StripeAccount> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+          'https://crowdfunderteam.com/api/profile/userInfo'),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -88,7 +88,7 @@ class _StripeAccountState extends State<StripeAccount> {
 
     var response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/products/fetchProductSales'),
+          'https://crowdfunderteam.com/api/products/fetchProductSales'),
       headers: {
         'Authorization': '$token',
         'Private-key':

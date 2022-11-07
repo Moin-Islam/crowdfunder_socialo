@@ -79,7 +79,7 @@ class _MemberListState extends State<MemberList> {
     print(token);
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          'https://crowdfunderteam.com/api/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -109,7 +109,7 @@ class _MemberListState extends State<MemberList> {
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
-          "https://demo.socialo.agency/crowdfunder-api-application/purchase/fetchTeamList"),
+          "https://crowdfunderteam.com/api/purchase/fetchTeamList"),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -282,7 +282,7 @@ class _MemberListState extends State<MemberList> {
 
             await http.delete(
               Uri.parse(
-                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+                  'https://crowdfunderteam.com/api/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
                 'Private-key':

@@ -71,7 +71,7 @@ class _SetUpState extends State<SetUp> {
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
-          "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+          "https://crowdfunderteam.com/api/profile/stripeInfo"),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -126,7 +126,7 @@ class _SetUpState extends State<SetUp> {
     var jsonResponse = null;
     var response = await http.put(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+            "https://crowdfunderteam.com/api/profile/stripeInfo"),
         headers: {
           'Authorization': '$token',
           'Private-key':
@@ -234,7 +234,7 @@ class _SetUpState extends State<SetUp> {
 
             await http.delete(
               Uri.parse(
-                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+                  'https://crowdfunderteam.com/api/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
                 'Private-key':

@@ -144,7 +144,7 @@ class _UpdateImageState extends State<UpdateImage> {
       print(data);
       var response = await http.post(
           Uri.parse(
-              "https://demo.socialo.agency/crowdfunder-api-application/profile/updateProfileImage"),
+              "https://crowdfunderteam.com/api/profile/updateProfileImage"),
           headers: {
             'Authorization': '$token',
             'Private-key':

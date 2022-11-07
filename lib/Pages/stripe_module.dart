@@ -83,7 +83,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+          'https://crowdfunderteam.com/api/profile/userInfo'),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -130,7 +130,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/profile/fetchInvitationMessage'),
+          'https://crowdfunderteam.com/api/profile/fetchInvitationMessage'),
       headers: {
         'Authorization': '$token',
         'Private-key':
@@ -294,7 +294,6 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
   void _sendSMS(String message, List<String> recipents) async {
     print(message);
-    message = "cat";
     var uri = 'sms:' + recipents[0] + '?body=' + message;
     print(uri);
     if (await canLaunchUrl(Uri.parse(uri))) {
@@ -472,7 +471,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
 
             await http.delete(
               Uri.parse(
-                  'https://demo.socialo.agency/crowdfunder-api-application/authentication/processUserAccess'),
+                  'https://crowdfunderteam.com/api/authentication/processUserAccess'),
               headers: {
                 'Authorization': '$token',
                 'Private-key':

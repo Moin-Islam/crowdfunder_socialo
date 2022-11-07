@@ -48,7 +48,7 @@ class _LoadingState extends State<Loading> {
     if (token != null && token != "") {
       final response = await http.get(
         Uri.parse(
-            'https://demo.socialo.agency/crowdfunder-api-application/authentication/auth'),
+            'https://crowdfunderteam.com/api/authentication/auth'),
         headers: {
           'Authorization': '$token',
           'Private-key':
@@ -73,7 +73,7 @@ class _LoadingState extends State<Loading> {
   checkUserStatus(String token) async {
     final user_response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/dashboard/userInfo'),
+          'https://crowdfunderteam.com/api/dashboard/userInfo'),
       headers: {
         'Authorization': '$token',
         'Private-key':

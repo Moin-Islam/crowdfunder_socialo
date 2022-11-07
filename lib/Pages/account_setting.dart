@@ -97,7 +97,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     var jsonResponse = null;
     var response = await http.put(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo"),
+            "https://crowdfunderteam.com/api/profile/userInfo"),
         headers: {
           'Authorization': token,
           'Private-key':
@@ -124,7 +124,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     String token = await getToken();
     final response = await http.get(
       Uri.parse(
-          'https://demo.socialo.agency/crowdfunder-api-application/profile/userInfo'),
+          'https://crowdfunderteam.com/api/profile/userInfo'),
       headers: {
         'Authorization': token,
         'Private-key':
@@ -188,7 +188,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     var jsonResponse = null;
     var response = await http.get(
       Uri.parse(
-          "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+          "https://crowdfunderteam.com/api/profile/stripeInfo"),
       headers: {
         'Authorization': token,
         'Private-key':
@@ -236,7 +236,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     var jsonResponse = null;
     var response = await http.put(
         Uri.parse(
-            "https://demo.socialo.agency/crowdfunder-api-application/profile/stripeInfo"),
+            "https://crowdfunderteam.com/api/profile/stripeInfo"),
         headers: {
           'Authorization': token,
           'Private-key':
@@ -763,7 +763,7 @@ class _AccountSettingtate extends State<AccountSetting> {
 
                                 var response = await http.delete(
                                   Uri.parse(
-                                      'https://demo.socialo.agency/crowdfunder-api-application/profile/deleteAccount'),
+                                      'https://crowdfunderteam.com/api/profile/deleteAccount'),
                                   headers: {
                                     'Authorization': '$token',
                                     'Private-key':
