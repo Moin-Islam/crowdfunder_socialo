@@ -5,10 +5,10 @@ import 'package:flutter_demo/Pages/welcome_page.dart';
 import 'package:flutter_demo/utils/token_preference.dart';
 import 'package:flutter_demo/utils/token_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intro_slider/dot_animation_enum.dart';
+
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
-import 'package:intro_slider/scrollbar_behavior_enum.dart';
+
+
 import 'package:modals/modals.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -117,9 +117,11 @@ class IntroScreenState extends State<IntroScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(),
-                                            FlatButton(
-                                              padding: EdgeInsets.all(15),
-                                              color: Color(0xff800080),
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.all(15),
+                                                backgroundColor: Color(0xff800080),
+                                              ),
                                               onPressed: () {
                                                 removeAllModals();
                                                 showModal(
@@ -175,12 +177,15 @@ class IntroScreenState extends State<IntroScreen> {
                                                                         .spaceBetween,
                                                                 children: [
                                                                   Container(),
-                                                                  FlatButton(
-                                                                    padding:
+                                                                  TextButton(
+                                                                    style: TextButton.styleFrom(
+                                                                      padding:
                                                                         EdgeInsets.all(
                                                                             15),
-                                                                    color: Color(
+                                                                      backgroundColor: Color(
                                                                         0xff800080),
+                                                                    ),
+                                                                    
                                                                     onPressed: () =>
                                                                         removeAllModals(),
                                                                     child: Text(
@@ -264,9 +269,11 @@ class IntroScreenState extends State<IntroScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(),
-                                            FlatButton(
-                                              padding: EdgeInsets.all(15),
-                                              color: Color(0xff800080),
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.all(15),
+                                                backgroundColor: Color(0xff800080),
+                                              ),
                                               onPressed: () =>
                                                   removeAllModals(),
                                               child: Text(
@@ -359,9 +366,11 @@ class IntroScreenState extends State<IntroScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(),
-                                        FlatButton(
-                                          padding: EdgeInsets.all(15),
-                                          color: Color(0xff800080),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.all(15),
+                                            backgroundColor: Color(0xff800080),
+                                          ), 
                                           onPressed: () {
                                             removeAllModals();
                                             showModal(ModalEntry.aligned(
@@ -413,12 +422,14 @@ class IntroScreenState extends State<IntroScreen> {
                                                                 .spaceBetween,
                                                         children: [
                                                           Container(),
-                                                          FlatButton(
-                                                            padding:
+                                                          TextButton(
+                                                            style: TextButton.styleFrom(
+                                                              padding:
                                                                 EdgeInsets.all(
                                                                     15),
-                                                            color: Color(
+                                                              backgroundColor: Color(
                                                                 0xff800080),
+                                                            ),
                                                             onPressed: () =>
                                                                 removeAllModals(),
                                                             child: Text(
@@ -501,9 +512,11 @@ class IntroScreenState extends State<IntroScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(),
-                                        FlatButton(
-                                          padding: EdgeInsets.all(15),
-                                          color: Color(0xff800080),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.all(15),
+                                            backgroundColor: Color(0xff800080),
+                                          ),
                                           onPressed: () => removeAllModals(),
                                           child: Text(
                                             "Done",
@@ -610,7 +623,7 @@ class IntroScreenState extends State<IntroScreen> {
       backgroundColorAllSlides: Colors.grey,
 
       // Scrollbar
-      verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
+      verticalScrollbarBehavior: ScrollbarBehavior.SHOW_ALWAYS,
     );
   }
 }

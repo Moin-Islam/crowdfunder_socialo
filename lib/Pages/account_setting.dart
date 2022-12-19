@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/payment_info.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
@@ -26,6 +25,29 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingtate extends State<AccountSetting> {
+
+  bool _isVisibleCurrent = false;
+  bool _isVisibleNew = false;
+  bool _isVisibleRecheck = false;
+
+  void updateStatus() {
+    setState(() {
+      _isVisibleCurrent = !_isVisibleCurrent;
+    });
+  }
+
+  void updateStatusNew() {
+    setState(() {
+      _isVisibleNew = !_isVisibleNew;
+    });
+  }
+
+  void updateStatusRecheck() {
+    setState(() {
+      _isVisibleRecheck = !_isVisibleRecheck;
+    });
+  }
+
   Future<User> futureUser;
   Future<Stripe> futureStripe;
   File image;
@@ -392,7 +414,10 @@ class _AccountSettingtate extends State<AccountSetting> {
           height: 48,
           child: TextFormField(
             controller: currentpasswordController,
-            obscureText: true,
+            obscureText: _isVisibleCurrent ? false : true,
+            inputFormatters: [
+               FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+            ],
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
@@ -400,6 +425,12 @@ class _AccountSettingtate extends State<AccountSetting> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton(  
+                  onPressed: () => updateStatus(),
+                  icon: Icon(
+                    _isVisibleCurrent ? Icons.visibility : Icons.visibility_off
+                  ),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -426,7 +457,7 @@ class _AccountSettingtate extends State<AccountSetting> {
           height: 48,
           child: TextFormField(
             controller: newpasswordController,
-            obscureText: true,
+            obscureText: _isVisibleNew ? false : true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
@@ -434,6 +465,12 @@ class _AccountSettingtate extends State<AccountSetting> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton(  
+                  onPressed: () => updateStatusNew(),
+                  icon: Icon(
+                    _isVisibleNew ? Icons.visibility : Icons.visibility_off 
+                  ),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -460,7 +497,7 @@ class _AccountSettingtate extends State<AccountSetting> {
           height: 48,
           child: TextFormField(
             controller: confirmpasswordController,
-            obscureText: true,
+            obscureText: _isVisibleRecheck ? false : true,
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
@@ -468,6 +505,12 @@ class _AccountSettingtate extends State<AccountSetting> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton(  
+                  onPressed: () => updateStatusRecheck(),
+                  icon: Icon(
+                    _isVisibleRecheck ? Icons.visibility : Icons.visibility_off
+                  ),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -488,7 +531,7 @@ class _AccountSettingtate extends State<AccountSetting> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: _isLoading
                 ? null
                 : () {
@@ -506,10 +549,12 @@ class _AccountSettingtate extends State<AccountSetting> {
                       ));
                     });
                   },
-            padding: EdgeInsets.all(15),
-            shape:
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(15),
+              shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            color: Color(0xff800080),
+              primary: Color(0xff800080),
+            ),
             child: Text(
               'Save Changes',
               style: GoogleFonts.rubik(
@@ -585,7 +630,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: _isLoading2
             ? null
             : () {
@@ -597,9 +642,11 @@ class _AccountSettingtate extends State<AccountSetting> {
                   ));
                 });
               },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          primary: Color(0xff800080),
+        ),
         child: Text(
           'Set Up Account',
           style: GoogleFonts.rubik(
@@ -612,16 +659,18 @@ class _AccountSettingtate extends State<AccountSetting> {
   Widget buildBackBtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => StripeModuleX()),
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
-          shape:
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(15),
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: Icon(
             Icons.arrow_back,
             color: Color(0xff800080),
@@ -708,7 +757,7 @@ class _AccountSettingtate extends State<AccountSetting> {
     return Container(
       width: double.infinity,
       height: 48,
-      child: RaisedButton(
+      child: ElevatedButton(
           onPressed: () {
             showModal(ModalEntry.aligned(context,
                 tag: 'Delete Account',
@@ -755,9 +804,11 @@ class _AccountSettingtate extends State<AccountSetting> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            FlatButton(
-                              padding: EdgeInsets.all(15),
-                              color: Color(0xff800080),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.all(15),
+                                backgroundColor: Color(0xff800080),
+                              ),
                               onPressed: () async {
                                 String token = await getToken();
 
@@ -807,9 +858,11 @@ class _AccountSettingtate extends State<AccountSetting> {
                                     color: Colors.white, fontSize: 12),
                               ),
                             ),
-                            FlatButton(
-                              padding: EdgeInsets.all(15),
-                              color: Color(0xff800080),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.all(15),
+                                backgroundColor: Color(0xff800080),
+                              ),
                               onPressed: () => removeAllModals(),
                               child: Text(
                                 "No",
@@ -824,9 +877,11 @@ class _AccountSettingtate extends State<AccountSetting> {
                   ),
                 )));
           },
-          shape:
+          style: ElevatedButton.styleFrom(
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          color: Color(0xff800080),
+            primary: Color(0xff800080),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

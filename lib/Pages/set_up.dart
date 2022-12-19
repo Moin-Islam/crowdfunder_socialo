@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/material/flat_button.dart';
+
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
@@ -228,7 +228,7 @@ class _SetUpState extends State<SetUp> {
   Widget buildLogOutbtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () async {
             String token = await getToken();
 
@@ -250,9 +250,12 @@ class _SetUpState extends State<SetUp> {
               (_) => false,
             );
           },
-          padding: EdgeInsets.only(left: 40),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.only(left: 40),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          
           child: Icon(
             Icons.logout,
             color: Color(0xff800080),
@@ -264,15 +267,18 @@ class _SetUpState extends State<SetUp> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: _isLoading
             ? null
             : () {
                 paymentSetup(context);
               },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          primary: Color(0xff800080),
+        ),
+        
         child: Text(
           'Set Up Account',
           style: GoogleFonts.roboto(

@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/sign_up.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
@@ -61,12 +60,14 @@ class _UploadImageState extends State<UploadImage> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
           onPressed: () => captureImage(),
-          padding: EdgeInsets.all(15),
-          shape:
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(15),
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          color: Color(0xff800080),
+            primary: Color(0xff800080),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -199,13 +200,16 @@ class _UploadImageState extends State<UploadImage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignUp())),
-                  padding: EdgeInsets.all(13),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  color: Color(0xff800080),
+                  primary: Color(0xff800080),
+
+                  ),
                   child: Text(
                     'Previous',
                     style: GoogleFonts.rubik(
@@ -214,7 +218,7 @@ class _UploadImageState extends State<UploadImage> {
                         fontWeight: FontWeight.normal),
                   ),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _isLoading
                       ? null
                       : () {
@@ -273,10 +277,12 @@ class _UploadImageState extends State<UploadImage> {
                           //   ));
                           // }
                         },
-                  padding: EdgeInsets.all(13),
+                  style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(13),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
-                  color: Color(0xff800080),
+                  primary: Color(0xff800080),
+                  ),
                   child: Text(
                     'Sign Up',
                     style: GoogleFonts.rubik(

@@ -96,9 +96,12 @@ class _StripeAccountState extends State<StripeAccount> {
       },
     );
 
-    if (response.statusCode == 200) {
-      Map data = jsonDecode(response.body);
+  Map data = jsonDecode(response.body);
+    if (data["http_response_code"] == 200) {
+      
+      print(data);
       var body = jsonDecode(data["list_data"]);
+      
 
       return body.map<Product>(Product.fromJson).toList();
 
@@ -268,16 +271,19 @@ class _StripeAccountState extends State<StripeAccount> {
   Widget buildBackBtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => StripeModuleX()),
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(15),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          
           child: Icon(
             Icons.arrow_back,
             color: Color(0xff800080),

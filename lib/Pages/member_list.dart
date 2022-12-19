@@ -276,7 +276,7 @@ class _MemberListState extends State<MemberList> {
   Widget buildLogOutbtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () async {
             String token = await getToken();
 
@@ -298,9 +298,11 @@ class _MemberListState extends State<MemberList> {
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
-          shape:
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(15),
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: Icon(
             Icons.logout,
             color: Color(0xff800080),

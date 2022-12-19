@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
@@ -42,16 +41,18 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   Widget buildBackBtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => SignIn()),
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
-          shape:
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(15),
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: Icon(
             Icons.arrow_back,
             color: Color(0xff800080),
@@ -100,17 +101,20 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       padding: EdgeInsets.symmetric(vertical: 25),
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 50),
-      child: RaisedButton(
-        elevation: 5,
+      child: ElevatedButton(
+        
         onPressed: _isLoading ? null : () {
            setState(() {
             _isLoading = true;
            });
           signIn(emailController.text, context);
         },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Color(0xff800080),
+        ),
         child: Text(
           'Recover Your Password',
           style: GoogleFonts.rubik(

@@ -324,13 +324,15 @@ class _StripeModuleXState extends State<StripeModuleX> {
     return Container(
       width: double.infinity,
       height: 48,
-      child: RaisedButton(
+      child: ElevatedButton(
           onPressed: () {
             pickContact();
           },
-          shape:
+          style: ElevatedButton.styleFrom(
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          color: Color(0xff800080),
+            primary: Color(0xff800080),
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -465,7 +467,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
   Widget buildLogOutBtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () async {
             String token = await getToken();
 
@@ -487,9 +489,11 @@ class _StripeModuleXState extends State<StripeModuleX> {
               (_) => false,
             );
           },
-          padding: EdgeInsets.only(top: 55, left: 25),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.only(top: 55, left: 25),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: Icon(
             Icons.logout,
             color: Color(0xff800080),

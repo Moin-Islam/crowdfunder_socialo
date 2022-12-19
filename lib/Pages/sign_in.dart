@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/account_setting.dart';
 import 'package:flutter_demo/Pages/forget_password.dart';
 import 'package:flutter_demo/Pages/member_list.dart';
@@ -27,8 +26,15 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool isRememberMe = false;
+  bool _isVisiblePassword = false;
   bool _isLoading = false;
   var token = "";
+
+  void updateStatus() {
+    setState(() {
+      _isVisiblePassword = !_isVisiblePassword;
+    });
+  }
 
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
@@ -82,7 +88,10 @@ class _SignInState extends State<SignIn> {
           height: 48,
           child: TextFormField(
             controller: passwordController,
-            obscureText: true,
+            obscureText: _isVisiblePassword ? false : true,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+            ],
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 border: InputBorder.none,
@@ -90,6 +99,10 @@ class _SignInState extends State<SignIn> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton(  
+                  onPressed: () => updateStatus(),
+                  icon:  Icon( _isVisiblePassword ? Icons.visibility : Icons.visibility_off),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -136,14 +149,17 @@ class _SignInState extends State<SignIn> {
             ),
           ),
           Container(
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                         builder: (BuildContext context) => ForgetPassword()),
                     (Route<dynamic> route) => false);
               },
-              padding: EdgeInsets.only(right: 0),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.only(right: 0),
+              ),
+              
               child: Text(
                 'Forgot your Password?',
                 style: TextStyle(
@@ -161,8 +177,7 @@ class _SignInState extends State<SignIn> {
       padding: EdgeInsets.symmetric(vertical: 25),
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 50),
-      child: RaisedButton(
-        elevation: 5,
+      child: ElevatedButton(
         onPressed: _isLoading
             ? null
             : () {
@@ -183,9 +198,13 @@ class _SignInState extends State<SignIn> {
                   // }
                 });
               },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Color(0xff800080),
+        ),
+        
         child: _isLoading
             ? Text(
                 'Loading...',

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/set_up.dart';
 import 'package:flutter_demo/Pages/stripe_account.dart';
 import 'package:flutter_demo/Pages/stripe_module.dart';
@@ -188,6 +187,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
   }
 
   StripePayment(id, BuildContext context) async {
+    bool _isTrigger = false;
     Stripe.publishableKey = widget.data[id]['publishableKey'];
     print(widget.data[id]['publishableKey']);
     Stripe.merchantIdentifier = "test";
@@ -204,6 +204,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
     }).onError((error, stackTrace) {
       print("onError sent message: $error");
       if (error is StripeException) {
+        _isTrigger = true;
         print("Error from Stripe: ${error.error.localizedMessage}");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error.error.localizedMessage),
@@ -215,11 +216,16 @@ class _PaymentInfoState extends State<PaymentInfo> {
         });
       }
     });
-
     if (widget.data[id] != null || widget.data[id] != {}) {
       /*receiveData['team_data'][k]
                     .add();*/
-      temp.add({'saleId': id, 'stripeToken': tokenData.id});
+        
+      if (_isTrigger) {
+        temp.add({'saleId': id, 'stripeToken': ""});
+      }
+      else{
+        temp.add({'saleId': id, 'stripeToken': tokenData.id});
+      }
     }
   }
 
@@ -269,7 +275,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: _isLoading
             ? null
             : () async {
@@ -290,6 +296,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   ));
                   for (var id in widget.data.keys) {
                     await StripePayment(id, context);
+                   
                   }
 
                   // widget.data.keys.forEach(await (id) {
@@ -314,9 +321,11 @@ class _PaymentInfoState extends State<PaymentInfo> {
 
                   print("response");
                   print(response.body);
+                  
 
                   Map<String, dynamic> data = jsonDecode(response.body);
-
+                  
+                  print(data['code']);
                   setState(() {
                     _log = json.encode(receiveData) + response.body;
                   });
@@ -335,9 +344,11 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   }
                 }
               },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          primary: Color(0xff800080),
+        ), 
         child: _isLoading
             ? Text(
                 'Processing payment please wait',
@@ -360,16 +371,18 @@ class _PaymentInfoState extends State<PaymentInfo> {
   Widget buildLogOutBtn() {
     return Align(
       alignment: Alignment.topRight,
-      child: FlatButton(
+      child: TextButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               CupertinoPageRoute(builder: (context) => MemberList()),
               (_) => false,
             );
           },
-          padding: EdgeInsets.all(15),
-          shape:
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.all(15),
+            shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
           child: Icon(
             Icons.arrow_back,
             color: Color(0xff800080),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/material/flat_button.dart';
 import 'package:flutter_demo/Pages/sign_in.dart';
 import 'package:flutter_demo/Pages/upload_image.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +16,10 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  bool _isVisible = false;
+  bool _isVisibleRecheck = false;
+
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
@@ -54,6 +57,18 @@ class _SignUpState extends State<SignUp> {
       print(prefs.containsKey(parameter));
       return "";
     }
+  }
+
+  void updateStatus() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
+
+  void updateStatuRecheck() {
+    setState(() {
+      _isVisibleRecheck = !_isVisibleRecheck;
+    });
   }
 
   Widget buildName() {
@@ -174,7 +189,10 @@ class _SignUpState extends State<SignUp> {
           alignment: Alignment.centerLeft,
           child: TextFormField(
             controller: passwordController,
-            obscureText: true,
+            obscureText: _isVisible ? false : true,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+            ],
             style: TextStyle(color: Colors.black),
             validator: (value) {
               if (value.isEmpty) {
@@ -194,6 +212,12 @@ class _SignUpState extends State<SignUp> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton (  
+                  onPressed: () => updateStatus(),
+                  icon: Icon(
+                    _isVisible ? Icons.visibility : Icons.visibility_off
+                  ),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -215,7 +239,10 @@ class _SignUpState extends State<SignUp> {
           alignment: Alignment.centerLeft,
           child: TextFormField(
             controller: confirmpasswordController,
-            obscureText: true,
+            obscureText: _isVisibleRecheck ? false : true ,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
+            ],
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter password';
@@ -237,6 +264,12 @@ class _SignUpState extends State<SignUp> {
                 focusedBorder: OutlineInputBorder(
                   borderSide:
                       const BorderSide(color: Color(0xff800080), width: 2.0),
+                ),
+                suffixIcon: IconButton(  
+                  onPressed: () => updateStatuRecheck(),
+                  icon:  Icon(
+                    _isVisibleRecheck ? Icons.visibility : Icons.visibility_off
+                  ),
                 ),
                 prefixIcon: Icon(
                   Icons.lock,
@@ -348,8 +381,7 @@ class _SignUpState extends State<SignUp> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       width: double.infinity,
-      child: RaisedButton(
-        elevation: 5,
+      child: ElevatedButton(
         onPressed: _isLoading
             ? null
             : () {
@@ -364,9 +396,13 @@ class _SignUpState extends State<SignUp> {
                       invitationController.text);
                 }
               },
-        padding: EdgeInsets.all(15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        color: Color(0xff800080),
+        style: ElevatedButton.styleFrom(
+          elevation: 5,
+          padding: EdgeInsets.all(15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Color(0xff800080),
+
+        ),
         child: Text(
           'Next',
           style: GoogleFonts.rubik(
