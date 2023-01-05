@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
@@ -82,13 +84,15 @@ class _SetUpState extends State<SetUp> {
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
+      print("double simp dipto");
+      print(data);
 
       if (data["STRIPE_DATA"][0]["public_key"] != "" &&
           data["STRIPE_DATA"][0]["secret_key"] != "") {
-        Navigator.of(context).pushAndRemoveUntil(
+        /*Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
                 builder: (BuildContext context) => StripeModuleX()),
-            (Route<dynamic> route) => false);
+            (Route<dynamic> route) => false);*/
         return;
       }
 

@@ -94,6 +94,7 @@ class _StripeModuleXState extends State<StripeModuleX> {
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       print(data);
+      print('aaa');
       setState(() {
         name = data["USER_DATA"][0]["name"];
       });

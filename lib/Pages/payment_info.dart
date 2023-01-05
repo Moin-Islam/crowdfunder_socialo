@@ -326,9 +326,9 @@ class _PaymentInfoState extends State<PaymentInfo> {
                   Map<String, dynamic> data = jsonDecode(response.body);
                   
                   print(data['code']);
-                  setState(() {
+                  /*setState(() {
                     _log = json.encode(receiveData) + response.body;
-                  });
+                  });*/
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(data['message']),
@@ -513,7 +513,7 @@ class _PaymentInfoState extends State<PaymentInfo> {
                         )),
 
                     buildSetUpAccountbtn(context),
-                    Text((_log == null) ? "Logs" : '$_log')
+                    /*Text((_log == null) ? "Logs" : '$_log')*/
                   ],
                 ),
               ),

@@ -292,6 +292,7 @@ class _SignInState extends State<SignIn> {
         );
       } else {
         print("NAX");
+        print('aaaa');
         print(data["USER_DATA"][0]["stripe_status"]);
 
         if (data["USER_DATA"][0]["stripe_status"] == "1") {
